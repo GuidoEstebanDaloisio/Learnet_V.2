@@ -1,0 +1,51 @@
+.container {
+  background: #fafafa;
+  min-height: 100vh;
+}
+
+/* HERO */
+.heroSection {
+  text-align: center;
+  padding: 100px 20px;
+  background: white;
+  border-bottom: 1px solid #eee;
+}
+
+.heroParagraph {
+  font-size: 18px;
+  color: #555;
+}
+
+/* DESCRIPCIÓN */
+.descriptionSection {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.descriptionParagraph {
+  color: #555;
+  font-size: 16px;
+}
+
+/* TESTIMONIOS */
+.testimonialsSection {
+  padding: 60px 20px;
+  margin-top: 40px;
+  text-align: center;
+  background: #fff;
+  border-top: 1px solid #eee;
+}
+
+.testimonialCard {
+  border-radius: 10px;
+  min-height: 200px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.testimonialText {
+  margin-bottom: 20px;
+}
+
+.testimonialName {
+  font-weight: 600;
+}
