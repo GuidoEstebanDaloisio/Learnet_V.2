@@ -1,7 +1,6 @@
 import { Button, Layout } from "antd";
 import styles from "../styles/components/navbar.module.css";
-import Logo from "../../public/img/Logo.png";
-
+import Logo from "../assets/Logo.png";
 
 const { Header } = Layout;
 
@@ -9,11 +8,7 @@ export default function Navbar() {
   return (
     <Header className={styles.navbar}>
       <div className={styles.logoSection}>
-        <img
-          src={Logo}
-          alt="Learnet Logo"
-          className={styles.logoImg}
-        />
+        <img src={Logo} alt="Learnet Logo" className={styles.logoImg} />
         <span className={styles.logoText}>Learnet</span>
       </div>
 

@@ -1,6 +1,9 @@
 import { Button, Card, Row, Col, Typography, Space } from "antd";
 import type { FC } from "react";
 import styles from "../styles/home.module.css";
+import heroImg from "../assets/Hero.png";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 const { Title, Paragraph } = Typography;
 
@@ -21,20 +24,30 @@ const Home: FC = () => {
   ];
 
   return (
+    <>
+    <Navbar />
     <div className={styles.container}>
       {/* HERO */}
-      <div className={styles.heroSection}>
-        <Space direction="vertical" size="large" align="center">
-          <Title level={1}>Aprende con los mejores mentores</Title>
+      <div
+        className={styles.heroSection}
+        style={{ backgroundImage: `url(${heroImg})` }}
+      >
+        <div className={styles.heroOverlay} />
+        <div className={styles.heroContent}>
+          <Space direction="vertical" size="large" align="center">
+            <Title level={1} className={styles.heroTitle}>
+              ACELERA TU CARRERA
+            </Title>
 
-          <Paragraph className={styles.heroParagraph}>
-            Conecta con expertos, elige tu camino de aprendizaje y crece a tu ritmo.
-          </Paragraph>
+            <Paragraph className={styles.heroParagraph}>
+              Conecta con expertos y da el siguiente paso en tu aprendizaje.
+            </Paragraph>
 
-          <Button type="primary" size="large">
-            Comenzar ahora
-          </Button>
-        </Space>
+            <Button type="primary" size="large">
+              Comenzar ahora
+            </Button>
+          </Space>
+        </div>
       </div>
 
       {/* DESCRIPCIÓN */}
@@ -46,9 +59,10 @@ const Home: FC = () => {
             </Title>
 
             <Paragraph className={styles.descriptionParagraph}>
-              Learnet es una plataforma donde estudiantes pueden encontrar mentores especializados
-              en distintas áreas. Cada mentor ofrece mentorías diseñadas para ayudarte a dominar un
-              tema de manera clara, práctica y a tu medida.
+              Learnet es una plataforma donde estudiantes pueden encontrar
+              mentores especializados en distintas áreas. Cada mentor ofrece
+              mentorías diseñadas para ayudarte a dominar un tema de manera
+              clara, práctica y a tu medida.
             </Paragraph>
           </div>
         </Col>
@@ -74,6 +88,9 @@ const Home: FC = () => {
         </Row>
       </div>
     </div>
+          <Footer />
+    
+    </>
   );
 };
 
