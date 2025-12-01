@@ -1,21 +1,19 @@
-import { Button, Typography, Container } from "@mui/material";
+import { Box, Heading, Text, Button, VStack } from "@chakra-ui/react";
 
 export default function Hero() {
   return (
-    <div style={{ padding: "4rem 0", textAlign: "center" }}>
-      <Container maxWidth="md">
-        <Typography variant="h3" component="h1" gutterBottom>
-          Bienvenido a la Plataforma de Mentorías
-        </Typography>
+    <Box textAlign="center" py={28} px={6}>
+      <Heading fontSize="4xl" mb={4}>
+        Potenciá tu crecimiento con mentorías personalizadas
+      </Heading>
 
-        <Typography variant="subtitle1" color="text.secondary" paragraph>
-          Conectamos estudiantes con mentores especializados para potenciar su aprendizaje.
-        </Typography>
+      <Text maxW="600px" mx="auto" opacity={0.8} mb={6}>
+        Conectá con expertos que te acompañan en tu camino profesional.
+      </Text>
 
-        <Button variant="contained" size="large">
-          Comenzar
-        </Button>
-      </Container>
-    </div>
+      <Button size="lg" colorScheme="brand">
+        Comenzar ahora
+      </Button>
+    </Box>
   );
 }

@@ -1,21 +1,32 @@
-import { Button, Layout } from "antd";
-import styles from "../styles/components/navbar.module.css";
+import { Box, Flex, HStack, Link, Button, Image, Text } from "@chakra-ui/react";
 import Logo from "../assets/Logo.png";
-
-const { Header } = Layout;
 
 export default function Navbar() {
   return (
-    <Header className={styles.navbar}>
-      <div className={styles.logoSection}>
-        <img src={Logo} alt="Learnet Logo" className={styles.logoImg} />
-        <span className={styles.logoText}>Learnet</span>
-      </div>
+    <Box bg="gray.800" px={6} py={3} boxShadow="md">
+      <Flex justify="space-between" align="center">
 
-      <div className={styles.actions}>
-        <Button type="default">Login</Button>
-        <Button type="primary">Registrarse</Button>
-      </div>
-    </Header>
+        {/* IZQUIERDA: Logo + Nombre */}
+        <HStack spacing={3}>
+          <Image 
+            src={Logo} 
+            alt="Learnet Logo" 
+            boxSize="40px" 
+            objectFit="contain"
+          />
+          <Text fontSize="xl" fontWeight="bold">
+            Learnet
+          </Text>
+        </HStack>
+
+        {/* DERECHA: Links */}
+        <HStack spacing={6} color="white">
+          <Link href="#beneficios">Beneficios</Link>
+          <Link href="#testimonios">Testimonios</Link>
+          <Button colorScheme="brand">Ingresar</Button>
+        </HStack>
+
+      </Flex>
+    </Box>
   );
 }
