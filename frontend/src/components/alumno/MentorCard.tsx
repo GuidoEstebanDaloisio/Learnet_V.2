@@ -9,12 +9,14 @@ import {
   Icon,
 } from "@chakra-ui/react";
 import { FaStar } from "react-icons/fa";
+// 1. Importar useNavigate
+import { useNavigate } from "react-router-dom";
 
 interface MentorCardProps {
   nombre: string;
-  titulo: string;             // Nuevo: título profesional
+  titulo: string; // Nuevo: título profesional
   rating: number;
-  cantidadRatings: number;    // Nuevo: cantidad de personas que puntuaron
+  cantidadRatings: number; // Nuevo: cantidad de personas que puntuaron
   disponible: boolean;
   imagen?: string;
 }
@@ -27,6 +29,9 @@ export default function MentorCard({
   disponible,
   imagen,
 }: MentorCardProps) {
+  // 2. Inicializar useNavigate
+  const navigate = useNavigate();
+
   return (
     <Box
       bg="gray.800"
@@ -91,7 +96,13 @@ export default function MentorCard({
       </Flex>
 
       {/* ACTION */}
-      <Button mt={4} w="100%" colorScheme="brand">
+      <Button
+        mt={4}
+        w="100%"
+        colorScheme="brand"
+        // 3. Agregar la función onClick para navegar
+        onClick={() => navigate("/alumno/detalles-mentor")}
+      >
         Ver perfil
       </Button>
     </Box>

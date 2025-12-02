@@ -6,7 +6,7 @@ export default function NavbarAlumno() {
   const navigate = useNavigate();
 
   const navItems = [
-    { label: "Explorar", icon: FaCompass, path: "/alumno/explorar" },
+    { label: "Explorar", icon: FaCompass, path: "/alumno/explorar-mentores" },
     { label: "Mis Mentorías", icon: FaBookOpen, path: "/alumno/mentorias" },
     { label: "Perfil", icon: FaUser, path: "/alumno/perfil" },
   ];

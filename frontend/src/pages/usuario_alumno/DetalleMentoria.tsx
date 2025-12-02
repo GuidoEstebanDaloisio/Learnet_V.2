@@ -6,9 +6,19 @@ import {
   Button,
   Icon,
   Link,
+  Divider,
+  Tag,
+  TagLabel,
 } from "@chakra-ui/react";
-import { FaUser, FaCalendar, FaClock, FaInfoCircle } from "react-icons/fa";
+import {
+  FaUser,
+  FaCalendar,
+  FaClock,
+  FaInfoCircle,
+} from "react-icons/fa";
 import { useLocation } from "react-router-dom";
+import NavbarAlumno from "../../components/alumno/NavbarAlumno";
+import Footer from "../../components/Footer";
 
 interface Mentoria {
   titulo: string;
@@ -27,7 +37,6 @@ const colorEstado: Record<Mentoria["estado"], string> = {
 };
 
 export default function DetalleMentoria() {
-
   const { state } = useLocation();
   const mentoria: Mentoria = state?.mentoria;
 
@@ -36,61 +45,96 @@ export default function DetalleMentoria() {
   }
 
   return (
-    <Box minH="100vh" px={6} py={10} display="flex" justifyContent="center">
-      <Box
-        bg="gray.800"
-        p={8}
-        rounded="2xl"
-        shadow="xl"
-        borderWidth="1px"
-        borderColor="gray.700"
-        maxW="700px"
-        w="100%"
-      >
-        <Text fontSize="3xl" fontWeight="bold" color="gray.100" mb={2}>
-          <Icon as={FaInfoCircle} mr={2} /> {mentoria.titulo}
-        </Text>
+    <>
+      <NavbarAlumno />
 
-        <Text color="gray.300" fontSize="lg" mb={6}>
-          {mentoria.descripcion}
-        </Text>
+      <Box minH="100vh" px={6} py={10} display="flex" justifyContent="center">
+        <Box
+          bg="gray.800"
+          p={8}
+          rounded="2xl"
+          shadow="2xl"
+          borderWidth="1px"
+          borderColor="gray.700"
+          maxW="700px"
+          w="100%"
+        >
+          {/* TÍTULO Y DESCRIPCIÓN */}
+          <Flex align="center" mb={4} gap={3}>
+            <Icon as={FaInfoCircle} boxSize={7} color="brand.300" />
+            <Text fontSize="3xl" fontWeight="bold" color="brand.300">
+              {mentoria.titulo}
+            </Text>
+          </Flex>
 
-        <Flex align="center" gap={3} color="gray.300" mb={4}>
-          <Icon as={FaUser} />
-          <Text><strong>Mentor:</strong> {mentoria.mentor}</Text>
-        </Flex>
+          <Text color="gray.300" fontSize="lg" mb={6}>
+            {mentoria.descripcion}
+          </Text>
 
-        <Flex align="center" gap={3} color="gray.300" mb={2}>
-          <Icon as={FaCalendar} />
-          <Text><strong>Fecha:</strong> {mentoria.fecha}</Text>
-        </Flex>
+          <Divider borderColor="gray.600" my={6} />
 
-        <Flex align="center" gap={3} color="gray.300" mb={4}>
-          <Icon as={FaClock} />
-          <Text><strong>Hora:</strong> {mentoria.hora}</Text>
-        </Flex>
-
-        <Flex align="center" gap={3} mb={6}>
-          <Icon as={FaInfoCircle} />
-          <Text fontWeight="semibold" color="gray.200">Estado:</Text>
-
-          <Badge
-            colorScheme={colorEstado[mentoria.estado]}
-            px={3}
-            py={1}
-            rounded="full"
-            fontSize="sm"
+          {/* INFO GENERAL */}
+          <Box
+            bg="gray.700"
+            p={5}
+            rounded="xl"
+            borderWidth="1px"
+            borderColor="gray.600"
+            mb={6}
           >
-            {mentoria.estado}
-          </Badge>
-        </Flex>
+            <Flex align="center" gap={3} color="gray.300" mb={4}>
+              <Icon as={FaUser} />
+              <Text>
+                <strong>Mentor:</strong> {mentoria.mentor}
+              </Text>
+            </Flex>
 
-        <Link href={mentoria.meetUrl} target="_blank" style={{ width: "100%" }}>
-          <Button w="100%" size="lg" colorScheme="brand">
-            Unirse a la Mentoría
-          </Button>
-        </Link>
+            <Flex align="center" gap={3} color="gray.300" mb={2}>
+              <Icon as={FaCalendar} />
+              <Text>
+                <strong>Fecha:</strong> {mentoria.fecha}
+              </Text>
+            </Flex>
+
+            <Flex align="center" gap={3} color="gray.300" mb={4}>
+              <Icon as={FaClock} />
+              <Text>
+                <strong>Hora:</strong> {mentoria.hora}
+              </Text>
+            </Flex>
+
+            {/* ESTADO */}
+            <Flex align="center" gap={3}>
+              <Icon as={FaInfoCircle} />
+              <Text fontWeight="semibold" color="gray.200">
+                Estado:
+              </Text>
+
+              <Badge
+                colorScheme={colorEstado[mentoria.estado]}
+                px={3}
+                py={1}
+                rounded="full"
+                fontSize="sm"
+                shadow="md"
+              >
+                {mentoria.estado}
+              </Badge>
+            </Flex>
+          </Box>
+
+          <Divider borderColor="gray.600" my={6} />
+
+          {/* ACCESO A LA MENTORÍA */}
+          <Link href={mentoria.meetUrl} target="_blank" style={{ width: "100%" }}>
+            <Button w="100%" size="lg" colorScheme="brand" rounded="lg" shadow="md">
+              Unirse a la Mentoría
+            </Button>
+          </Link>
+        </Box>
       </Box>
-    </Box>
+
+      <Footer />
+    </>
   );
 }
