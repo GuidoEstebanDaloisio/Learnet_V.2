@@ -6,9 +6,7 @@ import {
   Button,
   Icon,
   Link,
-  Divider,
-  Tag,
-  TagLabel,
+  Divider
 } from "@chakra-ui/react";
 import {
   FaUser,

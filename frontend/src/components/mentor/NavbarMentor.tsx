@@ -1,15 +1,16 @@
 import { Box, Flex, HStack, Link, Icon, Spacer, Image } from "@chakra-ui/react";
-import { FaCompass, FaBookOpen, FaUser, FaSignOutAlt } from "react-icons/fa";
+import { FaClipboardList, FaCalendarAlt, FaBookOpen, FaUser, FaSignOutAlt } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import Logo from "../../assets/logo.png"; // <-- IMPORTA EL LOGO
+import Logo from "../../assets/logo.png"; // Ajustar la ruta según tu proyecto
 
-export default function NavbarAlumno() {
+export default function NavbarMentor() {
   const navigate = useNavigate();
 
   const navItems = [
-    { label: "Explorar", icon: FaCompass, path: "/alumno/explorar-mentores" },
-    { label: "Mis Mentorías", icon: FaBookOpen, path: "/alumno/mentorias" },
-    { label: "Perfil", icon: FaUser, path: "/alumno/perfil" },
+    { label: "Solicitudes", icon: FaClipboardList, path: "/mentor/solicitudes" },
+    { label: "Agenda", icon: FaCalendarAlt, path: "/mentor/agenda" },
+    { label: "Mis Mentorías", icon: FaBookOpen, path: "/mentor/mentorias" },
+    { label: "Perfil", icon: FaUser, path: "/mentor/perfil" },
   ];
 
   const handleLogout = () => {
@@ -19,10 +20,10 @@ export default function NavbarAlumno() {
   return (
     <Box bg="gray.800" px={6} py={3} boxShadow="md">
       <Flex align="center">
-        
+
         {/* LOGO + NOMBRE */}
         <HStack
-          spacing={2}
+          spacing={3}
           cursor="pointer"
           onClick={() => navigate("/")}
         >
@@ -32,7 +33,6 @@ export default function NavbarAlumno() {
             boxSize="35px"
             objectFit="contain"
           />
-
           <Box fontSize="xl" fontWeight="bold" color="white">
             Learnet
           </Box>
@@ -58,7 +58,7 @@ export default function NavbarAlumno() {
             </HStack>
           ))}
 
-          {/* LOGOUT */}
+          {/* CERRAR SESIÓN */}
           <HStack
             spacing={2}
             color="red.300"

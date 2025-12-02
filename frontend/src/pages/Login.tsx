@@ -49,7 +49,7 @@ export default function Login() {
           <VStack w="100%" spacing={3} mt={4}>
             <Button
               as={Link}
-              to="/alumno/explorar"
+              to="/alumno/explorar-mentores"
               w="100%"
               colorScheme="brand"
               variant="outline"
@@ -59,7 +59,7 @@ export default function Login() {
 
             <Button
               as={Link}
-              to="/mentor"
+              to="/mentor/perfil"
               w="100%"
               colorScheme="brand"
               variant="outline"

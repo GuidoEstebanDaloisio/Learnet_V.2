@@ -101,7 +101,7 @@ export default function MentorCard({
         w="100%"
         colorScheme="brand"
         // 3. Agregar la función onClick para navegar
-        onClick={() => navigate("/alumno/detalles-mentor")}
+        onClick={() => navigate("/alumno/mentor/detalle")}
       >
         Ver perfil
       </Button>

@@ -1,5 +1,4 @@
 import { Box, Heading } from "@chakra-ui/react";
-
 import NavbarAlumno from "../../components/alumno/NavbarAlumno";
 import Footer from "../../components/Footer";
 import MentoriaCard from "../../components/alumno/MentoriaCard";
