@@ -1,15 +1,32 @@
 import { ChakraProvider } from "@chakra-ui/react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import tema from "./theme/Tema";
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
 import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Explorar from "./pages/usuario_alumno/Explorar";
+import MisMentorias from "./pages/usuario_alumno/MisMentorias";
+import PerfilAlumno from "./pages/usuario_alumno/PerfilAlumno";
+import DetalleMentoria from "./pages/usuario_alumno/DetalleMentoria";
 
 function App() {
   return (
     <ChakraProvider theme={tema}>
-      <Navbar />
-      <Home />
-      <Footer />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+
+          <Route path="/alumno/explorar" element={<Explorar />} />
+          <Route path="/alumno/mentorias" element={<MisMentorias />} />
+
+          {/* NO PASA PROPS — Detalle recibe la mentoria por state */}
+          <Route path="/alumno/mentoria/detalle" element={<DetalleMentoria />} />
+
+          <Route path="/alumno/perfil" element={<PerfilAlumno />} />
+
+          <Route path="*" element={<h1>Pagina no encontrada. ERROR 404</h1>} />
+        </Routes>
+      </BrowserRouter>
     </ChakraProvider>
   );
 }
