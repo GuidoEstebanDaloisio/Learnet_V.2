@@ -1,9 +1,9 @@
 import { Box, Heading } from "@chakra-ui/react";
 import NavbarAlumno from "../../components/alumno/NavbarAlumno";
 import Footer from "../../components/Footer";
-import MentoriaCard from "../../components/alumno/MentoriaCard";
+import SesionAsesoriaAlumnoCard from "../../components/alumno/SesiónAsesoríaAlumnoCard";
 
-const mentorias = [
+const sesiones = [
   {
     mentor: "Ana Torres",
     titulo: "Introducción a React",
@@ -24,7 +24,8 @@ const mentorias = [
     fecha: "02/02/2025",
     hora: "15:00",
     estado: "finalizada",
-  },  {
+  },
+  {
     mentor: "Fernando Gomez",
     titulo: "Inicios en Excel",
     fecha: "02/02/2025",
@@ -33,14 +34,14 @@ const mentorias = [
   },
 ];
 
-export default function MisMentorias() {
+export default function AgendaAlumno() {
   return (
     <Box minH="100vh" display="flex" flexDirection="column">
       <NavbarAlumno />
 
       <Box flex="1" px={{ base: 4, md: 12 }} py={10}>
         <Heading mb={8} textAlign="center">
-          Mis Mentorías
+          Mis Sesiones de Asesoría
         </Heading>
 
         <Box
@@ -52,14 +53,14 @@ export default function MisMentorias() {
           }}
           gap={8}
         >
-          {mentorias.map((m, i) => (
-            <MentoriaCard
+          {sesiones.map((s, i) => (
+            <SesionAsesoriaAlumnoCard
               key={i}
-              mentor={m.mentor}
-              titulo={m.titulo}
-              fecha={m.fecha}
-              hora={m.hora}
-              estado={m.estado as any}
+              mentor={s.mentor}
+              titulo={s.titulo}
+              fecha={s.fecha}
+              hora={s.hora}
+              estado={s.estado as any}
             />
           ))}
         </Box>

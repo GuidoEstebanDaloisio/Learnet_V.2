@@ -5,18 +5,17 @@ import {
   Text,
   Badge,
   Button,
-  HStack,
   Icon,
+  HStack,
 } from "@chakra-ui/react";
 import { FaStar } from "react-icons/fa";
-// 1. Importar useNavigate
 import { useNavigate } from "react-router-dom";
 
 interface MentorCardProps {
   nombre: string;
-  titulo: string; // Nuevo: título profesional
+  titulo: string;
   rating: number;
-  cantidadRatings: number; // Nuevo: cantidad de personas que puntuaron
+  cantidadRatings: number;
   disponible: boolean;
   imagen?: string;
 }
@@ -29,7 +28,6 @@ export default function MentorCard({
   disponible,
   imagen,
 }: MentorCardProps) {
-  // 2. Inicializar useNavigate
   const navigate = useNavigate();
 
   return (
@@ -40,8 +38,6 @@ export default function MentorCard({
       shadow="md"
       borderWidth="1px"
       borderColor="gray.700"
-      maxW="350px"
-      w="100%"
       _hover={{
         shadow: "lg",
         transform: "translateY(-3px)",
@@ -49,44 +45,40 @@ export default function MentorCard({
       }}
       transition="0.2s"
     >
-      {/* HEADER */}
-      <Flex align="center" gap={4}>
-        <Avatar size="lg" name={nombre} src={imagen || undefined} />
+      {/* Título / Nombre del mentor */}
+      <Text fontSize="xl" color="brand.300" fontWeight="bold" mb={2}>
+        {nombre}
+      </Text>
 
-        <Box>
-          <Text fontWeight="bold" fontSize="lg" color="gray.100">
-            {nombre}
-          </Text>
-
-          <Text color="gray.300" fontSize="sm">
+      {/* Mentor + Avatar */}
+      <Flex align="center" gap={3} mb={4}>
+        <Avatar size="md" name={nombre} src={imagen} />
+        <Text fontSize="md" color="gray.300">
+          <Text as="span" fontWeight="bold">
             {titulo}
           </Text>
-        </Box>
+        </Text>
       </Flex>
 
-      {/* RATING + ESTADO EN LA MISMA FILA */}
-      <Flex justify="space-between" align="center" mt={4}>
+      {/* Rating + Disponibilidad */}
+      <Flex justify="space-between" align="center" mb={1}>
         <HStack spacing={1}>
           {Array.from({ length: 5 }).map((_, i) => (
             <Icon
               key={i}
               as={FaStar}
               color={i < rating ? "brand.400" : "gray.700"}
-              boxSize={5}
+              boxSize={4}
             />
           ))}
 
-          {/* Cantidad de personas */}
-          <Text fontSize="sm" color="gray.400" ml={2}>
+          <Text fontSize="sm" color="gray.400">
             ({cantidadRatings})
           </Text>
         </HStack>
 
-        {/* Disponibilidad */}
         <Badge
           colorScheme={disponible ? "green" : "red"}
-          bg={disponible ? "green.600" : "red.600"}
-          color="white"
           px={2}
           py={1}
           rounded="md"
@@ -95,12 +87,10 @@ export default function MentorCard({
         </Badge>
       </Flex>
 
-      {/* ACTION */}
       <Button
         mt={4}
         w="100%"
         colorScheme="brand"
-        // 3. Agregar la función onClick para navegar
         onClick={() => navigate("/alumno/mentor/detalle")}
       >
         Ver perfil

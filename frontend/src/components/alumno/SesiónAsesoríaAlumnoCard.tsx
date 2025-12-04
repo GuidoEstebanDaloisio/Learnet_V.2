@@ -12,7 +12,7 @@ import { FaClock, FaPlay, FaCheckCircle } from "react-icons/fa";
 import { FaBan } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 
-interface MentoriaCardProps {
+interface SesionAsesoriaAlumnoProps {
   mentor: string;
   titulo: string;
   fecha: string;
@@ -21,15 +21,14 @@ interface MentoriaCardProps {
   imagen?: string;
 }
 
-export default function MentoriaCard({
+export default function SesionAsesoriaAlumnoCard({
   mentor,
   titulo,
   fecha,
   hora,
   estado,
   imagen,
-}: MentoriaCardProps) {
-  
+}: SesionAsesoriaAlumnoProps) {
   const navigate = useNavigate();
 
   const estadoConfig = {
@@ -49,21 +48,27 @@ export default function MentoriaCard({
       shadow="md"
       borderWidth="1px"
       borderColor="gray.700"
-      _hover={{ shadow: "lg", transform: "translateY(-3px)", borderColor: "brand.400" }}
+      _hover={{
+        shadow: "lg",
+        transform: "translateY(-3px)",
+        borderColor: "brand.400",
+      }}
       transition="0.2s"
     >
+      {/* Título */}
       <Text fontSize="xl" color="brand.300" fontWeight="bold" mb={2}>
         {titulo}
       </Text>
 
+      {/* Mentor */}
       <Flex align="center" gap={3} mb={4}>
         <Avatar size="md" name={mentor} src={imagen} />
-
         <Text fontSize="md" color="gray.300">
-          por <Text as="span" fontWeight="bold">{mentor}</Text>
+          Mentor: <Text as="span" fontWeight="bold">{mentor}</Text>
         </Text>
       </Flex>
 
+      {/* Fecha + Estado */}
       <Flex justify="space-between" align="center">
         <Text fontSize="sm" color="gray.400">
           {fecha} — {hora}
@@ -88,17 +93,13 @@ export default function MentoriaCard({
         w="100%"
         colorScheme="brand"
         onClick={() =>
-          navigate("/alumno/mentoria/detalle", {
+          navigate("/alumno/sesion-de-asesoria/detalle", {
             state: {
-              mentoria: {
-                mentor,
-                titulo,
-                fecha,
-                hora,
-                estado: cfg.label,
-                descripcion: "Aquí va una descripción real.",
-                meetUrl: "https://meet.google.com/tu-meet",
-              },
+              mentor,
+              titulo,
+              fecha,
+              hora,
+              estado: cfg.label,
             },
           })
         }
