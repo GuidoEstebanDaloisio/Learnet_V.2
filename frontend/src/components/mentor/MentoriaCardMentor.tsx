@@ -1,4 +1,6 @@
-import { Box, Flex, Text, Badge, Button } from "@chakra-ui/react";
+import { Box, Text, Badge, Button } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
+
 
 interface MentoriaCardMentorProps {
   titulo: string;
@@ -11,6 +13,7 @@ export default function MentoriaCardMentor({
   descripcion,
   tema,
 }: MentoriaCardMentorProps) {
+  const navigate = useNavigate();
 
   return (
     <Box
@@ -48,8 +51,9 @@ export default function MentoriaCardMentor({
       <Button
         w="100%"
         colorScheme="brand"
+        onClick={() => navigate("/mentor/mentoria/detalle")}
       >
-        Ver / Editar plantilla
+        Ver
       </Button>
     </Box>
   );

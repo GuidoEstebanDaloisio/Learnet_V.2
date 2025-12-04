@@ -1,46 +1,48 @@
 import { Box, Heading } from "@chakra-ui/react";
 import NavbarMentor from "../../components/mentor/NavbarMentor";
 import Footer from "../../components/Footer";
-import SolicitudCard from "../../components/mentor/SolicitudCard";
+import SesionAsesoriaCard from "../../components/mentor/SesionAsesoriaCard";
 
-const solicitudes = [
+// Ejemplo de sesiones de asesoría asignadas al mentor
+const sesionesDeAsesoria = [
   {
-    alumno: "Laura Gómez",
+    alumno: "Juan Pérez",
     tituloMentoria: "Introducción a React",
-    tema: "Programación",
-    fecha: "10/03/2025",
-    hora: "16:00",
-    mensaje: "Me gustaría comenzar lo antes posible.",
-    estado: "pendiente",
+    fecha: "14/02/2025",
+    hora: "17:00",
+    estado: "no-iniciada",
   },
   {
-    alumno: "Carlos Pérez",
-    tituloMentoria: "Marketing Digital Básico",
-    tema: "Marketing",
-    fecha: "12/03/2025",
-    hora: "18:30",
-    mensaje: "",
-    estado: "aceptada",
+    alumno: "Carla Rodríguez",
+    tituloMentoria: "Machine Learning Avanzado",
+    fecha: "20/02/2025",
+    hora: "19:30",
+    estado: "en-progreso",
   },
   {
-    alumno: "Marta Salinas",
-    tituloMentoria: "Gestión de Proyectos Ágil",
-    tema: "Project Management",
-    fecha: "08/03/2025",
-    hora: "14:00",
-    mensaje: "Tengo conocimientos previos, quiero profundizar.",
+    alumno: "Miguel Torres",
+    tituloMentoria: "Ciberseguridad en Empresas",
+    fecha: "02/02/2025",
+    hora: "15:00",
+    estado: "finalizada",
+  },
+  {
+    alumno: "Sofía Gómez",
+    tituloMentoria: "Inicios en Excel",
+    fecha: "02/02/2025",
+    hora: "15:00",
     estado: "cancelada",
   },
 ];
 
-export default function SolicitudesMentor() {
+export default function Agenda() {
   return (
     <Box minH="100vh" display="flex" flexDirection="column">
       <NavbarMentor />
 
       <Box flex="1" px={{ base: 4, md: 12 }} py={10}>
         <Heading mb={8} textAlign="center">
-          Solicitudes de Mentoría
+          Mi Agenda de Sesiones de Asesoría
         </Heading>
 
         <Box
@@ -52,15 +54,13 @@ export default function SolicitudesMentor() {
           }}
           gap={8}
         >
-          {solicitudes.map((s, i) => (
-            <SolicitudCard
+          {sesionesDeAsesoria.map((s, i) => (
+            <SesionAsesoriaCard
               key={i}
               alumno={s.alumno}
               tituloMentoria={s.tituloMentoria}
-              tema={s.tema}
               fecha={s.fecha}
               hora={s.hora}
-              mensaje={s.mensaje}
               estado={s.estado as any}
             />
           ))}

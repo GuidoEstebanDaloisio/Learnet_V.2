@@ -1,14 +1,10 @@
 import {
   Box,
-  Flex,
   Text,
-  Badge,
   Button,
-  Icon,
-  HStack,
+  HStack
 } from "@chakra-ui/react";
 
-import { FaClock, FaCheckCircle, FaTimesCircle } from "react-icons/fa";
 import { useState } from "react";
 
 interface SolicitudCardProps {
@@ -30,16 +26,7 @@ export default function SolicitudCard({
   mensaje,
   estado,
 }: SolicitudCardProps) {
-
   const [estadoActual, setEstadoActual] = useState(estado);
-
-  const estadoConfig = {
-    pendiente: { label: "Pendiente", color: "yellow", icon: FaClock },
-    aceptada: { label: "Aceptada", color: "green", icon: FaCheckCircle },
-    cancelada: { label: "Cancelada", color: "red", icon: FaTimesCircle },
-  };
-
-  const cfg = estadoConfig[estadoActual];
 
   return (
     <Box
@@ -56,21 +43,7 @@ export default function SolicitudCard({
       }}
       transition="0.2s"
     >
-      <Badge
-        colorScheme={cfg.color}
-        px={3}
-        py={1}
-        mb={3}
-        rounded="md"
-        display="flex"
-        alignItems="center"
-        gap={1}
-        w="fit-content"
-      >
-        <Icon as={cfg.icon} boxSize={3} />
-        {cfg.label}
-      </Badge>
-
+    
       <Text fontSize="lg" fontWeight="bold" color="brand.300" mb={1}>
         {alumno}
       </Text>

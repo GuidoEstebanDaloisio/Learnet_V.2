@@ -2,6 +2,7 @@ import { Box, Heading, Button } from "@chakra-ui/react";
 import Footer from "../../components/Footer";
 import MentoriaCardMentor from "../../components/mentor/MentoriaCardMentor";
 import NavbarMentor from "../../components/mentor/NavbarMentor";
+import { useNavigate } from "react-router-dom";
 
 const plantillas = [
   {
@@ -22,18 +23,24 @@ const plantillas = [
 ];
 
 export default function MisMentoriasMentor() {
+  const navigate = useNavigate();
+
   return (
     <Box minH="100vh" display="flex" flexDirection="column">
       <NavbarMentor />
 
       <Box flex="1" px={{ base: 4, md: 12 }} py={10}>
         <Heading mb={6} textAlign="center">
-          Mis Mentorías (Plantillas)
+          Mis Mentorías
         </Heading>
 
         {/* Botón Crear Nueva Mentoría */}
         <Box display="flex" justifyContent="center" mb={8}>
-          <Button colorScheme="brand" size="lg">
+          <Button
+            colorScheme="brand"
+            size="lg"
+            onClick={() => navigate("/mentor/mentoria/nueva")}
+          >
             + Crear Nueva Mentoría
           </Button>
         </Box>

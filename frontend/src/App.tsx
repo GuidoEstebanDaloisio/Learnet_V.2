@@ -11,6 +11,11 @@ import DetalleMentor from "./pages/usuario_alumno/DetalleMentor";
 import PerfilMentor from "./pages/usuario_mentor/PerfilMentor";
 import MisMentoriasMentor from "./pages/usuario_mentor/MisMentoriasMentor";
 import SolicitudesMentor from "./pages/usuario_mentor/SolicitudesMentor";
+import Agenda from "./pages/usuario_mentor/Agenda";
+import DetalleSesionAsesoriaMentor from "./pages/usuario_mentor/DetalleSesionAsesoriaMentor";
+import NuevaMentoria from "./pages/usuario_mentor/NuevaMentoria";
+import EditarMentoria from "./pages/usuario_mentor/EditarMentoria";
+import DetalleMentoriaMentor from "./pages/usuario_mentor/DetalleMentoriaMentor";
 
 function App() {
   return (
@@ -28,7 +33,14 @@ function App() {
 
           <Route path="/mentor/perfil" element={<PerfilMentor />} />
           <Route path="/mentor/mentorias" element={<MisMentoriasMentor />} />
+          <Route path="/mentor/mentoria/detalle" element={<DetalleMentoriaMentor />} />
+          <Route path="/mentor/mentoria/editar" element={<EditarMentoria />} />
+          <Route path="/mentor/mentoria/nueva" element={<NuevaMentoria />} />
+
           <Route path="/mentor/solicitudes" element={<SolicitudesMentor />} />
+          <Route path="/mentor/agenda" element={<Agenda />} />
+          <Route path="/mentor/sesion-de-asesoria/detalle" element={<DetalleSesionAsesoriaMentor />} />
+
 
           <Route path="*" element={<h1>Pagina no encontrada. ERROR 404</h1>} />
         </Routes>
