@@ -3,6 +3,8 @@ import Footer from "../../components/Footer";
 import MentoriaCardMentor from "../../components/mentor/MentoriaCardMentor";
 import NavbarMentor from "../../components/mentor/NavbarMentor";
 import { useNavigate } from "react-router-dom";
+import { RUTAS } from "../../routes";
+
 
 const plantillas = [
   {
@@ -39,7 +41,7 @@ export default function MisMentoriasMentor() {
           <Button
             colorScheme="brand"
             size="lg"
-            onClick={() => navigate("/mentor/mentoria/nueva")}
+            onClick={() => navigate( RUTAS.MENTOR.NUEVA_MENTORIA)}
           >
             + Crear Nueva Mentoría
           </Button>

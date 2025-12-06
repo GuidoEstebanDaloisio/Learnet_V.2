@@ -1,20 +1,21 @@
 import { Box, Flex, HStack, Link, Icon, Spacer, Image } from "@chakra-ui/react";
 import { FaClipboardList, FaCalendarAlt, FaBookOpen, FaUser, FaSignOutAlt } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import Logo from "../../assets/logo.png"; // Ajustar la ruta según tu proyecto
+import Logo from "../../assets/logo.png"; 
+import { RUTAS } from "../../routes";
 
 export default function NavbarMentor() {
   const navigate = useNavigate();
 
   const navItems = [
-    { label: "Solicitudes", icon: FaClipboardList, path: "/mentor/solicitudes" },
-    { label: "Agenda", icon: FaCalendarAlt, path: "/mentor/agenda" },
-    { label: "Mis Mentorías", icon: FaBookOpen, path: "/mentor/mentorias" },
-    { label: "Perfil", icon: FaUser, path: "/mentor/perfil" },
+    { label: "Solicitudes", icon: FaClipboardList, path: RUTAS.MENTOR.SOLICITUDES},
+    { label: "Agenda", icon: FaCalendarAlt, path: RUTAS.MENTOR.AGENDA},
+    { label: "Mis Mentorías", icon: FaBookOpen, path: RUTAS.MENTOR.MENTORIAS},
+    { label: "Perfil", icon: FaUser, path: RUTAS.MENTOR.PERFIL},
   ];
 
   const handleLogout = () => {
-    navigate("/login");
+    navigate(RUTAS.LOGIN);
   };
 
   return (

@@ -1,49 +1,60 @@
 import { ChakraProvider } from "@chakra-ui/react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import tema from "./theme/Tema";
+
+// Páginas
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Explorar from "./pages/usuario_alumno/Explorar";
 import AgendaAlumno from "./pages/usuario_alumno/AgendaAlumno";
 import PerfilAlumno from "./pages/usuario_alumno/PerfilAlumno";
 import DetalleMentor from "./pages/usuario_alumno/DetalleMentor";
+import SolicitarMentoria from "./pages/usuario_alumno/SolicitarMentoria";
+import DetalleSesionAsesoriaAlumno from "./pages/usuario_alumno/DetalleSesionAsesoriaAlumno";
+
 import PerfilMentor from "./pages/usuario_mentor/PerfilMentor";
 import MisMentoriasMentor from "./pages/usuario_mentor/MisMentoriasMentor";
+import DetalleMentoriaMentor from "./pages/usuario_mentor/DetalleMentoriaMentor";
+import EditarMentoria from "./pages/usuario_mentor/EditarMentoria";
+import NuevaMentoria from "./pages/usuario_mentor/NuevaMentoria";
 import SolicitudesMentor from "./pages/usuario_mentor/SolicitudesMentor";
 import Agenda from "./pages/usuario_mentor/Agenda";
 import DetalleSesionAsesoriaMentor from "./pages/usuario_mentor/DetalleSesionAsesoriaMentor";
-import NuevaMentoria from "./pages/usuario_mentor/NuevaMentoria";
-import EditarMentoria from "./pages/usuario_mentor/EditarMentoria";
-import DetalleMentoriaMentor from "./pages/usuario_mentor/DetalleMentoriaMentor";
-import DetalleSesionAsesoriaAlumno from "./pages/usuario_alumno/DetalleSesionAsesoriaAlumno";
-import SolicitarMentoria from "./pages/usuario_alumno/SolicitarMentoria";
+
+// Rutas centralizadas
+import { RUTAS } from "./routes";
 
 function App() {
   return (
     <ChakraProvider theme={tema}>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
 
-          <Route path="/alumno/explorar-mentores" element={<Explorar />} />
-          <Route path="/alumno/mentor/detalle" element={<DetalleMentor />} />
-          <Route path="/alumno/mentor/solicitar-mentoria" element={<SolicitarMentoria />} />
-          <Route path="/alumno/agenda" element={<AgendaAlumno />} />
-          <Route path="/alumno/sesion-de-asesoria/detalle" element={<DetalleSesionAsesoriaAlumno />} />
-          <Route path="/alumno/perfil" element={<PerfilAlumno />} />
+          {/* Rutas generales */}
+          <Route path={RUTAS.HOME} element={<Home />} />
+          <Route path={RUTAS.LOGIN} element={<Login />} />
 
-          <Route path="/mentor/perfil" element={<PerfilMentor />} />
-          <Route path="/mentor/mentorias" element={<MisMentoriasMentor />} />
-          <Route path="/mentor/mentoria/detalle" element={<DetalleMentoriaMentor />} />
-          <Route path="/mentor/mentoria/editar" element={<EditarMentoria />} />
-          <Route path="/mentor/mentoria/nueva" element={<NuevaMentoria />} />
-          <Route path="/mentor/solicitudes" element={<SolicitudesMentor />} />
-          <Route path="/mentor/agenda" element={<Agenda />} />
-          <Route path="/mentor/sesion-de-asesoria/detalle" element={<DetalleSesionAsesoriaMentor />} />
+          {/* Rutas Alumno */}
+          <Route path={RUTAS.ALUMNO.EXPLORAR_MENTORES} element={<Explorar />} />
+          <Route path={RUTAS.ALUMNO.DETALLE_MENTOR} element={<DetalleMentor />} />
+          <Route path={RUTAS.ALUMNO.SOLICITAR_MENTORIA} element={<SolicitarMentoria />} />
+          <Route path={RUTAS.ALUMNO.AGENDA} element={<AgendaAlumno />} />
+          <Route path={RUTAS.ALUMNO.DETALLE_SESION_ASESORIA} element={<DetalleSesionAsesoriaAlumno />} />
+          <Route path={RUTAS.ALUMNO.PERFIL} element={<PerfilAlumno />} />
 
+          {/* Rutas Mentor */}
+          <Route path={RUTAS.MENTOR.PERFIL} element={<PerfilMentor />} />
+          <Route path={RUTAS.MENTOR.MENTORIAS} element={<MisMentoriasMentor />} />
+          <Route path={RUTAS.MENTOR.DETALLE_MENTORIA} element={<DetalleMentoriaMentor />} />
+          <Route path={RUTAS.MENTOR.EDITAR_MENTORIA} element={<EditarMentoria />} />
+          <Route path={RUTAS.MENTOR.NUEVA_MENTORIA} element={<NuevaMentoria />} />
+          <Route path={RUTAS.MENTOR.SOLICITUDES} element={<SolicitudesMentor />} />
+          <Route path={RUTAS.MENTOR.AGENDA} element={<Agenda />} />
+          <Route path={RUTAS.MENTOR.DETALLE_SESION_ASESORIA} element={<DetalleSesionAsesoriaMentor />} />
 
-          <Route path="*" element={<h1>Pagina no encontrada. ERROR 404</h1>} />
+          {/* 404 */}
+          <Route path={RUTAS.NOT_FOUND} element={<h1>Pagina no encontrada. ERROR 404</h1>} />
+
         </Routes>
       </BrowserRouter>
     </ChakraProvider>

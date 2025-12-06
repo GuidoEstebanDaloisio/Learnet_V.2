@@ -1,19 +1,21 @@
 import { Box, Flex, HStack, Link, Icon, Spacer, Image } from "@chakra-ui/react";
 import { FaCompass, FaUser, FaSignOutAlt,FaCalendarAlt } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import Logo from "../../assets/logo.png"; // <-- IMPORTA EL LOGO
+import Logo from "../../assets/logo.png"; 
+import { RUTAS } from "../../routes";
+
 
 export default function NavbarAlumno() {
   const navigate = useNavigate();
 
   const navItems = [
-    { label: "Explorar", icon: FaCompass, path: "/alumno/explorar-mentores" },
-    { label: "Agenda", icon: FaCalendarAlt, path: "/alumno/agenda" },
-    { label: "Perfil", icon: FaUser, path: "/alumno/perfil" },
+    { label: "Explorar", icon: FaCompass, path: RUTAS.ALUMNO.EXPLORAR_MENTORES },
+    { label: "Agenda", icon: FaCalendarAlt, path: RUTAS.ALUMNO.AGENDA },
+    { label: "Perfil", icon: FaUser, path:  RUTAS.ALUMNO.PERFIL},
   ];
 
   const handleLogout = () => {
-    navigate("/login");
+    navigate(RUTAS.LOGIN);
   };
 
   return (

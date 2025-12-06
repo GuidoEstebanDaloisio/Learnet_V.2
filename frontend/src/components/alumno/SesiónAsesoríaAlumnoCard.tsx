@@ -11,6 +11,8 @@ import {
 import { FaClock, FaPlay, FaCheckCircle } from "react-icons/fa";
 import { FaBan } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
+import { RUTAS } from "../../routes";
+
 
 interface SesionAsesoriaAlumnoProps {
   mentor: string;
@@ -93,7 +95,7 @@ export default function SesionAsesoriaAlumnoCard({
         w="100%"
         colorScheme="brand"
         onClick={() =>
-          navigate("/alumno/sesion-de-asesoria/detalle", {
+          navigate( RUTAS.ALUMNO.DETALLE_SESION_ASESORIA, {
             state: {
               mentor,
               titulo,

@@ -1,5 +1,6 @@
 import { Box, Text, Badge, Button } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
+import { RUTAS } from "../../routes";
 
 
 interface MentoriaCardMentorProps {
@@ -51,7 +52,7 @@ export default function MentoriaCardMentor({
       <Button
         w="100%"
         colorScheme="brand"
-        onClick={() => navigate("/mentor/mentoria/detalle")}
+        onClick={() => navigate( RUTAS.MENTOR.DETALLE_MENTORIA)}
       >
         Ver
       </Button>

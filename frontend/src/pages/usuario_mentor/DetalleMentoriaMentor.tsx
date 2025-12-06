@@ -2,6 +2,7 @@ import { Box, Heading, Text, Badge, Button } from "@chakra-ui/react";
 import NavbarMentor from "../../components/mentor/NavbarMentor";
 import Footer from "../../components/Footer";
 import { useNavigate } from "react-router-dom";
+import { RUTAS } from "../../routes";
 
 export default function DetalleMentoriaMentor() {
   const navigate = useNavigate();
@@ -70,7 +71,7 @@ export default function DetalleMentoriaMentor() {
             w="100%"
             size="lg"
             colorScheme="brand"
-            onClick={() => navigate(`/mentoria/editar/${plantilla.id}`)}
+            onClick={() => navigate( RUTAS.MENTOR.EDITAR_MENTORIA)}
           >
             Editar Plantilla
           </Button>

@@ -3,6 +3,8 @@ import NavbarMentor from "../../components/mentor/NavbarMentor";
 import Footer from "../../components/Footer";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { RUTAS } from "../../routes";
+
 
 export default function EditarMentoria() {
   const navigate = useNavigate();
@@ -17,7 +19,7 @@ export default function EditarMentoria() {
 
   const handleSave = () => {
     console.log({ titulo, descripcion, tema });
-    navigate("/mentor/mentorias");
+    navigate( RUTAS.MENTOR.MENTORIAS);
   };
 
   return (

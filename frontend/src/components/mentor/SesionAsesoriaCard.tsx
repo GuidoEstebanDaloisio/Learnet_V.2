@@ -11,6 +11,8 @@ import {
 import { FaClock, FaPlay, FaCheckCircle } from "react-icons/fa";
 import { FaBan } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
+import { RUTAS } from "../../routes";
+
 
 interface SesionAsesoriaCardProps {
   alumno: string;
@@ -94,14 +96,14 @@ export default function SesionAsesoriaCard({
         w="100%"
         colorScheme="brand"
         onClick={() =>
-          navigate("/mentor/sesion-de-asesoria/detalle", {
+          navigate( RUTAS.MENTOR.DETALLE_SESION_ASESORIA, {
             state: {
               sesionAsesoria: {
                 alumno,
                 tituloMentoria,
                 fecha,
                 hora,
-                estado: cfg.label, // esto lo toma DetalleSesionAsesoriaMentor
+                estado: cfg.label, 
               },
             },
           })

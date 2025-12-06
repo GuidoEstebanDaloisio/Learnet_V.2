@@ -10,6 +10,8 @@ import {
 } from "@chakra-ui/react";
 import { FaStar } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { RUTAS } from "../../routes";
+
 
 interface MentorCardProps {
   nombre: string;
@@ -91,7 +93,7 @@ export default function MentorCard({
         mt={4}
         w="100%"
         colorScheme="brand"
-        onClick={() => navigate("/alumno/mentor/detalle")}
+        onClick={() => navigate(RUTAS.ALUMNO.DETALLE_MENTOR)}
       >
         Ver perfil
       </Button>

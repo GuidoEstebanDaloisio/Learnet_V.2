@@ -1,6 +1,8 @@
 import { Box, VStack, Heading, Input, Button, Text, FormControl, FormLabel } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import Footer from "../components/Footer";
+import { RUTAS } from "../routes";
+
 
 export default function Login() {
   return (
@@ -49,7 +51,7 @@ export default function Login() {
           <VStack w="100%" spacing={3} mt={4}>
             <Button
               as={Link}
-              to="/alumno/explorar-mentores"
+              to= {RUTAS.ALUMNO.EXPLORAR_MENTORES}
               w="100%"
               colorScheme="brand"
               variant="outline"
@@ -59,7 +61,7 @@ export default function Login() {
 
             <Button
               as={Link}
-              to="/mentor/perfil"
+              to={RUTAS.MENTOR.PERFIL}
               w="100%"
               colorScheme="brand"
               variant="outline"
