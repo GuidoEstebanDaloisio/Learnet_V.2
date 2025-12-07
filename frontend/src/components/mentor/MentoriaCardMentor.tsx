@@ -1,6 +1,7 @@
 import { Box, Text, Badge, Button } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { RUTAS } from "../../routes";
+import Card from "../../theme/components/Card";
 
 
 interface MentoriaCardMentorProps {
@@ -17,19 +18,10 @@ export default function MentoriaCardMentor({
   const navigate = useNavigate();
 
   return (
-    <Box
-      bg="gray.800"
-      p={5}
-      rounded="lg"
-      shadow="md"
-      borderWidth="1px"
-      borderColor="gray.700"
-      _hover={{ shadow: "lg", transform: "translateY(-3px)", borderColor: "brand.400" }}
-      transition="0.2s"
-    >
+    <Card>
       {/* Tema */}
       <Badge
-        colorScheme="purple"
+        colorScheme="brand"
         mb={3}
         px={3}
         py={1}
@@ -51,11 +43,11 @@ export default function MentoriaCardMentor({
 
       <Button
         w="100%"
-        colorScheme="brand"
-        onClick={() => navigate( RUTAS.MENTOR.DETALLE_MENTORIA)}
+        variant="primary"
+        onClick={() => navigate(RUTAS.MENTOR.DETALLE_MENTORIA)}
       >
         Ver
       </Button>
-    </Box>
+    </Card>
   );
 }

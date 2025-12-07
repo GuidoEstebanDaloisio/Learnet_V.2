@@ -4,6 +4,7 @@ import {
   Button,
   HStack
 } from "@chakra-ui/react";
+import Card from "../../theme/components/Card";
 
 import { useState } from "react";
 
@@ -29,21 +30,8 @@ export default function SolicitudCard({
   const [estadoActual, setEstadoActual] = useState(estado);
 
   return (
-    <Box
-      bg="gray.800"
-      p={5}
-      rounded="lg"
-      shadow="md"
-      borderWidth="1px"
-      borderColor="gray.700"
-      _hover={{
-        shadow: "lg",
-        transform: "translateY(-3px)",
-        borderColor: "brand.400",
-      }}
-      transition="0.2s"
-    >
-    
+    <Card>
+
       <Text fontSize="lg" fontWeight="bold" color="brand.300" mb={1}>
         {alumno}
       </Text>
@@ -71,7 +59,7 @@ export default function SolicitudCard({
         <HStack mt={4}>
           <Button
             w="50%"
-            colorScheme="green"
+            variant="primary"
             onClick={() => setEstadoActual("aceptada")}
           >
             Aceptar
@@ -79,7 +67,7 @@ export default function SolicitudCard({
 
           <Button
             w="50%"
-            colorScheme="red"
+            variant="primary"
             onClick={() => setEstadoActual("cancelada")}
           >
             Rechazar
@@ -117,6 +105,6 @@ export default function SolicitudCard({
           </Text>
         </Box>
       )}
-    </Box>
+    </Card>
   );
 }

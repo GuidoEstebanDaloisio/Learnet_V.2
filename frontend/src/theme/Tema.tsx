@@ -7,6 +7,8 @@ const config = {
 
 const tema = extendTheme({
   config,
+
+  //Paleta de marca
   colors: {
     brand: {
       50: "#d6e4ff",
@@ -21,15 +23,65 @@ const tema = extendTheme({
       900: "#040a4c",
     },
   },
+
+  //Tipografías
   fonts: {
     heading: "'Inter', sans-serif",
     body: "'Inter', sans-serif",
   },
+
+  //Estilos globales
   styles: {
     global: {
       body: {
         bg: "gray.900",
         color: "gray.100",
+      },
+    },
+  },
+
+  components: {
+    Button: {
+      variants: {
+        primary: {
+          mt: 4,
+          bg: "brand.300",
+          color: "black",
+          fontWeight: "medium",
+          _hover: { bg: "brand.400" },
+          _active: { bg: "brand.600" },
+        },
+        login: {
+          bg: "brand.300",
+          color: "black",
+          fontWeight: "medium",
+          _hover: { bg: "brand.400" },
+          _active: { bg: "brand.600" },
+        },
+        logout: {
+          bg: "red.700",
+          color: "white",
+          fontWeight: "semibold",
+          _hover: { bg: "red.600" },
+          _active: { bg: "red.700" },
+        },
+        
+      },
+      defaultProps: {
+        variant: "primary", // Provicional para que TODOS los botones sean primary por defecto
+      },
+    },
+
+    Link: {
+      variants: {
+        navbarLink: {
+          color: "gray.200",
+          fontWeight: "medium",
+          _hover: {
+            color: "white",
+            textDecoration: "none",
+          },
+        },
       },
     },
   },

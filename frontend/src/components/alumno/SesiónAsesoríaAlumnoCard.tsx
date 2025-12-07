@@ -8,11 +8,11 @@ import {
   Icon,
 } from "@chakra-ui/react";
 
+import Card from "../../theme/components/Card";
 import { FaClock, FaPlay, FaCheckCircle } from "react-icons/fa";
 import { FaBan } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import { RUTAS } from "../../routes";
-
 
 interface SesionAsesoriaAlumnoProps {
   mentor: string;
@@ -43,35 +43,20 @@ export default function SesionAsesoriaAlumnoCard({
   const cfg = estadoConfig[estado];
 
   return (
-    <Box
-      bg="gray.800"
-      p={5}
-      rounded="lg"
-      shadow="md"
-      borderWidth="1px"
-      borderColor="gray.700"
-      _hover={{
-        shadow: "lg",
-        transform: "translateY(-3px)",
-        borderColor: "brand.400",
-      }}
-      transition="0.2s"
+    <Card
     >
-      {/* Título */}
-      <Text fontSize="xl" color="brand.300" fontWeight="bold" mb={2}>
+      <Text fontSize="lg" color="brand.300" fontWeight="bold" mb={3}>
         {titulo}
       </Text>
 
-      {/* Mentor */}
-      <Flex align="center" gap={3} mb={4}>
-        <Avatar size="md" name={mentor} src={imagen} />
+      <Flex align="center" gap={4} mb={4}>
+        <Avatar size="lg" name={mentor} src={imagen} />
         <Text fontSize="md" color="gray.300">
-          Mentor: <Text as="span" fontWeight="bold">{mentor}</Text>
+          Mentor: <Text as="span" fontWeight="semibold">{mentor}</Text>
         </Text>
       </Flex>
 
-      {/* Fecha + Estado */}
-      <Flex justify="space-between" align="center">
+      <Flex justify="space-between" align="center" mb={3}>
         <Text fontSize="sm" color="gray.400">
           {fecha} — {hora}
         </Text>
@@ -81,6 +66,7 @@ export default function SesionAsesoriaAlumnoCard({
           px={2}
           py={1}
           rounded="md"
+          fontSize="0.75rem"
           display="flex"
           alignItems="center"
           gap={1}
@@ -91,23 +77,16 @@ export default function SesionAsesoriaAlumnoCard({
       </Flex>
 
       <Button
-        mt={4}
         w="100%"
-        colorScheme="brand"
+        variant="primary"
         onClick={() =>
-          navigate( RUTAS.ALUMNO.DETALLE_SESION_ASESORIA, {
-            state: {
-              mentor,
-              titulo,
-              fecha,
-              hora,
-              estado: cfg.label,
-            },
+          navigate(RUTAS.ALUMNO.DETALLE_SESION_ASESORIA, {
+            state: { mentor, titulo, fecha, hora, estado: cfg.label },
           })
         }
       >
         Ver detalles
       </Button>
-    </Box>
+    </Card>
   );
 }

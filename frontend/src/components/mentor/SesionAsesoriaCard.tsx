@@ -7,6 +7,7 @@ import {
   Button,
   Icon,
 } from "@chakra-ui/react";
+import Card from "../../theme/components/Card";
 
 import { FaClock, FaPlay, FaCheckCircle } from "react-icons/fa";
 import { FaBan } from "react-icons/fa6";
@@ -43,20 +44,7 @@ export default function SesionAsesoriaCard({
   const cfg = estadoConfig[estado];
 
   return (
-    <Box
-      bg="gray.800"
-      p={5}
-      rounded="lg"
-      shadow="md"
-      borderWidth="1px"
-      borderColor="gray.700"
-      _hover={{
-        shadow: "lg",
-        transform: "translateY(-3px)",
-        borderColor: "brand.400",
-      }}
-      transition="0.2s"
-    >
+    <Card>
       {/* Titulo de la mentoría (plantilla) */}
       <Text fontSize="xl" color="brand.300" fontWeight="bold" mb={2}>
         {tituloMentoria}
@@ -92,9 +80,8 @@ export default function SesionAsesoriaCard({
 
       {/* Botón: Ver detalles */}
       <Button
-        mt={4}
         w="100%"
-        colorScheme="brand"
+        variant="primary"
         onClick={() =>
           navigate( RUTAS.MENTOR.DETALLE_SESION_ASESORIA, {
             state: {
@@ -111,6 +98,6 @@ export default function SesionAsesoriaCard({
       >
         Ver detalles
       </Button>
-    </Box>
+    </Card>
   );
 }
