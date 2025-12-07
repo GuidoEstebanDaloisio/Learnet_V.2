@@ -42,7 +42,7 @@ const mentores = [
     rating: 5,
     cantidadRatings: 143,
     disponible: true,
-  },  
+  },
   {
     nombre: "Fernando Gomez",
     titulo: "Contador",
@@ -50,7 +50,7 @@ const mentores = [
     rating: 5,
     cantidadRatings: 143,
     disponible: false,
-  }
+  },
 ];
 
 export default function Explorar() {
@@ -64,27 +64,23 @@ export default function Explorar() {
         </Heading>
 
         <VStack spacing={6} mb={12}>
+          {/* Buscador */}
           <InputGroup maxW="600px">
             <InputLeftElement pointerEvents="none">
               <Icon as={FaSearch} color="gray.400" />
             </InputLeftElement>
 
-            <Input
-              placeholder="Buscar por nombre o especialización..."
-              focusBorderColor="brand.400"
-            />
+            <Input placeholder="Buscar por nombre o especialización..." />
           </InputGroup>
 
-          <Select
-            maxW="300px"
-            focusBorderColor="brand.400"
-            placeholder="Ordenar por..."
-          >
+          {/* Select */}
+          <Select maxW="300px" placeholder="Ordenar por...">
             <option value="puntuacion">Mejor puntuados</option>
             <option value="nuevos">Más nuevos</option>
             <option value="antiguos">Más antiguos</option>
           </Select>
 
+          {/* Switch */}
           <FormControl display="flex" alignItems="center" justifyContent="center">
             <FormLabel mb="0" fontSize="lg">
               Mostrar solo disponibles
@@ -93,6 +89,7 @@ export default function Explorar() {
           </FormControl>
         </VStack>
 
+        {/* Grid de cards */}
         <Box
           display="grid"
           gridTemplateColumns={{

@@ -1,4 +1,4 @@
-import { Box, Heading } from "@chakra-ui/react";
+import { Box, Heading, SimpleGrid } from "@chakra-ui/react";
 import NavbarAlumno from "../../components/alumno/NavbarAlumno";
 import Footer from "../../components/Footer";
 import SesionAsesoriaAlumnoCard from "../../components/alumno/SesiónAsesoríaAlumnoCard";
@@ -44,15 +44,7 @@ export default function AgendaAlumno() {
           Mis Sesiones de Asesoría
         </Heading>
 
-        <Box
-          display="grid"
-          gridTemplateColumns={{
-            base: "1fr",
-            sm: "1fr 1fr",
-            lg: "1fr 1fr 1fr",
-          }}
-          gap={8}
-        >
+        <SimpleGrid columns={{ base: 1, sm: 2, lg: 3 }} spacing={8}>
           {sesiones.map((s, i) => (
             <SesionAsesoriaAlumnoCard
               key={i}
@@ -63,7 +55,7 @@ export default function AgendaAlumno() {
               estado={s.estado as any}
             />
           ))}
-        </Box>
+        </SimpleGrid>
       </Box>
 
       <Footer />

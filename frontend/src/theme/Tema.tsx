@@ -51,6 +51,47 @@ const tema = extendTheme({
           _hover: { bg: "brand.400" },
           _active: { bg: "brand.600" },
         },
+
+        secondary: {
+          bg: "transparent",
+          borderWidth: "1px",
+          borderColor: "brand.300",
+          color: "brand.300",
+          fontWeight: "medium",
+          _hover: {
+            bg: "brand.600",
+            color: "white",
+          },
+          _active: {
+            bg: "brand.600",
+            color: "white",
+          },
+        },
+
+        alerta: {
+          bg: "red.700",
+          color: "white",
+          fontWeight: "semibold",
+          _hover: { bg: "red.600" },
+          _active: { bg: "red.700" },
+        },
+
+        alerta_secondary: {
+          bg: "transparent",
+          borderWidth: "1px",
+          borderColor: "red.300",
+          color: "red.300",
+          fontWeight: "medium",
+          _hover: {
+            bg: "red.600",
+            color: "white",
+          },
+          _active: {
+            bg: "red.600",
+            color: "white",
+          },
+        },
+
         login: {
           bg: "brand.300",
           color: "black",
@@ -58,6 +99,7 @@ const tema = extendTheme({
           _hover: { bg: "brand.400" },
           _active: { bg: "brand.600" },
         },
+
         logout: {
           bg: "red.700",
           color: "white",
@@ -65,10 +107,53 @@ const tema = extendTheme({
           _hover: { bg: "red.600" },
           _active: { bg: "red.700" },
         },
-        
       },
       defaultProps: {
         variant: "primary", // Provicional para que TODOS los botones sean primary por defecto
+      },
+    },
+
+    Input: {
+      baseStyle: {
+        field: {
+          bg: "gray.700",
+          borderColor: "gray.600",
+          _placeholder: { color: "gray.400" },
+          _hover: {
+            borderColor: "gray.500",
+          },
+          _focus: {
+            borderColor: "brand.400",
+            boxShadow: "0 0 0 1px var(--chakra-colors-brand-400)",
+          },
+        },
+      },
+      sizes: {
+        md: {
+          field: {
+            h: 12,
+            borderRadius: "md",
+          },
+        },
+      },
+      defaultProps: {
+        size: "md",
+        variant: "outline",
+      },
+    },
+
+    FormLabel: {
+      baseStyle: {
+        marginBottom: 1,
+        fontWeight: "medium",
+        color: "gray.300",
+      },
+    },
+
+    Divider: {
+      baseStyle: {
+        borderColor: "gray.600",
+        my: 6,
       },
     },
 

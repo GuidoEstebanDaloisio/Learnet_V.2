@@ -1,5 +1,5 @@
 import { Box, Heading, Text, Button } from "@chakra-ui/react";
-import { Link } from 'react-router-dom'; 
+import { Link } from "react-router-dom";
 import { RUTAS } from "../routes";
 
 export default function Hero() {
@@ -13,7 +13,12 @@ export default function Hero() {
         Conectá con expertos que te acompañan en tu camino profesional.
       </Text>
 
-      <Button as={Link} to={RUTAS.LOGIN} size="lg" colorScheme="brand">
+      <Button
+        as={Link}
+        to={RUTAS.LOGIN}
+        size="lg"
+        variant="primary" 
+      >
         Comenzar ahora
       </Button>
     </Box>

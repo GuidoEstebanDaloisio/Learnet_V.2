@@ -63,7 +63,7 @@ export default function PerfilMentor() {
             </Text>
           </Flex>
 
-          <Divider borderColor="gray.600" mb={6} />
+          <Divider/>
 
           {/* DATOS */}
           <VStack align="start" spacing={5}>

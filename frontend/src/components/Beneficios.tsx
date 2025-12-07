@@ -1,4 +1,5 @@
 import { Box, SimpleGrid, VStack, Heading, Text } from "@chakra-ui/react";
+import Card from "../theme/components/Card";
 
 const datos = [
   { title: "Mentores reales", desc: "Profesionales con experiencia comprobable." },
@@ -13,16 +14,12 @@ export default function Beneficios() {
 
       <SimpleGrid columns={{ base: 1, md: 3 }} spacing={10}>
         {datos.map((item) => (
-          <VStack
-            key={item.title}
-            bg="gray.800"
-            p={6}
-            rounded="lg"
-            boxShadow="lg"
-          >
-            <Heading fontSize="xl">{item.title}</Heading>
-            <Text opacity={0.8}>{item.desc}</Text>
-          </VStack>
+          <Card key={item.title} textAlign="center">
+            <VStack spacing={3}>
+              <Heading fontSize="xl">{item.title}</Heading>
+              <Text opacity={0.8}>{item.desc}</Text>
+            </VStack>
+          </Card>
         ))}
       </SimpleGrid>
     </Box>

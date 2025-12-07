@@ -19,6 +19,7 @@ import {
 import { useLocation } from "react-router-dom";
 import NavbarAlumno from "../../components/alumno/NavbarAlumno";
 import Footer from "../../components/Footer";
+import Panel from "../../theme/components/Panel";
 
 interface SesionAsesoriaAlumno {
   titulo: string;
@@ -40,8 +41,6 @@ const colorEstado: Record<SesionAsesoriaAlumno["estado"], string> = {
 export default function DetalleSesionAsesoriaAlumno() {
   const { state } = useLocation();
 
-  // ✔ Si viene datos desde navigate, se usan
-  // ✔ Si NO viene nada, mostramos datos hardcodeados
   const sesion: SesionAsesoriaAlumno =
     state ||
     {
@@ -60,16 +59,10 @@ export default function DetalleSesionAsesoriaAlumno() {
       <NavbarAlumno />
 
       <Box minH="100vh" px={6} py={10} display="flex" justifyContent="center">
-        <Box
-          bg="gray.800"
-          p={8}
-          rounded="2xl"
-          shadow="2xl"
-          borderWidth="1px"
-          borderColor="gray.700"
-          maxW="700px"
-          w="100%"
-        >
+        
+        {/* PANEL PRINCIPAL */}
+        <Panel maxW="700px" w="100%" p={8} rounded="2xl" shadow="2xl">
+          
           {/* TÍTULO */}
           <Flex align="center" mb={4} gap={3}>
             <Icon as={FaInfoCircle} boxSize={7} color="brand.300" />
@@ -78,41 +71,27 @@ export default function DetalleSesionAsesoriaAlumno() {
             </Text>
           </Flex>
 
-          {/* DESCRIPCIÓN */}
           <Text color="gray.300" fontSize="lg" mb={6}>
             {sesion.descripcion}
           </Text>
 
-          <Divider borderColor="gray.600" my={6} />
+          <Divider/>
 
           {/* INFO GENERAL */}
-          <Box
-            bg="gray.700"
-            p={5}
-            rounded="xl"
-            borderWidth="1px"
-            borderColor="gray.600"
-            mb={6}
-          >
+          <Panel bg="gray.700" borderColor="gray.600" p={5} rounded="xl" mb={6}>
             <Flex align="center" gap={3} color="gray.300" mb={4}>
               <Icon as={FaUser} />
-              <Text>
-                <strong>Mentor:</strong> {sesion.mentor}
-              </Text>
+              <Text><strong>Mentor:</strong> {sesion.mentor}</Text>
             </Flex>
 
             <Flex align="center" gap={3} color="gray.300" mb={2}>
               <Icon as={FaCalendar} />
-              <Text>
-                <strong>Fecha:</strong> {sesion.fecha}
-              </Text>
+              <Text><strong>Fecha:</strong> {sesion.fecha}</Text>
             </Flex>
 
             <Flex align="center" gap={3} color="gray.300" mb={4}>
               <Icon as={FaClock} />
-              <Text>
-                <strong>Hora:</strong> {sesion.hora}
-              </Text>
+              <Text><strong>Hora:</strong> {sesion.hora}</Text>
             </Flex>
 
             {/* ESTADO */}
@@ -122,29 +101,24 @@ export default function DetalleSesionAsesoriaAlumno() {
 
               <Badge
                 colorScheme={colorEstado[sesion.estado]}
-                px={3}
-                py={1}
                 rounded="full"
-                fontSize="sm"
               >
                 {sesion.estado}
               </Badge>
             </Flex>
-          </Box>
+          </Panel>
 
-          <Divider borderColor="gray.600" my={6} />
+          <Divider/>
 
-          {/* BOTÓN PARA ENTRAR A LA SESIÓN */}
-          <Link
-            href={sesion.meetUrl}
-            target="_blank"
-            style={{ width: "100%" }}
-          >
-            <Button w="100%" size="lg" colorScheme="brand" rounded="lg">
+          {/* BOTÓN */}
+          <Link href={sesion.meetUrl} target="_blank" style={{ width: "100%" }}>
+            <Button w="100%" variant="primary">
               Unirse a la sesión
             </Button>
           </Link>
-        </Box>
+
+        </Panel>
+
       </Box>
 
       <Footer />

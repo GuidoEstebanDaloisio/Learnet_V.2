@@ -113,7 +113,7 @@ export default function DetalleSesionAsesoriaMentor() {
             {sesionAsesoria.descripcionMentoria}
           </Text>
 
-          <Divider borderColor="gray.600" my={6} />
+          <Divider  />
 
           {/* INFORMACIÓN DE LA SESIÓN DE ASESORÍA */}
           <Box
@@ -163,7 +163,7 @@ export default function DetalleSesionAsesoriaMentor() {
             </Flex>
           </Box>
 
-          <Divider borderColor="gray.600" my={6} />
+          <Divider  />
 
           {/* CAMBIAR ESTADO */}
           <Box
@@ -196,7 +196,7 @@ export default function DetalleSesionAsesoriaMentor() {
             </Select>
           </Box>
 
-          <Divider borderColor="gray.600" my={6} />
+          <Divider />
 
           {/* BOTÓN PARA REPROGRAMAR */}
           <Button
@@ -253,7 +253,7 @@ export default function DetalleSesionAsesoriaMentor() {
             </Box>
           </Collapse>
 
-          <Divider borderColor="gray.600" my={6} />
+          <Divider  />
 
           {/* LINK MEET */}
           <Link
