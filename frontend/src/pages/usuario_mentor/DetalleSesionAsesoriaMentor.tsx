@@ -15,14 +15,11 @@ import { FaUser, FaCalendar, FaClock, FaInfoCircle } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
 import NavbarMentor from "../../components/mentor/NavbarMentor";
 import Footer from "../../components/Footer";
+import Panel from "../../theme/components/Panel";
 import { useState } from "react";
 
-/* ----------------------------------------
-   INTERFACE: SESIÓN DE ASESORÍA
-   ---------------------------------------- */
-
 interface SesionAsesoria {
-  idMentoria: string; // ID de la plantilla
+  idMentoria: string;
   tituloMentoria: string;
   descripcionMentoria: string;
   alumno: string;
@@ -42,9 +39,6 @@ const colorEstado: Record<SesionAsesoria["estado"], string> = {
 export default function DetalleSesionAsesoriaMentor() {
   const { state } = useLocation();
 
-  /* ----------------------------------------
-     SESIÓN DE ASESORÍA HARDCODEADA (ejemplo)
-     ---------------------------------------- */
   const sesionInicial: SesionAsesoria =
     state?.sesionAsesoria || {
       idMentoria: "123",
@@ -90,17 +84,8 @@ export default function DetalleSesionAsesoriaMentor() {
       <NavbarMentor />
 
       <Box minH="100vh" px={6} py={10} display="flex" justifyContent="center">
-        <Box
-          bg="gray.800"
-          p={8}
-          rounded="2xl"
-          shadow="2xl"
-          borderWidth="1px"
-          borderColor="gray.700"
-          maxW="700px"
-          w="100%"
-        >
-          {/* TÍTULO DE LA PLANTILLA */}
+        <Panel maxW="700px" w="100%">
+          {/* Título */}
           <Flex align="center" mb={4} gap={3}>
             <Icon as={FaInfoCircle} boxSize={7} color="brand.300" />
             <Text fontSize="3xl" fontWeight="bold" color="brand.300">
@@ -108,22 +93,15 @@ export default function DetalleSesionAsesoriaMentor() {
             </Text>
           </Flex>
 
-          {/* DESCRIPCIÓN DE LA PLANTILLA */}
+          {/* Descripción */}
           <Text color="gray.300" fontSize="lg" mb={6}>
             {sesionAsesoria.descripcionMentoria}
           </Text>
 
-          <Divider  />
+          <Divider />
 
-          {/* INFORMACIÓN DE LA SESIÓN DE ASESORÍA */}
-          <Box
-            bg="gray.700"
-            p={5}
-            rounded="xl"
-            borderWidth="1px"
-            borderColor="gray.600"
-            mb={6}
-          >
+          {/* Panel interno */}
+          <Panel bg="gray.700" borderColor="gray.600" mt={6} mb={6}>
             <Flex align="center" gap={3} color="gray.300" mb={4}>
               <Icon as={FaUser} />
               <Text>
@@ -161,19 +139,12 @@ export default function DetalleSesionAsesoriaMentor() {
                 {sesionAsesoria.estado}
               </Badge>
             </Flex>
-          </Box>
+          </Panel>
 
-          <Divider  />
+          <Divider />
 
-          {/* CAMBIAR ESTADO */}
-          <Box
-            bg="gray.700"
-            p={5}
-            rounded="xl"
-            borderWidth="1px"
-            borderColor="gray.600"
-            mb={6}
-          >
+          {/* Cambiar estado */}
+          <Panel bg="gray.700" borderColor="gray.600" my={6}>
             <Text fontSize="lg" color="gray.200" fontWeight="bold" mb={3}>
               Cambiar estado de la sesión de asesoría
             </Text>
@@ -183,41 +154,27 @@ export default function DetalleSesionAsesoriaMentor() {
               onChange={(e) =>
                 actualizarEstado(e.target.value as SesionAsesoria["estado"])
               }
-              bg="gray.800"
-              borderColor="gray.600"
-              color="white"
-              _hover={{ borderColor: "brand.300" }}
-              _focus={{ borderColor: "brand.300" }}
             >
               <option value="No iniciada">No iniciada</option>
               <option value="En proceso">En proceso</option>
               <option value="Finalizada">Finalizada</option>
               <option value="Cancelada">Cancelada</option>
             </Select>
-          </Box>
+          </Panel>
 
           <Divider />
 
-          {/* BOTÓN PARA REPROGRAMAR */}
+          {/* Reprogramar */}
           <Button
             w="100%"
-            colorScheme="yellow"
-            mb={3}
+            variant="secondary"
             onClick={() => setMostrarReprogramar(!mostrarReprogramar)}
           >
             Reprogramar sesión de asesoría
           </Button>
 
-          {/* PANEL DE REPROGRAMACIÓN */}
           <Collapse in={mostrarReprogramar} animateOpacity>
-            <Box
-              bg="gray.700"
-              p={5}
-              rounded="xl"
-              borderWidth="1px"
-              borderColor="gray.600"
-              mt={3}
-            >
+            <Panel bg="gray.700" borderColor="gray.600" mt={3}>
               <Text color="gray.200" mb={3} fontWeight="bold">
                 Seleccionar nueva fecha y hora
               </Text>
@@ -227,9 +184,6 @@ export default function DetalleSesionAsesoriaMentor() {
                 value={nuevaFecha}
                 onChange={(e) => setNuevaFecha(e.target.value)}
                 mb={3}
-                bg="gray.800"
-                borderColor="gray.600"
-                color="white"
               />
 
               <Input
@@ -237,35 +191,28 @@ export default function DetalleSesionAsesoriaMentor() {
                 value={nuevaHora}
                 onChange={(e) => setNuevaHora(e.target.value)}
                 mb={4}
-                bg="gray.800"
-                borderColor="gray.600"
-                color="white"
               />
 
               <Button
                 w="100%"
-                colorScheme="green"
+                variant="primary"
                 onClick={guardarNuevaFecha}
                 isDisabled={!nuevaFecha || !nuevaHora}
               >
                 Guardar nueva fecha
               </Button>
-            </Box>
+            </Panel>
           </Collapse>
 
-          <Divider  />
+          <Divider mt={6} />
 
-          {/* LINK MEET */}
-          <Link
-            href={sesionAsesoria.meetUrl}
-            target="_blank"
-            style={{ width: "100%" }}
-          >
-            <Button w="100%" size="lg" colorScheme="brand">
+          {/* Link Meet */}
+          <Link href={sesionAsesoria.meetUrl} target="_blank" style={{ width: "100%" }}>
+            <Button w="100%" variant="primary">
               Unirse a la sesión de asesoría
             </Button>
           </Link>
-        </Box>
+        </Panel>
       </Box>
 
       <Footer />

@@ -15,9 +15,9 @@ import {
 import { FaEnvelope, FaBirthdayCake, FaUserEdit, FaGraduationCap, FaBriefcase } from "react-icons/fa";
 import NavbarMentor from "../../components/mentor/NavbarMentor";
 import Footer from "../../components/Footer";
+import Panel from "../../theme/components/Panel";
 
 export default function PerfilMentor() {
-  // ⚠️ Luego vendrá del backend
   const mentor = {
     nombre: "Juan",
     apellido: "Pérez",
@@ -26,7 +26,8 @@ export default function PerfilMentor() {
     titulo: "Ingeniero en Sistemas",
     imagen: "",
     disponible: true,
-    experiencia: "Más de 8 años trabajando en desarrollo backend y liderazgo de equipos."
+    experiencia:
+      "Más de 8 años trabajando en desarrollo backend y liderazgo de equipos.",
   };
 
   return (
@@ -34,17 +35,7 @@ export default function PerfilMentor() {
       <NavbarMentor />
 
       <Box py={10} px={{ base: 4, md: 10 }} flex="1">
-
-        <Box
-          bg="gray.800"
-          p={8}
-          rounded="xl"
-          borderWidth="1px"
-          borderColor="gray.700"
-          maxW="700px"
-          mx="auto"
-          shadow="md"
-        >
+        <Panel maxW="700px" mx="auto" p={8}>
           {/* HEADER */}
           <Flex direction="column" align="center" mb={6}>
             <Avatar
@@ -54,61 +45,49 @@ export default function PerfilMentor() {
               mb={4}
             />
 
-            <Heading color="gray.100">
-              {mentor.nombre} {mentor.apellido}
-            </Heading>
+            <Heading>{mentor.nombre} {mentor.apellido}</Heading>
 
             <Text color="brand.300" mt={1}>
               Mentor en Learnet
             </Text>
           </Flex>
 
-          <Divider/>
+          <Divider />
 
           {/* DATOS */}
           <VStack align="start" spacing={5}>
 
-            {/* TÍTULO PROFESIONAL */}
             <Flex align="center" gap={3}>
               <Icon as={FaGraduationCap} color="brand.400" boxSize={5} />
-              <Text fontSize="lg" color="gray.200">
+              <Text fontSize="lg">
                 <strong>Título profesional:</strong> {mentor.titulo}
               </Text>
             </Flex>
 
-            {/* EXPERIENCIA */}
             <Flex align="flex-start" gap={3}>
               <Icon as={FaBriefcase} color="brand.400" boxSize={5} mt={1} />
-              <Text fontSize="lg" color="gray.200">
+              <Text fontSize="lg">
                 <strong>Experiencia:</strong> {mentor.experiencia}
               </Text>
             </Flex>
 
-            {/* EMAIL */}
             <Flex align="center" gap={3}>
               <Icon as={FaEnvelope} color="brand.400" boxSize={5} />
-              <Text fontSize="lg" color="gray.200">
+              <Text fontSize="lg">
                 <strong>Email:</strong> {mentor.email}
               </Text>
             </Flex>
 
-            {/* FECHA DE NACIMIENTO */}
             <Flex align="center" gap={3}>
               <Icon as={FaBirthdayCake} color="brand.400" boxSize={5} />
-              <Text fontSize="lg" color="gray.200">
+              <Text fontSize="lg">
                 <strong>Fecha de nacimiento:</strong> {mentor.fechaNacimiento}
               </Text>
             </Flex>
 
             {/* DISPONIBILIDAD */}
             <FormControl display="flex" alignItems="center" mt={3}>
-              <FormLabel
-                htmlFor="disponible"
-                mb="0"
-                color="gray.200"
-                fontSize="lg"
-                fontWeight="bold"
-              >
+              <FormLabel htmlFor="disponible" mb="0" fontSize="lg" fontWeight="bold">
                 Disponible para mentorías
               </FormLabel>
 
@@ -121,16 +100,14 @@ export default function PerfilMentor() {
             </FormControl>
           </VStack>
 
-          {/* BOTÓN EDITAR */}
           <Button
             leftIcon={<FaUserEdit />}
-            colorScheme="brand"
-            mt={8}
+            variant="primary"
             w="100%"
           >
             Editar perfil
           </Button>
-        </Box>
+        </Panel>
       </Box>
 
       <Footer />

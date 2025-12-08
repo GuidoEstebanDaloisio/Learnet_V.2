@@ -1,9 +1,9 @@
-import { Box, Heading } from "@chakra-ui/react";
+import { Box, Heading, SimpleGrid } from "@chakra-ui/react";
 import NavbarMentor from "../../components/mentor/NavbarMentor";
 import Footer from "../../components/Footer";
 import SesionAsesoriaCard from "../../components/mentor/SesionAsesoriaCard";
 
-// Ejemplo de sesiones de asesoría asignadas al mentor
+// Datos de ejemplo
 const sesionesDeAsesoria = [
   {
     alumno: "Juan Pérez",
@@ -45,15 +45,7 @@ export default function Agenda() {
           Mi Agenda de Sesiones de Asesoría
         </Heading>
 
-        <Box
-          display="grid"
-          gridTemplateColumns={{
-            base: "1fr",
-            sm: "1fr 1fr",
-            lg: "1fr 1fr 1fr",
-          }}
-          gap={8}
-        >
+        <SimpleGrid columns={{ base: 1, sm: 2, lg: 3 }} spacing={8}>
           {sesionesDeAsesoria.map((s, i) => (
             <SesionAsesoriaCard
               key={i}
@@ -64,7 +56,7 @@ export default function Agenda() {
               estado={s.estado as any}
             />
           ))}
-        </Box>
+        </SimpleGrid>
       </Box>
 
       <Footer />

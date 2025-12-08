@@ -39,7 +39,7 @@ export default function SolicitudesMentor() {
       <NavbarMentor />
 
       <Box flex="1" px={{ base: 4, md: 12 }} py={10}>
-        <Heading mb={8} textAlign="center">
+        <Heading size="xl" mb={8} textAlign="center">
           Solicitudes de Mentoría
         </Heading>
 
