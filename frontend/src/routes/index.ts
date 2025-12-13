@@ -33,7 +33,8 @@ export const RUTAS = {
     BASE: PATHS.MENTOR_BASE,
     PERFIL: `${PATHS.MENTOR_BASE}/perfil`,
     MENTORIAS: `${PATHS.MENTOR_BASE}/mentorias`,
-    DETALLE_MENTORIA: `${PATHS.MENTOR_BASE}/mentoria/detalle`,
+    DETALLE_MENTORIA: `${PATHS.MENTOR_BASE}/mentoria/detalle`,//Base para concatenar luego con el ID
+    DETALLE_MENTORIA_ID: `${PATHS.MENTOR_BASE}/mentoria/detalle/:id`,
     EDITAR_MENTORIA: `${PATHS.MENTOR_BASE}/mentoria/editar`,
     NUEVA_MENTORIA: `${PATHS.MENTOR_BASE}/mentoria/nueva`,
     SOLICITUDES: `${PATHS.MENTOR_BASE}/solicitudes`,

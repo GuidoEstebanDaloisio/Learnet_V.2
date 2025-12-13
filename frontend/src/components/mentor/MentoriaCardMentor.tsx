@@ -5,12 +5,14 @@ import Card from "../../theme/components/Card";
 
 
 interface MentoriaCardMentorProps {
+  id: string;
   titulo: string;
   descripcion: string;
   tema: string;
 }
 
 export default function MentoriaCardMentor({
+  id,
   titulo,
   descripcion,
   tema,
@@ -44,7 +46,9 @@ export default function MentoriaCardMentor({
       <Button
         w="100%"
         variant="primary"
-        onClick={() => navigate(RUTAS.MENTOR.DETALLE_MENTORIA)}
+        onClick={() =>
+          navigate(`${RUTAS.MENTOR.DETALLE_MENTORIA}/${id}`)
+        }
       >
         Ver
       </Button>

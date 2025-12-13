@@ -55,3 +55,23 @@ export const listarMisMentorias = async (
     res.status(500).json({ mensaje: "Error listando mentorías del mentor" });
   }
 };
+
+export const listarMentoriaPorId = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    const mentoria = await MentoriaModel.findById(id)
+      .populate("tema", "nombre slug")
+      .populate("mentor", "nombre apellido email");
+
+    if (!mentoria) {
+      return res.status(404).json({ mensaje: "Mentoría no encontrada" });
+    }
+
+    res.json(mentoria);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ mensaje: "Error obteniendo la mentoría" });
+  }
+};
+

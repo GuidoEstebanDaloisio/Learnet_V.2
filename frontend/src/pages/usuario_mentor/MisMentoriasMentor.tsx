@@ -71,6 +71,7 @@ export default function MisMentoriasMentor() {
           {mentorias.map((m) => (
             <MentoriaCardMentor
               key={m._id}
+              id={m._id}
               titulo={m.titulo}
               descripcion={m.descripcion}
               tema={m.tema.nombre}

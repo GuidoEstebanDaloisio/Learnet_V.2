@@ -15,3 +15,7 @@ export const listarMentoriasDelMentor = () => {
 export const listarTemas = () => {
   return api.get("/temas");
 };
+
+export const obtenerMentoriaPorId = (id: string) => {
+  return api.get(`/mentorias/${id}`);
+};

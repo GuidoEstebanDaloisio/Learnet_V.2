@@ -79,7 +79,7 @@ function App() {
           >
             <Route path={RUTAS.MENTOR.PERFIL} element={<PerfilMentor />} />
             <Route path={RUTAS.MENTOR.MENTORIAS} element={<MisMentoriasMentor />} />
-            <Route path={RUTAS.MENTOR.DETALLE_MENTORIA} element={<DetalleMentoriaMentor />} />
+            <Route path={RUTAS.MENTOR.DETALLE_MENTORIA_ID} element={<DetalleMentoriaMentor />} />
             <Route path={RUTAS.MENTOR.EDITAR_MENTORIA} element={<EditarMentoria />} />
             <Route path={RUTAS.MENTOR.NUEVA_MENTORIA} element={<NuevaMentoria />} />
             <Route path={RUTAS.MENTOR.SOLICITUDES} element={<SolicitudesMentor />} />
