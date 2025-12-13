@@ -1,4 +1,5 @@
 import mongoose, { Schema, Document } from "mongoose";
+import { Types } from "mongoose";
 import { ROLES } from "../constants/roles";
 
 export interface IUsuario extends Document {
@@ -16,6 +17,8 @@ export interface IUsuario extends Document {
   experiencia?: string;
   fechaDeIngreso?: Date;
   estaDisponible?: boolean;
+  temas?: Types.ObjectId[];
+
 
   // Relaciones futuras
   mentorias?: mongoose.Types.ObjectId[];

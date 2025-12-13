@@ -13,8 +13,8 @@ import { useState } from "react";
 import Footer from "../components/Footer";
 import { RUTAS } from "../routes";
 import Panel from "../theme/components/Panel";
-import axios from "axios";
 import { useAuth } from "../context/AuthContext";
+import { loginUsuario } from "../api/authApi";
 
 
 export default function Login() {
@@ -28,14 +28,11 @@ export default function Login() {
 
   const handleLogin = async () => {
   try {
-    const res = await axios.post("http://localhost:4000/api/auth/login", {
-      email,
-      password,
-    });
+    const res = await loginUsuario({ email, password });
 
     login({
       token: res.data.token,
-      usuario: res.data.usuario
+      usuario: res.data.usuario,
     });
 
     if (res.data.usuario.tipo === "alumno") {
@@ -49,6 +46,7 @@ export default function Login() {
     setError(err.response?.data?.mensaje || "Error al iniciar sesión");
   }
 };
+
 
 
   return (
