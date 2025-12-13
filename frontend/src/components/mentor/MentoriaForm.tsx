@@ -12,6 +12,7 @@ interface MentoriaFormProps {
   titulo: string;
   descripcion: string;
   tema: string;
+  temas: { nombre: string; slug: string }[]; // ✅ lista de temas desde el backend
   onChangeTitulo: (v: string) => void;
   onChangeDescripcion: (v: string) => void;
   onChangeTema: (v: string) => void;
@@ -23,29 +24,31 @@ export default function MentoriaForm({
   titulo,
   descripcion,
   tema,
+  temas,
   onChangeTitulo,
   onChangeDescripcion,
   onChangeTema,
   onSubmit,
-  modo
+  modo,
 }: MentoriaFormProps) {
   return (
     <Panel maxW="700px" mx="auto">
-
       {/* Tema - para crear y editar */}
       <FormControl mb={5}>
         <FormLabel>Tema</FormLabel>
         <Select
-          placeholder="Selecciona una categoría"
+          placeholder="Selecciona un tema"
           value={tema}
           onChange={(e) => onChangeTema(e.target.value)}
         >
-          <option value="Programación">Programación</option>
-          <option value="Marketing">Marketing</option>
-          <option value="Diseño">Diseño</option>
-          <option value="Project Management">Project Management</option>
-          <option value="Idiomas">Idiomas</option>
+          {temas.map((t) => (
+            <option key={t._id} value={t._id}>
+              {t.nombre}
+            </option>
+          ))}
         </Select>
+
+
       </FormControl>
 
       {/* Título */}
@@ -68,11 +71,7 @@ export default function MentoriaForm({
       </FormControl>
 
       {/* Botón */}
-      <Button
-        w="100%"
-        variant="primary"
-        onClick={onSubmit}
-      >
+      <Button w="100%" variant="primary" onClick={onSubmit}>
         {modo === "crear" ? "Crear Mentoría" : "Guardar Cambios"}
       </Button>
     </Panel>

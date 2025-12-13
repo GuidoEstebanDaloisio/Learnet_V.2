@@ -22,3 +22,14 @@ export const crearTema = async (req: Request, res: Response) => {
     return res.status(500).json({ mensaje: "Error al crear tema" });
   }
 };
+
+// Listar todos los temas activos
+export const listarTemas = async (req: Request, res: Response) => {
+  try {
+    const temas = await TemaModel.find({ activo: true }).sort({ nombre: 1 });
+    res.json(temas);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ mensaje: "Error listando temas" });
+  }
+};
