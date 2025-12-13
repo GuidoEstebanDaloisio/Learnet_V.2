@@ -13,13 +13,14 @@ export const RUTAS = {
   NOT_FOUND: PATHS.NOT_FOUND,
 
   REGISTRO: {
-    BASE: PATHS.REGISTRO_BASE, 
+    BASE: PATHS.REGISTRO_BASE,
     MENTOR: `${PATHS.REGISTRO_BASE}/mentor`,
     ALUMNO: `${PATHS.REGISTRO_BASE}/alumno`,
     ADMIN: `${PATHS.REGISTRO_BASE}/admin`
   },
 
   ALUMNO: {
+    BASE: PATHS.ALUMNO_BASE,
     EXPLORAR_MENTORES: `${PATHS.ALUMNO_BASE}/explorar-mentores`,
     DETALLE_MENTOR: `${PATHS.ALUMNO_BASE}/mentor/detalle`,
     SOLICITAR_MENTORIA: `${PATHS.ALUMNO_BASE}/mentor/solicitar-mentoria`,
@@ -29,6 +30,7 @@ export const RUTAS = {
   },
 
   MENTOR: {
+    BASE: PATHS.MENTOR_BASE,
     PERFIL: `${PATHS.MENTOR_BASE}/perfil`,
     MENTORIAS: `${PATHS.MENTOR_BASE}/mentorias`,
     DETALLE_MENTORIA: `${PATHS.MENTOR_BASE}/mentoria/detalle`,

@@ -2,7 +2,12 @@ import { ChakraProvider } from "@chakra-ui/react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import tema from "./theme/Tema";
 
-// Páginas
+// Proteccion de rutas
+import ProtectedRoute from "./routes/ProtectedRoute";
+import { Outlet } from "react-router-dom";
+
+
+// Paginas
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Explorar from "./pages/usuario_alumno/Explorar";
@@ -44,23 +49,43 @@ function App() {
           <Route path={RUTAS.REGISTRO.ALUMNO} element={<RegistroAlumno />} />
           <Route path={RUTAS.REGISTRO.ADMIN} element={<RegistroAdmin />} />
 
+
           {/* Alumno */}
-          <Route path={RUTAS.ALUMNO.EXPLORAR_MENTORES} element={<Explorar />} />
-          <Route path={RUTAS.ALUMNO.DETALLE_MENTOR} element={<DetalleMentor />} />
-          <Route path={RUTAS.ALUMNO.SOLICITAR_MENTORIA} element={<SolicitarMentoria />} />
-          <Route path={RUTAS.ALUMNO.AGENDA} element={<AgendaAlumno />} />
-          <Route path={RUTAS.ALUMNO.DETALLE_SESION_ASESORIA} element={<DetalleSesionAsesoriaAlumno />} />
-          <Route path={RUTAS.ALUMNO.PERFIL} element={<PerfilAlumno />} />
+          <Route
+            path={RUTAS.ALUMNO.BASE}
+            element={
+              <ProtectedRoute allowedRoles={["alumno"]}>
+                <Outlet />
+              </ProtectedRoute>
+            }
+          >
+            <Route path={RUTAS.ALUMNO.EXPLORAR_MENTORES} element={<Explorar />} />
+            <Route path={RUTAS.ALUMNO.DETALLE_MENTOR} element={<DetalleMentor />} />
+            <Route path={RUTAS.ALUMNO.SOLICITAR_MENTORIA} element={<SolicitarMentoria />} />
+            <Route path={RUTAS.ALUMNO.AGENDA} element={<AgendaAlumno />} />
+            <Route path={RUTAS.ALUMNO.DETALLE_SESION_ASESORIA} element={<DetalleSesionAsesoriaAlumno />} />
+            <Route path={RUTAS.ALUMNO.PERFIL} element={<PerfilAlumno />} />
+          </Route>
+
 
           {/* Mentor */}
-          <Route path={RUTAS.MENTOR.PERFIL} element={<PerfilMentor />} />
-          <Route path={RUTAS.MENTOR.MENTORIAS} element={<MisMentoriasMentor />} />
-          <Route path={RUTAS.MENTOR.DETALLE_MENTORIA} element={<DetalleMentoriaMentor />} />
-          <Route path={RUTAS.MENTOR.EDITAR_MENTORIA} element={<EditarMentoria />} />
-          <Route path={RUTAS.MENTOR.NUEVA_MENTORIA} element={<NuevaMentoria />} />
-          <Route path={RUTAS.MENTOR.SOLICITUDES} element={<SolicitudesMentor />} />
-          <Route path={RUTAS.MENTOR.AGENDA} element={<Agenda />} />
-          <Route path={RUTAS.MENTOR.DETALLE_SESION_ASESORIA} element={<DetalleSesionAsesoriaMentor />} />
+          <Route
+            path={RUTAS.MENTOR.BASE}
+            element={
+              <ProtectedRoute allowedRoles={["mentor"]}>
+                <Outlet />
+              </ProtectedRoute>
+            }
+          >
+            <Route path={RUTAS.MENTOR.PERFIL} element={<PerfilMentor />} />
+            <Route path={RUTAS.MENTOR.MENTORIAS} element={<MisMentoriasMentor />} />
+            <Route path={RUTAS.MENTOR.DETALLE_MENTORIA} element={<DetalleMentoriaMentor />} />
+            <Route path={RUTAS.MENTOR.EDITAR_MENTORIA} element={<EditarMentoria />} />
+            <Route path={RUTAS.MENTOR.NUEVA_MENTORIA} element={<NuevaMentoria />} />
+            <Route path={RUTAS.MENTOR.SOLICITUDES} element={<SolicitudesMentor />} />
+            <Route path={RUTAS.MENTOR.AGENDA} element={<Agenda />} />
+            <Route path={RUTAS.MENTOR.DETALLE_SESION_ASESORIA} element={<DetalleSesionAsesoriaMentor />} />
+          </Route>
 
           {/* 404 */}
           <Route path={RUTAS.NOT_FOUND} element={<h1>Pagina no encontrada. ERROR 404</h1>} />
