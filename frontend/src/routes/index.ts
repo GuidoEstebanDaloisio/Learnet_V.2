@@ -23,6 +23,7 @@ export const RUTAS = {
     BASE: PATHS.ALUMNO_BASE,
     EXPLORAR_MENTORES: `${PATHS.ALUMNO_BASE}/explorar-mentores`,
     DETALLE_MENTOR: `${PATHS.ALUMNO_BASE}/mentor/detalle`,
+    DETALLE_MENTOR_ID: `${PATHS.ALUMNO_BASE}/mentor/detalle/:id`,
     SOLICITAR_MENTORIA: `${PATHS.ALUMNO_BASE}/mentor/solicitar-mentoria`,
     AGENDA: `${PATHS.ALUMNO_BASE}/agenda`,
     DETALLE_SESION_ASESORIA: `${PATHS.ALUMNO_BASE}/sesion-de-asesoria/detalle`,

@@ -16,80 +16,134 @@ import {
   AccordionPanel,
   Button,
 } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { RUTAS } from "../../routes";
 
-import { FaUserTie, FaCalendarAlt, FaBook, FaClock, FaStar } from "react-icons/fa";
+import {
+  FaUserTie,
+  FaCalendarAlt,
+  FaBook,
+  FaClock,
+  FaStar,
+} from "react-icons/fa";
 
 import NavbarAlumno from "../../components/alumno/NavbarAlumno";
 import Footer from "../../components/Footer";
 import Panel from "../../theme/components/Panel";
 import Card from "../../theme/components/Card";
 
+import { obtenerMentorPorId } from "../../api/usuarioApi";
+
+/* =======================
+   Tipos
+======================= */
+
+interface Mentoria {
+  _id: string;
+  titulo: string;
+  descripcion: string;
+  tema: {
+    nombre: string;
+  };
+}
+
+interface Mentor {
+  _id: string;
+  nombre: string;
+  apellido: string;
+  tituloProfesional?: string;
+  experiencia?: string;
+  fechaDeIngreso?: string;
+  mentorias: Mentoria[];
+}
+
+/* =======================
+   Component
+======================= */
 
 export default function DetalleMentor() {
-  const mentor = {
-    nombre: "Carlos",
-    apellido: "Gutiérrez",
-    tituloProfesional: "Ingeniero en Sistemas",
-    experiencia: "8 años de experiencia en desarrollo web y enseñanza online",
-    fechaRegistro: "12/08/2023",
-    fotoPerfil: "https://i.pravatar.cc/150?img=12",
-
-    disponibilidad: [
-      { dia: "Lunes", horario: "18:00 - 20:00" },
-      { dia: "Miércoles", horario: "17:00 - 19:00" },
-      { dia: "Viernes", horario: "19:00 - 21:00" },
-    ],
-
-    mentorias: [
-      {
-        tema: "React",
-        clases: [
-          { titulo: "Introducción a React", descripcion: "Conceptos base y componentes." },
-          { titulo: "Hooks Avanzados", descripcion: "useReducer, useMemo, custom hooks." },
-        ],
-      },
-      {
-        tema: "Ciberseguridad",
-        clases: [
-          { titulo: "Seguridad en Web", descripcion: "XSS, CSRF y buenas prácticas." },
-        ],
-      },
-    ],
-
-    calificaciones: {
-      promedio: 4.8,
-      cantidad: 126,
-      opiniones: [
-        {
-          alumno: "Lucía Fernández",
-          rating: 5,
-          comentario: "Excelente explicación, muy claro con los ejemplos.",
-          fecha: "05/11/2024",
-        },
-        {
-          alumno: "Julián Prieto",
-          rating: 4,
-          comentario: "Muy buena clase, aunque me hubiese gustado más práctica.",
-          fecha: "22/10/2024",
-        },
-      ],
-    },
-  };
+  const { id } = useParams();
   const navigate = useNavigate();
+
+  const [mentor, setMentor] = useState<Mentor | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchMentor = async () => {
+      try {
+        const res = await obtenerMentorPorId(id!);
+        setMentor(res.data);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMentor();
+  }, [id]);
+
+  if (loading) {
+    return <Text p={10}>Cargando mentor...</Text>;
+  }
+
+  if (!mentor) {
+    return <Text p={10}>Mentor no encontrado</Text>;
+  }
+
+  /* =======================
+     Agrupar mentorías por tema
+  ======================= */
+
+  const mentoriasPorTema = mentor.mentorias.reduce<Record<string, Mentoria[]>>(
+    (acc, mentoria) => {
+      const tema = mentoria.tema.nombre;
+      if (!acc[tema]) acc[tema] = [];
+      acc[tema].push(mentoria);
+      return acc;
+    },
+    {}
+  );
+
+  /* =======================
+     MOCKS (fase 2)
+  ======================= */
+
+  const disponibilidad = [
+    { dia: "Lunes", horario: "18:00 - 20:00" },
+    { dia: "Miércoles", horario: "17:00 - 19:00" },
+    { dia: "Viernes", horario: "19:00 - 21:00" },
+  ];
+
+  const calificaciones = {
+    promedio: 4.8,
+    cantidad: 126,
+    opiniones: [
+      {
+        alumno: "Lucía Fernández",
+        rating: 5,
+        comentario: "Excelente explicación, muy claro con los ejemplos.",
+        fecha: "05/11/2024",
+      },
+      {
+        alumno: "Julián Prieto",
+        rating: 4,
+        comentario: "Muy buena clase, aunque me hubiese gustado más práctica.",
+        fecha: "22/10/2024",
+      },
+    ],
+  };
 
   return (
     <>
       <NavbarAlumno />
 
       <Box minH="100vh" px={6} py={10}>
-
         {/* HEADER */}
         <Panel p={8} rounded="2xl" mb={10}>
           <Flex gap={6} align="center">
-
-            <Avatar size="xl" src={mentor.fotoPerfil} />
+            <Avatar size="xl" name={`${mentor.nombre} ${mentor.apellido}`} />
 
             <Box flex="1">
               <Heading size="lg" color="brand.300">
@@ -107,14 +161,23 @@ export default function DetalleMentor() {
 
               <Text mt={3} color="gray.400" fontSize="sm">
                 <Icon as={FaCalendarAlt} mr={2} />
-                Registrado el: {mentor.fechaRegistro}
+                Registrado el:{" "}
+                {mentor.fechaDeIngreso
+                  ? new Date(mentor.fechaDeIngreso).toLocaleDateString()
+                  : "—"}
               </Text>
             </Box>
 
             {/* ACCIONES */}
             <Stack spacing={3} minW="180px">
-              <Button variant="primary" onClick={() => navigate(RUTAS.ALUMNO.SOLICITAR_MENTORIA)}
->
+              <Button
+                variant="primary"
+                onClick={() =>
+                  navigate(RUTAS.ALUMNO.SOLICITAR_MENTORIA, {
+                    state: { mentorId: mentor._id },
+                  })
+                }
+              >
                 Solicitar mentoría
               </Button>
 
@@ -125,29 +188,37 @@ export default function DetalleMentor() {
           </Flex>
         </Panel>
 
-        {/* MENTORIAS POR TEMA */}
-        <Heading size="md" mb={4}>Mentorías por temática</Heading>
+        {/* MENTORIAS */}
+        <Heading size="md" mb={4}>
+          Mentorías por temática
+        </Heading>
 
         <Accordion allowToggle>
-          {mentor.mentorias.map((m, i) => (
-            <AccordionItem key={i} border="none" mb={4}>
+          {Object.entries(mentoriasPorTema).map(([tema, mentorias]) => (
+            <AccordionItem key={tema} border="none" mb={4}>
               <Panel p={0} overflow="hidden">
-                <AccordionButton _expanded={{ bg: "brand.500", color: "white" }}>
+                <AccordionButton
+                  _expanded={{ bg: "brand.500", color: "white" }}
+                >
                   <Box flex="1" textAlign="left" fontWeight="bold">
                     <Icon as={FaBook} mr={2} />
-                    {m.tema}
+                    {tema}
                   </Box>
                   <AccordionIcon />
                 </AccordionButton>
 
                 <AccordionPanel pb={4}>
                   <Stack spacing={4} mt={2}>
-                    {m.clases.map((c, j) => (
-                      <Card key={j}>
-                        <Text fontSize="lg" fontWeight="bold" color="brand.300">
-                          {c.titulo}
+                    {mentorias.map((m) => (
+                      <Card key={m._id}>
+                        <Text
+                          fontSize="lg"
+                          fontWeight="bold"
+                          color="brand.300"
+                        >
+                          {m.titulo}
                         </Text>
-                        <Text color="gray.300">{c.descripcion}</Text>
+                        <Text color="gray.300">{m.descripcion}</Text>
                       </Card>
                     ))}
                   </Stack>
@@ -158,12 +229,13 @@ export default function DetalleMentor() {
         </Accordion>
 
         {/* DISPONIBILIDAD */}
-        <Divider my={10}/>
-
-        <Heading size="md" mb={4}>Disponibilidad</Heading>
+        <Divider my={10} />
+        <Heading size="md" mb={4}>
+          Disponibilidad
+        </Heading>
 
         <Flex gap={4} wrap="wrap">
-          {mentor.disponibilidad.map((d, i) => (
+          {disponibilidad.map((d, i) => (
             <Tag
               key={i}
               size="lg"
@@ -172,7 +244,6 @@ export default function DetalleMentor() {
               rounded="full"
             >
               <Icon as={FaClock} mr={2} />
-
               <TagLabel>
                 {d.dia}: {d.horario}
               </TagLabel>
@@ -181,14 +252,15 @@ export default function DetalleMentor() {
         </Flex>
 
         {/* CALIFICACIONES */}
-        <Divider my={10}  />
-
-        <Heading size="md" mb={4}>Calificaciones y opiniones</Heading>
+        <Divider my={10} />
+        <Heading size="md" mb={4}>
+          Calificaciones y opiniones
+        </Heading>
 
         <Panel mb={6}>
           <Flex align="center" gap={4}>
             <Text fontSize="4xl" fontWeight="bold" color="brand.300">
-              {mentor.calificaciones.promedio}
+              {calificaciones.promedio}
             </Text>
 
             <Box>
@@ -197,24 +269,30 @@ export default function DetalleMentor() {
                   <Icon
                     key={i}
                     as={FaStar}
-                    color={i < mentor.calificaciones.promedio ? "brand.400" : "gray.600"}
+                    color={
+                      i < Math.round(calificaciones.promedio)
+                        ? "brand.400"
+                        : "gray.600"
+                    }
                     boxSize={5}
                   />
                 ))}
               </Flex>
 
               <Text color="gray.400" fontSize="sm">
-                Basado en {mentor.calificaciones.cantidad} opiniones
+                Basado en {calificaciones.cantidad} opiniones
               </Text>
             </Box>
           </Flex>
         </Panel>
 
         <Stack spacing={4}>
-          {mentor.calificaciones.opiniones.map((op, i) => (
+          {calificaciones.opiniones.map((op, i) => (
             <Card key={i}>
               <Flex justify="space-between" align="center" mb={2}>
-                <Text fontWeight="bold" color="gray.100">{op.alumno}</Text>
+                <Text fontWeight="bold" color="gray.100">
+                  {op.alumno}
+                </Text>
 
                 <Flex>
                   {Array.from({ length: 5 }).map((_, j) => (
@@ -228,13 +306,16 @@ export default function DetalleMentor() {
                 </Flex>
               </Flex>
 
-              <Text color="gray.300" mb={2}>{op.comentario}</Text>
+              <Text color="gray.300" mb={2}>
+                {op.comentario}
+              </Text>
 
-              <Text fontSize="xs" color="gray.500">{op.fecha}</Text>
+              <Text fontSize="xs" color="gray.500">
+                {op.fecha}
+              </Text>
             </Card>
           ))}
         </Stack>
-
       </Box>
 
       <Footer />

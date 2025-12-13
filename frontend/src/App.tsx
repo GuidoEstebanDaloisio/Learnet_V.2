@@ -60,7 +60,8 @@ function App() {
             }
           >
             <Route path={RUTAS.ALUMNO.EXPLORAR_MENTORES} element={<Explorar />} />
-            <Route path={RUTAS.ALUMNO.DETALLE_MENTOR} element={<DetalleMentor />} />
+            <Route path={RUTAS.ALUMNO.DETALLE_MENTOR_ID} element={<DetalleMentor />} />
+            
             <Route path={RUTAS.ALUMNO.SOLICITAR_MENTORIA} element={<SolicitarMentoria />} />
             <Route path={RUTAS.ALUMNO.AGENDA} element={<AgendaAlumno />} />
             <Route path={RUTAS.ALUMNO.DETALLE_SESION_ASESORIA} element={<DetalleSesionAsesoriaAlumno />} />
@@ -80,9 +81,7 @@ function App() {
             <Route path={RUTAS.MENTOR.PERFIL} element={<PerfilMentor />} />
             <Route path={RUTAS.MENTOR.MENTORIAS} element={<MisMentoriasMentor />} />
             <Route path={RUTAS.MENTOR.DETALLE_MENTORIA_ID} element={<DetalleMentoriaMentor />} />
-            <Route path={RUTAS.MENTOR.EDITAR_MENTORIA} element={<EditarMentoria />} />
-
-                        <Route path={RUTAS.MENTOR.EDITAR_MENTORIA_ID} element={<EditarMentoria />} />
+            <Route path={RUTAS.MENTOR.EDITAR_MENTORIA_ID} element={<EditarMentoria />} />
             <Route path={RUTAS.MENTOR.NUEVA_MENTORIA} element={<NuevaMentoria />} />
             <Route path={RUTAS.MENTOR.SOLICITUDES} element={<SolicitudesMentor />} />
             <Route path={RUTAS.MENTOR.AGENDA} element={<Agenda />} />

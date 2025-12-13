@@ -11,6 +11,8 @@ import {
   VStack,
   Icon,
 } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+import { listarMentores } from "../../api/usuarioApi";
 
 import { FaSearch } from "react-icons/fa";
 
@@ -18,42 +20,31 @@ import NavbarAlumno from "../../components/alumno/NavbarAlumno";
 import Footer from "../../components/Footer";
 import MentorCard from "../../components/alumno/MentorCard";
 
-const mentores = [
-  {
-    nombre: "Ana Torres",
-    titulo: "Desarrolladora Fullstack",
-    especializacion: "Desarrollo Web",
-    rating: 5,
-    cantidadRatings: 120,
-    disponible: true,
-  },
-  {
-    nombre: "Luis Fernández",
-    titulo: "Científico de Datos Senior",
-    especializacion: "Data Science",
-    rating: 4,
-    cantidadRatings: 85,
-    disponible: false,
-  },
-  {
-    nombre: "María López",
-    titulo: "Especialista en Ciberseguridad",
-    especializacion: "Ciberseguridad",
-    rating: 5,
-    cantidadRatings: 143,
-    disponible: true,
-  },
-  {
-    nombre: "Fernando Gomez",
-    titulo: "Contador",
-    especializacion: "Excel",
-    rating: 5,
-    cantidadRatings: 143,
-    disponible: false,
-  },
-];
+interface Mentor {
+  _id: string;
+  nombre: string;
+  apellido: string;
+  tituloProfesional?: string;
+  estaDisponible?: boolean;
+}
+
 
 export default function Explorar() {
+  const [mentores, setMentores] = useState<Mentor[]>([]);
+
+  useEffect(() => {
+    const fetchMentores = async () => {
+      try {
+        const res = await listarMentores();
+        setMentores(res.data);
+      } catch (error) {
+        console.error("Error cargando mentores", error);
+      }
+    };
+
+    fetchMentores();
+  }, []);
+
   return (
     <Box minH="100vh" display="flex" flexDirection="column">
       <NavbarAlumno />
@@ -102,14 +93,16 @@ export default function Explorar() {
         >
           {mentores.map((mentor) => (
             <MentorCard
-              key={mentor.nombre}
-              nombre={mentor.nombre}
-              titulo={mentor.titulo}
-              rating={mentor.rating}
-              cantidadRatings={mentor.cantidadRatings}
-              disponible={mentor.disponible}
+              key={mentor._id}
+              id={mentor._id}
+              nombre={`${mentor.nombre} ${mentor.apellido}`}
+              titulo={mentor.tituloProfesional || "Mentor"}
+              rating={5}                 // mock por ahora
+              cantidadRatings={0}        // mock
+              disponible={mentor.estaDisponible ?? false}
             />
           ))}
+
         </Box>
       </Box>
 

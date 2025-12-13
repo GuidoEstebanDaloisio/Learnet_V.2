@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { RUTAS } from "../../routes";
 
 interface MentorCardProps {
+  id: string,
   nombre: string;
   titulo: string;
   rating: number;
@@ -22,6 +23,7 @@ interface MentorCardProps {
 }
 
 export default function MentorCard({
+  id,
   nombre,
   titulo,
   rating,
@@ -74,7 +76,9 @@ export default function MentorCard({
       <Button
         w="100%"
         variant="primary"
-        onClick={() => navigate(RUTAS.ALUMNO.DETALLE_MENTOR)}
+        onClick={() => navigate(`${RUTAS.ALUMNO.DETALLE_MENTOR}/${id}`)}
+                  
+
       >
         Ver perfil
       </Button>
