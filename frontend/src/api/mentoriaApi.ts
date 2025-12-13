@@ -19,3 +19,10 @@ export const listarTemas = () => {
 export const obtenerMentoriaPorId = (id: string) => {
   return api.get(`/mentorias/${id}`);
 };
+
+export const editarMentoria = (
+  id: string,
+  data: { titulo: string; descripcion: string; tema: string }
+) => {
+  return api.put(`/mentorias/${id}`, data);
+};

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { crearMentoria, listarMentorias, listarMisMentorias , listarMentoriaPorId} from "../controllers/mentoriaController";
+import { crearMentoria, listarMentorias, listarMisMentorias , listarMentoriaPorId, editarMentoria} from "../controllers/mentoriaController";
 import { authMiddleware } from "../middleware/authMiddleware";
 import { roleMiddleware } from "../middleware/roleMiddleware";
 import { ROLES } from "../constants/roles";
@@ -19,6 +19,13 @@ router.get(
 
 router.get("/:id", authMiddleware, listarMentoriaPorId);
 
+// Editar mentoría (solo mentor dueño)
+router.put(
+  "/:id",
+  authMiddleware,
+  roleMiddleware(ROLES.MENTOR),
+  editarMentoria
+);
 
 // Listar todas las mentorías (con populate de tema y mentor)
 router.get("/", authMiddleware, listarMentorias);

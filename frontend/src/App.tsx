@@ -81,6 +81,8 @@ function App() {
             <Route path={RUTAS.MENTOR.MENTORIAS} element={<MisMentoriasMentor />} />
             <Route path={RUTAS.MENTOR.DETALLE_MENTORIA_ID} element={<DetalleMentoriaMentor />} />
             <Route path={RUTAS.MENTOR.EDITAR_MENTORIA} element={<EditarMentoria />} />
+
+                        <Route path={RUTAS.MENTOR.EDITAR_MENTORIA_ID} element={<EditarMentoria />} />
             <Route path={RUTAS.MENTOR.NUEVA_MENTORIA} element={<NuevaMentoria />} />
             <Route path={RUTAS.MENTOR.SOLICITUDES} element={<SolicitudesMentor />} />
             <Route path={RUTAS.MENTOR.AGENDA} element={<Agenda />} />

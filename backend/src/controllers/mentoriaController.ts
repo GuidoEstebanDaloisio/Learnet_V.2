@@ -75,3 +75,39 @@ export const listarMentoriaPorId = async (req: Request, res: Response) => {
   }
 };
 
+export const editarMentoria = async (
+  req: RequestConUsuario,
+  res: Response
+) => {
+  try {
+    const { id } = req.params;
+    const { titulo, descripcion, tema } = req.body;
+
+    if (!req.usuario) {
+      return res.status(401).json({ mensaje: "No autenticado" });
+    }
+
+    const mentoria = await MentoriaModel.findById(id);
+
+    if (!mentoria) {
+      return res.status(404).json({ mensaje: "Mentoría no encontrada" });
+    }
+
+    // 🔒 Seguridad: solo el mentor dueño puede editar
+    if (mentoria.mentor.toString() !== req.usuario.id) {
+      return res.status(403).json({ mensaje: "No autorizado" });
+    }
+
+    // Actualización
+    mentoria.titulo = titulo ?? mentoria.titulo;
+    mentoria.descripcion = descripcion ?? mentoria.descripcion;
+    mentoria.tema = tema ?? mentoria.tema;
+
+    await mentoria.save();
+
+    res.json(mentoria);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ mensaje: "Error editando la mentoría" });
+  }
+};

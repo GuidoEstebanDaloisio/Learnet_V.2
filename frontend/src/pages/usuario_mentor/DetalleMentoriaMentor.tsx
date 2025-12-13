@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { obtenerMentoriaPorId } from "../../api/mentoriaApi";
 
 interface MentoriaDetalle {
-  _id: string;
+  id: string;
   titulo: string;
   descripcion: string;
   tema: {
@@ -88,7 +88,7 @@ export default function DetalleMentoriaMentor() {
             w="100%"
             variant="primary"
             onClick={() =>
-              navigate(`${RUTAS.MENTOR.EDITAR_MENTORIA}/${mentoria._id}`)
+              navigate(`${RUTAS.MENTOR.EDITAR_MENTORIA}/${id}`)
             }
           >
             Editar Mentoría
