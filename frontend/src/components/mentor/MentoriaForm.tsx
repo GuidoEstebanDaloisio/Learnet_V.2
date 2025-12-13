@@ -12,7 +12,7 @@ interface MentoriaFormProps {
   titulo: string;
   descripcion: string;
   tema: string;
-  temas: { nombre: string; slug: string }[]; // ✅ lista de temas desde el backend
+  temas: { _id: string; nombre: string; slug: string }[]; // Lista de temas desde el backend
   onChangeTitulo: (v: string) => void;
   onChangeDescripcion: (v: string) => void;
   onChangeTema: (v: string) => void;

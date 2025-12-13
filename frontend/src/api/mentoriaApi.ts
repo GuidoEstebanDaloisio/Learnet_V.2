@@ -8,6 +8,10 @@ export const listarMentorias = () => {
   return api.get("/mentorias");
 };
 
+export const listarMentoriasDelMentor = () => {
+  return api.get("/mentorias/mias");
+};
+
 export const listarTemas = () => {
   return api.get("/temas");
 };

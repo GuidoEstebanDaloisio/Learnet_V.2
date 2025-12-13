@@ -1,4 +1,4 @@
-import { Box, Text, Badge, Button } from "@chakra-ui/react";
+import { Text, Badge, Button } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { RUTAS } from "../../routes";
 import Card from "../../theme/components/Card";

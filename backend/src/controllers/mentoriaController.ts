@@ -33,3 +33,25 @@ export const listarMentorias = async (_req: Request, res: Response) => {
     res.status(500).json({ mensaje: "Error listando mentorías" });
   }
 };
+
+export const listarMisMentorias = async (
+  req: RequestConUsuario,
+  res: Response
+) => {
+  try {
+    if (!req.usuario) {
+      return res.status(401).json({ mensaje: "No autenticado" });
+    }
+
+    const mentorias = await MentoriaModel.find({
+      mentor: req.usuario.id,
+    })
+      .populate("tema", "nombre slug")
+      .sort({ createdAt: -1 });
+
+    res.json(mentorias);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ mensaje: "Error listando mentorías del mentor" });
+  }
+};

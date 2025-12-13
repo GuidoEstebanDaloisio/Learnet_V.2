@@ -1,33 +1,41 @@
-import { Box, Heading, Button, SimpleGrid } from "@chakra-ui/react";
+import { Box, Heading, Button, SimpleGrid, Text } from "@chakra-ui/react";
 import Footer from "../../components/Footer";
 import MentoriaCardMentor from "../../components/mentor/MentoriaCardMentor";
 import NavbarMentor from "../../components/mentor/NavbarMentor";
 import { useNavigate } from "react-router-dom";
 import { RUTAS } from "../../routes";
+import { useEffect, useState } from "react";
+import { listarMentoriasDelMentor } from "../../api/mentoriaApi";
 
-const plantillas = [
-  {
-    titulo: "Introducción a React",
-    descripcion:
-      "Aprenderás los fundamentos de React, componentes, props y el ciclo de vida.",
-    tema: "Programación",
-  },
-  {
-    titulo: "Fundamentos de Marketing Digital",
-    descripcion:
-      "Un recorrido por estrategias digitales, redes sociales y análisis de campañas.",
-    tema: "Marketing",
-  },
-  {
-    titulo: "Gestión de Proyectos Ágil",
-    descripcion:
-      "Qué es Scrum, roles, ceremonias y cómo aplicarlo al trabajo real.",
-    tema: "Project Management",
-  },
-];
+interface Mentoria {
+  _id: string;
+  titulo: string;
+  descripcion: string;
+  tema: {
+    nombre: string;
+    slug: string;
+  };
+}
 
 export default function MisMentoriasMentor() {
   const navigate = useNavigate();
+  const [mentorias, setMentorias] = useState<Mentoria[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchMentorias = async () => {
+      try {
+        const res = await listarMentoriasDelMentor();
+        setMentorias(res.data);
+      } catch (error) {
+        console.error("Error cargando mentorías:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMentorias();
+  }, []);
 
   return (
     <Box minH="100vh" display="flex" flexDirection="column">
@@ -47,14 +55,25 @@ export default function MisMentoriasMentor() {
           </Button>
         </Box>
 
-        {/* Grid de Cards (usa SimpleGrid para responsive) */}
+        {loading && (
+          <Text textAlign="center" opacity={0.7}>
+            Cargando mentorías...
+          </Text>
+        )}
+
+        {!loading && mentorias.length === 0 && (
+          <Text textAlign="center" opacity={0.7}>
+            Todavía no creaste ninguna mentoría.
+          </Text>
+        )}
+
         <SimpleGrid columns={{ base: 1, sm: 2, lg: 3 }} spacing={8}>
-          {plantillas.map((p, i) => (
+          {mentorias.map((m) => (
             <MentoriaCardMentor
-              key={i}
-              titulo={p.titulo}
-              descripcion={p.descripcion}
-              tema={p.tema}
+              key={m._id}
+              titulo={m.titulo}
+              descripcion={m.descripcion}
+              tema={m.tema.nombre}
             />
           ))}
         </SimpleGrid>
