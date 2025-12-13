@@ -23,6 +23,10 @@ import DetalleSesionAsesoriaMentor from "./pages/usuario_mentor/DetalleSesionAse
 
 // Rutas centralizadas
 import { RUTAS } from "./routes";
+import Registro from "./pages/register/Registro";
+import RegistroMentor from "./pages/register/RegistroMentor";
+import RegistroAlumno from "./pages/register/RegistroAlumno";
+import RegistroAdmin from "./pages/register/RegistroAdmin";
 
 function App() {
   return (
@@ -34,7 +38,13 @@ function App() {
           <Route path={RUTAS.HOME} element={<Home />} />
           <Route path={RUTAS.LOGIN} element={<Login />} />
 
-          {/* Rutas Alumno */}
+          {/* Registro */}
+          <Route path={RUTAS.REGISTRO.BASE} element={<Registro />} />
+          <Route path={RUTAS.REGISTRO.MENTOR} element={<RegistroMentor />} />
+          <Route path={RUTAS.REGISTRO.ALUMNO} element={<RegistroAlumno />} />
+          <Route path={RUTAS.REGISTRO.ADMIN} element={<RegistroAdmin />} />
+
+          {/* Alumno */}
           <Route path={RUTAS.ALUMNO.EXPLORAR_MENTORES} element={<Explorar />} />
           <Route path={RUTAS.ALUMNO.DETALLE_MENTOR} element={<DetalleMentor />} />
           <Route path={RUTAS.ALUMNO.SOLICITAR_MENTORIA} element={<SolicitarMentoria />} />
@@ -42,7 +52,7 @@ function App() {
           <Route path={RUTAS.ALUMNO.DETALLE_SESION_ASESORIA} element={<DetalleSesionAsesoriaAlumno />} />
           <Route path={RUTAS.ALUMNO.PERFIL} element={<PerfilAlumno />} />
 
-          {/* Rutas Mentor */}
+          {/* Mentor */}
           <Route path={RUTAS.MENTOR.PERFIL} element={<PerfilMentor />} />
           <Route path={RUTAS.MENTOR.MENTORIAS} element={<MisMentoriasMentor />} />
           <Route path={RUTAS.MENTOR.DETALLE_MENTORIA} element={<DetalleMentoriaMentor />} />

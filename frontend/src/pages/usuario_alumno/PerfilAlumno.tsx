@@ -10,39 +10,36 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { FaEnvelope, FaBirthdayCake, FaUserEdit } from "react-icons/fa";
+import { formatoFecha } from "../../utils/formatoFecha";
 
 import NavbarAlumno from "../../components/alumno/NavbarAlumno";
 import Footer from "../../components/Footer";
 import Panel from "../../theme/components/Panel";
+import { useAuth } from "../../context/AuthContext";
 
 export default function PerfilAlumno() {
+  const { usuario } = useAuth();
 
-  const alumno = {
-    nombre: "Guido",
-    apellido: "Daloisio",
-    email: "guido@example.com",
-    fechaNacimiento: "15/02/2001",
-    imagen: "",
-  };
+  // 🛡️ Protección básica
+  if (!usuario) {
+    return null; // o spinner / redirect
+  }
 
   return (
     <Box minH="100vh" display="flex" flexDirection="column">
       <NavbarAlumno />
 
       <Box py={10} px={{ base: 4, md: 10 }} flex="1">
-        
         <Panel maxW="700px" mx="auto" p={8}>
-          
           <Flex direction="column" align="center" mb={6}>
             <Avatar
               size="2xl"
-              name={`${alumno.nombre} ${alumno.apellido}`}
-              src={alumno.imagen}
+              name={`${usuario.nombre} ${usuario.apellido}`}
               mb={4}
             />
 
             <Heading>
-              {alumno.nombre} {alumno.apellido}
+              {usuario.nombre} {usuario.apellido}
             </Heading>
 
             <Text color="brand.300" mt={1}>
@@ -56,14 +53,17 @@ export default function PerfilAlumno() {
             <Flex align="center" gap={3}>
               <Icon as={FaEnvelope} color="brand.400" boxSize={5} />
               <Text fontSize="lg">
-                <strong>Email:</strong> {alumno.email}
+                <strong>Email:</strong> {usuario.email}
               </Text>
             </Flex>
 
             <Flex align="center" gap={3}>
-              <Icon as={FaBirthdayCake} color="brand.100" boxSize={5} />
+              <Icon as={FaBirthdayCake} color="brand.400" boxSize={5} />
               <Text fontSize="lg">
-                <strong>Fecha de nacimiento:</strong> {alumno.fechaNacimiento}
+                <strong>Fecha de nacimiento:</strong>{" "}
+                {usuario.fechaNacimiento
+                  ? formatoFecha(usuario.fechaNacimiento)
+                  : "No cargada"}
               </Text>
             </Flex>
           </VStack>
@@ -71,9 +71,7 @@ export default function PerfilAlumno() {
           <Button leftIcon={<FaUserEdit />} variant="primary" w="100%">
             Editar perfil
           </Button>
-
         </Panel>
-
       </Box>
 
       <Footer />

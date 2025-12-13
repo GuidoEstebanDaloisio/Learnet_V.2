@@ -3,9 +3,12 @@ import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { FaCompass, FaUser, FaSignOutAlt, FaCalendarAlt } from "react-icons/fa";
 import Logo from "../../assets/logo.png";
 import { RUTAS } from "../../routes";
+import { useAuth } from "../../context/AuthContext";
+
 
 export default function NavbarAlumno() {
   const navigate = useNavigate();
+  const { logout } = useAuth();
 
   const navItems = [
     { label: "Explorar", icon: FaCompass, path: RUTAS.ALUMNO.EXPLORAR_MENTORES },
@@ -13,7 +16,10 @@ export default function NavbarAlumno() {
     { label: "Perfil", icon: FaUser, path: RUTAS.ALUMNO.PERFIL },
   ];
 
-  const logout = () => navigate(RUTAS.LOGIN);
+  const handleLogout = () => {
+    logout();                 // 🔥 limpia sesión
+    navigate(RUTAS.LOGIN);    // 🔁 redirige
+  };
 
   return (
     <Box bg="gray.800" px={6} py={3} boxShadow="md">
@@ -44,7 +50,11 @@ export default function NavbarAlumno() {
           ))}
 
           {/* LOGOUT */}
-          <Button variant="logout" leftIcon={<FaSignOutAlt />} onClick={logout}>
+          <Button
+            variant="logout"
+            leftIcon={<FaSignOutAlt />}
+            onClick={handleLogout}
+          >
             Cerrar sesión
           </Button>
         </Flex>

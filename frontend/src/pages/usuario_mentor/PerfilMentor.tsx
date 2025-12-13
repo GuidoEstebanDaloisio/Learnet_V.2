@@ -12,23 +12,27 @@ import {
   FormLabel,
   Button,
 } from "@chakra-ui/react";
-import { FaEnvelope, FaBirthdayCake, FaUserEdit, FaGraduationCap, FaBriefcase } from "react-icons/fa";
+import {
+  FaEnvelope,
+  FaUserEdit,
+  FaGraduationCap,
+  FaBriefcase,
+  FaCalendarAlt,
+} from "react-icons/fa";
+
 import NavbarMentor from "../../components/mentor/NavbarMentor";
 import Footer from "../../components/Footer";
 import Panel from "../../theme/components/Panel";
+import { formatoFecha } from "../../utils/formatoFecha";
+import { useAuth } from "../../context/AuthContext";
 
 export default function PerfilMentor() {
-  const mentor = {
-    nombre: "Juan",
-    apellido: "Pérez",
-    email: "juan.perez@example.com",
-    fechaNacimiento: "14/05/1990",
-    titulo: "Ingeniero en Sistemas",
-    imagen: "",
-    disponible: true,
-    experiencia:
-      "Más de 8 años trabajando en desarrollo backend y liderazgo de equipos.",
-  };
+  const { usuario } = useAuth();
+
+  // 🛡️ Protección básica
+  if (!usuario) {
+    return null; // o spinner
+  }
 
   return (
     <Box minH="100vh" display="flex" flexDirection="column">
@@ -40,54 +44,64 @@ export default function PerfilMentor() {
           <Flex direction="column" align="center" mb={6}>
             <Avatar
               size="2xl"
-              name={`${mentor.nombre} ${mentor.apellido}`}
-              src={mentor.imagen}
+              name={`${usuario.nombre} ${usuario.apellido}`}
               mb={4}
             />
 
-            <Heading>{mentor.nombre} {mentor.apellido}</Heading>
+            <Heading>
+              {usuario.nombre} {usuario.apellido}
+            </Heading>
 
             <Text color="brand.300" mt={1}>
               Mentor en Learnet
             </Text>
           </Flex>
 
-          <Divider />
+          <Divider mb={6} />
 
           {/* DATOS */}
           <VStack align="start" spacing={5}>
-
             <Flex align="center" gap={3}>
               <Icon as={FaGraduationCap} color="brand.400" boxSize={5} />
               <Text fontSize="lg">
-                <strong>Título profesional:</strong> {mentor.titulo}
+                <strong>Título profesional:</strong>{" "}
+                {usuario.tituloProfesional || "No cargado"}
               </Text>
             </Flex>
 
             <Flex align="flex-start" gap={3}>
               <Icon as={FaBriefcase} color="brand.400" boxSize={5} mt={1} />
               <Text fontSize="lg">
-                <strong>Experiencia:</strong> {mentor.experiencia}
+                <strong>Experiencia:</strong>{" "}
+                {usuario.experiencia || "No cargada"}
               </Text>
             </Flex>
 
             <Flex align="center" gap={3}>
               <Icon as={FaEnvelope} color="brand.400" boxSize={5} />
               <Text fontSize="lg">
-                <strong>Email:</strong> {mentor.email}
+                <strong>Email:</strong> {usuario.email}
               </Text>
             </Flex>
 
             <Flex align="center" gap={3}>
-              <Icon as={FaBirthdayCake} color="brand.400" boxSize={5} />
+              <Icon as={FaCalendarAlt} color="brand.400" boxSize={5} />
               <Text fontSize="lg">
-                <strong>Fecha de nacimiento:</strong> {mentor.fechaNacimiento}
+                <strong>Fecha de ingreso:</strong>{" "}
+                {usuario.fechaDeIngreso
+                  ? formatoFecha(usuario.fechaDeIngreso)
+                  : "No disponible"}
               </Text>
             </Flex>
 
             {/* DISPONIBILIDAD */}
-            <FormControl display="flex" alignItems="center" mt={3}>
-              <FormLabel htmlFor="disponible" mb="0" fontSize="lg" fontWeight="bold">
+            <FormControl display="flex" alignItems="center" mt={4}>
+              <FormLabel
+                htmlFor="disponible"
+                mb="0"
+                fontSize="lg"
+                fontWeight="bold"
+              >
                 Disponible para mentorías
               </FormLabel>
 
@@ -95,7 +109,8 @@ export default function PerfilMentor() {
                 id="disponible"
                 colorScheme="green"
                 size="lg"
-                defaultChecked={mentor.disponible}
+                isChecked={usuario.estaDisponible}
+                isReadOnly
               />
             </FormControl>
           </VStack>
@@ -104,6 +119,7 @@ export default function PerfilMentor() {
             leftIcon={<FaUserEdit />}
             variant="primary"
             w="100%"
+            mt={8}
           >
             Editar perfil
           </Button>

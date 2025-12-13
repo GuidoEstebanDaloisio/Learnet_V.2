@@ -6,17 +6,53 @@ import {
   Button,
   Text,
   FormControl,
-  FormLabel
+  FormLabel,
 } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
 import Footer from "../components/Footer";
 import { RUTAS } from "../routes";
 import Panel from "../theme/components/Panel";
+import axios from "axios";
+import { useAuth } from "../context/AuthContext";
+
 
 export default function Login() {
+  const navigate = useNavigate();
+  const { login } = useAuth();
+
+  // Estados necesarios
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const handleLogin = async () => {
+  try {
+    const res = await axios.post("http://localhost:4000/api/auth/login", {
+      email,
+      password,
+    });
+
+    login({
+      token: res.data.token,
+      usuario: res.data.usuario
+    });
+
+    if (res.data.usuario.tipo === "alumno") {
+      navigate(RUTAS.ALUMNO.PERFIL);
+    } else if (res.data.usuario.tipo === "mentor") {
+      navigate(RUTAS.MENTOR.PERFIL);
+    } else {
+      navigate("/");
+    }
+  } catch (err: any) {
+    setError(err.response?.data?.mensaje || "Error al iniciar sesión");
+  }
+};
+
+
   return (
     <Box minH="100vh" display="flex" flexDirection="column">
-      
       <Box
         flex="1"
         display="flex"
@@ -32,21 +68,43 @@ export default function Login() {
 
             <FormControl>
               <FormLabel>Email</FormLabel>
-              <Input type="email" placeholder="tuemail@ejemplo.com" />
+              <Input
+                type="email"
+                placeholder="tuemail@ejemplo.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
             </FormControl>
 
             <FormControl>
               <FormLabel>Contraseña</FormLabel>
-              <Input type="password" placeholder="••••••••" />
+              <Input
+                type="password"
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
             </FormControl>
 
-            <Button variant="primary" w="100%">
+            {error && <Text color="red.400">{error}</Text>}
+
+            <Button variant="primary" w="100%" onClick={handleLogin}>
               Ingresar
             </Button>
 
-            <Text fontSize="sm" opacity={0.7}>
-              ¿No tenés cuenta? Próximamente…
-            </Text>
+            {/* NO CAMBIO NADA DE TU DISEÑO */}
+            <VStack w="100%" spacing={3}>
+              <Text fontSize="sm" opacity={0.7}>
+                ¿No tenés cuenta?
+              </Text>
+              <Button
+                as={Link}
+                to={RUTAS.REGISTRO.BASE}
+                variant="secondary"
+              >
+                Registrarme
+              </Button>
+            </VStack>
 
             <VStack w="100%" spacing={3} mt={4}>
               <Button

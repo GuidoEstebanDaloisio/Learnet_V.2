@@ -1,11 +1,19 @@
 import { Box, Flex, HStack, Icon, Image, Button, Link } from "@chakra-ui/react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
-import { FaClipboardList, FaCalendarAlt, FaBookOpen, FaUser, FaSignOutAlt } from "react-icons/fa";
+import {
+  FaClipboardList,
+  FaCalendarAlt,
+  FaBookOpen,
+  FaUser,
+  FaSignOutAlt,
+} from "react-icons/fa";
 import Logo from "../../assets/logo.png";
 import { RUTAS } from "../../routes";
+import { useAuth } from "../../context/AuthContext";
 
 export default function NavbarMentor() {
   const navigate = useNavigate();
+  const { logout } = useAuth();
 
   const navItems = [
     { label: "Solicitudes", icon: FaClipboardList, path: RUTAS.MENTOR.SOLICITUDES },
@@ -14,7 +22,10 @@ export default function NavbarMentor() {
     { label: "Perfil", icon: FaUser, path: RUTAS.MENTOR.PERFIL },
   ];
 
-  const logout = () => navigate(RUTAS.LOGIN);
+  const handleLogout = () => {
+    logout();                 // 🔥 limpia sesión
+    navigate(RUTAS.LOGIN);    // 🔁 redirige
+  };
 
   return (
     <Box bg="gray.800" px={6} py={3} boxShadow="md">
@@ -28,7 +39,6 @@ export default function NavbarMentor() {
         </HStack>
 
         <Flex ml="auto" align="center" gap={6}>
-          {/* NAV ITEMS */}
           {navItems.map((item) => (
             <Link
               key={item.label}
@@ -45,7 +55,11 @@ export default function NavbarMentor() {
           ))}
 
           {/* LOGOUT */}
-          <Button variant="logout" leftIcon={<FaSignOutAlt />} onClick={logout}>
+          <Button
+            variant="logout"
+            leftIcon={<FaSignOutAlt />}
+            onClick={handleLogout}
+          >
             Cerrar sesión
           </Button>
         </Flex>
