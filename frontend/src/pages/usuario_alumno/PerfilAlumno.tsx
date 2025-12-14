@@ -10,7 +10,7 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { FaEnvelope, FaBirthdayCake, FaUserEdit } from "react-icons/fa";
-import { formatoFecha } from "../../utils/formatoFecha";
+import { formatoFecha } from "../../utils/fechaConfig";
 
 import NavbarAlumno from "../../components/alumno/NavbarAlumno";
 import Footer from "../../components/Footer";

@@ -16,3 +16,9 @@ export const crearSolicitud = (data: CrearSolicitudData) => {
 export const listarSolicitudesAlumno = () => {
   return api.get("/solicitudes");
 };
+
+
+export const listarSolicitudesMentor = () => {
+  return api.get("/solicitudes/mentor");
+};
+

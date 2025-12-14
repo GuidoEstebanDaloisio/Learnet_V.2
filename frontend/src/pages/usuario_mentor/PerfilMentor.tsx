@@ -26,7 +26,7 @@ import { useEffect, useState } from "react";
 import NavbarMentor from "../../components/mentor/NavbarMentor";
 import Footer from "../../components/Footer";
 import Panel from "../../theme/components/Panel";
-import { formatoFecha } from "../../utils/formatoFecha";
+import { formatoFecha } from "../../utils/fechaConfig";
 import { useAuth } from "../../context/AuthContext";
 import { RUTAS } from "../../routes";
 import { obtenerDisponibilidadBase } from "../../api/disponibilidadApi";

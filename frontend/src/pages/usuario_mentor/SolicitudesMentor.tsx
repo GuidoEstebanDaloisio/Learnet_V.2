@@ -1,39 +1,43 @@
-import { Box, Heading } from "@chakra-ui/react";
+import { Box, Heading, Text } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+
 import NavbarMentor from "../../components/mentor/NavbarMentor";
 import Footer from "../../components/Footer";
 import SolicitudCard from "../../components/mentor/SolicitudCard";
 
-const solicitudes = [
-  {
-    alumno: "Laura Gómez",
-    tituloMentoria: "Introducción a React",
-    tema: "Programación",
-    fecha: "10/03/2025",
-    hora: "16:00",
-    mensaje: "Me gustaría comenzar lo antes posible.",
-    estado: "pendiente",
-  },
-  {
-    alumno: "Carlos Pérez",
-    tituloMentoria: "Marketing Digital Básico",
-    tema: "Marketing",
-    fecha: "12/03/2025",
-    hora: "18:30",
-    mensaje: "",
-    estado: "aceptada",
-  },
-  {
-    alumno: "Marta Salinas",
-    tituloMentoria: "Gestión de Proyectos Ágil",
-    tema: "Project Management",
-    fecha: "08/03/2025",
-    hora: "14:00",
-    mensaje: "Tengo conocimientos previos, quiero profundizar.",
-    estado: "cancelada",
-  },
-];
+import { listarSolicitudesMentor } from "../../api/solicitudApi";
+import { formatoFechaHoraLocal } from "../../utils/fechaConfig";
+
+interface Solicitud {
+  _id: string;
+  alumno: { nombre: string; apellido: string };
+  mentoria: { titulo: string; tema: { nombre: string } };
+  fechaSolicitada: string;
+  mensajeOpcional?: string;
+  estado: "pendiente" | "aceptada" | "rechazada";
+}
 
 export default function SolicitudesMentor() {
+  const [solicitudes, setSolicitudes] = useState<Solicitud[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchSolicitudes = async () => {
+      try {
+        const res = await listarSolicitudesMentor();
+        setSolicitudes(res.data);
+      } catch (error) {
+        console.error("Error cargando solicitudes:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSolicitudes();
+  }, []);
+
+  if (loading) return <Text p={10}>Cargando solicitudes...</Text>;
+
   return (
     <Box minH="100vh" display="flex" flexDirection="column">
       <NavbarMentor />
@@ -52,18 +56,22 @@ export default function SolicitudesMentor() {
           }}
           gap={8}
         >
-          {solicitudes.map((s, i) => (
-            <SolicitudCard
-              key={i}
-              alumno={s.alumno}
-              tituloMentoria={s.tituloMentoria}
-              tema={s.tema}
-              fecha={s.fecha}
-              hora={s.hora}
-              mensaje={s.mensaje}
-              estado={s.estado as any}
-            />
-          ))}
+          {solicitudes.map((s) => {
+            const { fecha, hora } = formatoFechaHoraLocal(s.fechaSolicitada);
+
+            return (
+              <SolicitudCard
+                key={s._id}
+                alumno={`${s.alumno.nombre} ${s.alumno.apellido}`}
+                tituloMentoria={s.mentoria.titulo}
+                tema={s.mentoria.tema.nombre}
+                fecha={fecha}
+                hora={hora}
+                mensaje={s.mensajeOpcional}
+                estado={s.estado === "rechazada" ? "cancelada" : s.estado}
+              />
+            );
+          })}
         </Box>
       </Box>
 
