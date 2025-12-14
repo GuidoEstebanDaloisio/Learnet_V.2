@@ -6,6 +6,7 @@ import {
   Button,
   FormControl,
   FormLabel,
+  useToast,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -13,15 +14,21 @@ import Panel from "../../theme/components/Panel";
 import Footer from "../../components/Footer";
 import { RUTAS } from "../../routes";
 import { registrarUsuario } from "../../api/authApi";
+import { mostrarToast } from "../../utils/toast";
 
 export default function RegistroAlumno() {
   const navigate = useNavigate();
+  const toast = useToast();
 
   const [fechaNacimiento, setFechaNacimiento] = useState("");
-
   const baseData = JSON.parse(localStorage.getItem("registroBase") || "{}");
 
   const handleRegistrar = async () => {
+    if (!fechaNacimiento) {
+      mostrarToast(toast, "error", "Debes ingresar tu fecha de nacimiento");
+      return;
+    }
+
     const dataFinal = {
       ...baseData,
       fechaNacimiento,
@@ -29,12 +36,12 @@ export default function RegistroAlumno() {
     };
 
     try {
-      const res = await registrarUsuario(dataFinal);
-      alert("Usuario registrado!");
+      await registrarUsuario(dataFinal);
+      mostrarToast(toast, "success", "Usuario registrado correctamente!");
       localStorage.removeItem("registroBase");
       navigate(RUTAS.LOGIN);
     } catch (err: any) {
-      alert(err.response?.data?.mensaje || "Error al registrar");
+      mostrarToast(toast, "error", err.response?.data?.mensaje || "Error al registrar");
     }
   };
 

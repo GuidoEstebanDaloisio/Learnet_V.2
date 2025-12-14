@@ -7,34 +7,37 @@ import {
   FormControl,
   FormLabel,
   Input,
+  useToast,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import Panel from "../../theme/components/Panel";
 import Footer from "../../components/Footer";
 import { RUTAS } from "../../routes";
+import { mostrarToast } from "../../utils/toast";
 
 export default function RegistroAdmin() {
   const navigate = useNavigate();
+  const toast = useToast();
 
   const baseData = JSON.parse(localStorage.getItem("registroBase") || "{}");
-
   const [token, setToken] = useState("");
 
   const handleRegistrar = () => {
     if (!token.trim()) {
-      alert("Debes ingresar un token válido para registrar un administrador.");
+      mostrarToast(toast, "error", "Debes ingresar un token válido para registrar un administrador.");
       return;
     }
 
     const dataFinal = {
       ...baseData,
       tipo: "admin",
-      adminToken: token, // Lo enviás al backend para validar
+      adminToken: token,
     };
 
     console.log("Datos a enviar al backend:", dataFinal);
 
+    mostrarToast(toast, "success", "Administrador registrado correctamente");
     localStorage.removeItem("registroBase");
     navigate(RUTAS.LOGIN);
   };
@@ -44,7 +47,6 @@ export default function RegistroAdmin() {
       <Box flex="1" display="flex" justifyContent="center" alignItems="center" px={4}>
         <Panel w={{ base: "100%", sm: "450px" }}>
           <VStack spacing={6}>
-            
             <Heading fontSize="2xl" textAlign="center">
               Registro de Administrador
             </Heading>

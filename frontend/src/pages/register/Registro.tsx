@@ -4,19 +4,21 @@ import {
   Heading,
   Input,
   Button,
-  
   FormControl,
   FormLabel,
   Select,
+  useToast,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Panel from "../../theme/components/Panel";
 import Footer from "../../components/Footer";
 import { RUTAS } from "../../routes";
+import { mostrarToast } from "../../utils/toast";
 
 export default function Registro() {
   const navigate = useNavigate();
+  const toast = useToast();
 
   const [form, setForm] = useState({
     nombre: "",
@@ -34,7 +36,10 @@ export default function Registro() {
   };
 
   const handleContinuar = () => {
-    if (!form.tipo) return;
+    if (!form.nombre.trim() || !form.apellido.trim() || !form.email.trim() || !form.password.trim() || !form.tipo) {
+      mostrarToast(toast, "error", "Debes completar todos los campos antes de continuar");
+      return;
+    }
 
     // Guardás datos base en localStorage o en contexto
     localStorage.setItem("registroBase", JSON.stringify(form));
@@ -47,7 +52,6 @@ export default function Registro() {
 
   return (
     <Box minH="100vh" display="flex" flexDirection="column">
-      
       <Box flex="1" display="flex" justifyContent="center" alignItems="center" px={4}>
         <Panel w={{ base: "100%", sm: "450px" }}>
           <VStack spacing={6}>

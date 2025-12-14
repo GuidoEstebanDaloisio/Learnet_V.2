@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { RUTAS } from "../../routes";
+import { mostrarToast } from "../../utils/toast";
 import {
     Box,
     Heading,
@@ -56,15 +57,9 @@ export default function EditarHorarioLaboral() {
                     setHoraDesde(res.data.horaDesde);
                     setHoraHasta(res.data.horaHasta);
                 }
-
             } catch (error) {
                 console.error("Error cargando disponibilidad:", error);
-                toast({
-                    title: "Error cargando disponibilidad",
-                    status: "error",
-                    duration: 3000,
-                    isClosable: true,
-                });
+                mostrarToast(toast, "error", "Error cargando disponibilidad");
             } finally {
                 setLoading(false);
             }
@@ -73,25 +68,15 @@ export default function EditarHorarioLaboral() {
         fetchDisponibilidad();
     }, []);
 
-     const handleGuardar = async () => {
+
+    const handleGuardar = async () => {
         try {
             await guardarDisponibilidadBase({ diasSemana, horaDesde, horaHasta });
-            toast({
-                title: "Horario laboral guardado",
-                status: "success",
-                duration: 3000,
-                isClosable: true,
-            });
-
-            navigate(RUTAS.MENTOR.PERFIL); // 🔹 ahora funciona
+            mostrarToast(toast, "success", "Horario laboral guardado correctamente");
+            navigate(RUTAS.MENTOR.PERFIL);
         } catch (error) {
             console.error("Error guardando disponibilidad:", error);
-            toast({
-                title: "Error al guardar",
-                status: "error",
-                duration: 3000,
-                isClosable: true,
-            });
+            mostrarToast(toast, "error", "Error al guardar el horario");
         }
     };
 

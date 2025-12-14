@@ -7,6 +7,7 @@ import {
   FormControl,
   FormLabel,
   Textarea,
+  useToast,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -14,10 +15,11 @@ import Panel from "../../theme/components/Panel";
 import Footer from "../../components/Footer";
 import { RUTAS } from "../../routes";
 import { registrarUsuario } from "../../api/authApi";
-
+import { mostrarToast } from "../../utils/toast";
 
 export default function RegistroMentor() {
   const navigate = useNavigate();
+  const toast = useToast();
 
   const [form, setForm] = useState({
     tituloProfesional: "",
@@ -30,23 +32,28 @@ export default function RegistroMentor() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-const handleRegistrar = async () => {
-  const dataFinal = {
-    ...baseData,
-    ...form,
-    tipo: "mentor",
-    fechaDeIngreso: new Date(), // se registra automáticamente
-  };
+  const handleRegistrar = async () => {
+    if (!form.tituloProfesional.trim() || !form.experiencia.trim()) {
+      mostrarToast(toast, "error", "Completa todos los campos antes de registrar");
+      return;
+    }
 
-  try {
-    await registrarUsuario(dataFinal);
-    alert("Mentor registrado con éxito");
-    localStorage.removeItem("registroBase");
-    navigate(RUTAS.LOGIN);
-  } catch (err: any) {
-    alert(err.response?.data?.mensaje || "Error al registrar mentor");
-  }
-};
+    const dataFinal = {
+      ...baseData,
+      ...form,
+      tipo: "mentor",
+      fechaDeIngreso: new Date(),
+    };
+
+    try {
+      await registrarUsuario(dataFinal);
+      mostrarToast(toast, "success", "Mentor registrado con éxito");
+      localStorage.removeItem("registroBase");
+      navigate(RUTAS.LOGIN);
+    } catch (err: any) {
+      mostrarToast(toast, "error", err.response?.data?.mensaje || "Error al registrar mentor");
+    }
+  };
 
   return (
     <Box minH="100vh" display="flex" flexDirection="column">

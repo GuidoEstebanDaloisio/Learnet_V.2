@@ -1,4 +1,4 @@
-import { Box, Heading } from "@chakra-ui/react";
+import { Box, Heading, useToast } from "@chakra-ui/react";
 import NavbarMentor from "../../components/mentor/NavbarMentor";
 import Footer from "../../components/Footer";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
@@ -6,9 +6,11 @@ import { useEffect, useState } from "react";
 import MentoriaForm from "../../components/mentor/MentoriaForm";
 import { RUTAS } from "../../routes";
 import { editarMentoria, obtenerMentoriaPorId, listarTemas } from "../../api/mentoriaApi";
+import { mostrarToast } from "../../utils/toast";
 
 export default function EditarMentoria() {
   const navigate = useNavigate();
+  const toast = useToast();
   const { id } = useParams<{ id: string }>();
   const location = useLocation();
   const plantilla = location.state;
@@ -16,9 +18,7 @@ export default function EditarMentoria() {
   const [titulo, setTitulo] = useState(plantilla?.titulo || "");
   const [descripcion, setDescripcion] = useState(plantilla?.descripcion || "");
   const [tema, setTema] = useState(plantilla?.tema || "");
-  const [temas, setTemas] = useState<
-    { _id: string; nombre: string; slug: string }[]
-  >([]);
+  const [temas, setTemas] = useState<{ _id: string; nombre: string; slug: string }[]>([]);
 
   // 🔹 Cargar temas y mentoría (si se refresca la página)
   useEffect(() => {
@@ -36,11 +36,12 @@ export default function EditarMentoria() {
         }
       } catch (error) {
         console.error("Error cargando datos:", error);
+        mostrarToast(toast, "error", "Error cargando datos de la mentoría");
       }
     };
 
     fetchData();
-  }, [id, plantilla]);
+  }, [id, plantilla, toast]);
 
   // 🔹 Guardar cambios
   const handleSave = async () => {
@@ -53,9 +54,15 @@ export default function EditarMentoria() {
         tema,
       });
 
-      navigate(RUTAS.MENTOR.MENTORIAS);
+      mostrarToast(toast, "success", "Mentoría actualizada con éxito");
+
+      // Redirigir luego de un pequeño delay opcional
+      setTimeout(() => {
+        navigate(RUTAS.MENTOR.MENTORIAS);
+      }, 500);
     } catch (error) {
       console.error("Error editando mentoría:", error);
+      mostrarToast(toast, "error", "Error editando la mentoría");
     }
   };
 
