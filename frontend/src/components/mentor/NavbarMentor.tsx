@@ -6,6 +6,7 @@ import {
   FaBookOpen,
   FaUser,
   FaSignOutAlt,
+  FaClock,
 } from "react-icons/fa";
 import Logo from "../../assets/logo.png";
 import { RUTAS } from "../../routes";
@@ -19,7 +20,8 @@ export default function NavbarMentor() {
     { label: "Solicitudes", icon: FaClipboardList, path: RUTAS.MENTOR.SOLICITUDES },
     { label: "Agenda", icon: FaCalendarAlt, path: RUTAS.MENTOR.AGENDA },
     { label: "Mis Mentorías", icon: FaBookOpen, path: RUTAS.MENTOR.MENTORIAS },
-    { label: "Perfil", icon: FaUser, path: RUTAS.MENTOR.PERFIL },
+    { label: "Disponibilidad", icon: FaClock, path: RUTAS.MENTOR.DISPONIBILIDAD },
+    { label: "Perfil", icon: FaUser, path: RUTAS.MENTOR.PERFIL }
   ];
 
   const handleLogout = () => {

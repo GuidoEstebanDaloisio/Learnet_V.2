@@ -22,7 +22,7 @@ export const RUTAS = {
   ALUMNO: {
     BASE: PATHS.ALUMNO_BASE,
     EXPLORAR_MENTORES: `${PATHS.ALUMNO_BASE}/explorar-mentores`,
-    DETALLE_MENTOR: `${PATHS.ALUMNO_BASE}/mentor/detalle`,
+    DETALLE_MENTOR: `${PATHS.ALUMNO_BASE}/mentor/detalle`,//Base para concatenar luego con el ID
     DETALLE_MENTOR_ID: `${PATHS.ALUMNO_BASE}/mentor/detalle/:id`,
     SOLICITAR_MENTORIA: `${PATHS.ALUMNO_BASE}/mentor/solicitar-mentoria`,
     AGENDA: `${PATHS.ALUMNO_BASE}/agenda`,
@@ -39,6 +39,7 @@ export const RUTAS = {
     EDITAR_MENTORIA: `${PATHS.MENTOR_BASE}/mentoria/editar`,//Base para concatenar luego con el ID
     EDITAR_MENTORIA_ID: `${PATHS.MENTOR_BASE}/mentoria/editar/:id`,
 
+    EDITAR_HORARIO_LABORAL:`${PATHS.MENTOR_BASE}/horario-laboral/editar`,
     NUEVA_MENTORIA: `${PATHS.MENTOR_BASE}/mentoria/nueva`,
     SOLICITUDES: `${PATHS.MENTOR_BASE}/solicitudes`,
     AGENDA: `${PATHS.MENTOR_BASE}/agenda`,

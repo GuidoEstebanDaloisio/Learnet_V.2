@@ -18,6 +18,7 @@ import SolicitarMentoria from "./pages/usuario_alumno/SolicitarMentoria";
 import DetalleSesionAsesoriaAlumno from "./pages/usuario_alumno/DetalleSesionAsesoriaAlumno";
 
 import PerfilMentor from "./pages/usuario_mentor/PerfilMentor";
+
 import MisMentoriasMentor from "./pages/usuario_mentor/MisMentoriasMentor";
 import DetalleMentoriaMentor from "./pages/usuario_mentor/DetalleMentoriaMentor";
 import EditarMentoria from "./pages/usuario_mentor/EditarMentoria";
@@ -32,6 +33,7 @@ import Registro from "./pages/register/Registro";
 import RegistroMentor from "./pages/register/RegistroMentor";
 import RegistroAlumno from "./pages/register/RegistroAlumno";
 import RegistroAdmin from "./pages/register/RegistroAdmin";
+import EditarHorarioLaboral from "./pages/usuario_mentor/EditarHorarioLaboral";
 
 function App() {
   return (
@@ -61,7 +63,7 @@ function App() {
           >
             <Route path={RUTAS.ALUMNO.EXPLORAR_MENTORES} element={<Explorar />} />
             <Route path={RUTAS.ALUMNO.DETALLE_MENTOR_ID} element={<DetalleMentor />} />
-            
+
             <Route path={RUTAS.ALUMNO.SOLICITAR_MENTORIA} element={<SolicitarMentoria />} />
             <Route path={RUTAS.ALUMNO.AGENDA} element={<AgendaAlumno />} />
             <Route path={RUTAS.ALUMNO.DETALLE_SESION_ASESORIA} element={<DetalleSesionAsesoriaAlumno />} />
@@ -79,6 +81,7 @@ function App() {
             }
           >
             <Route path={RUTAS.MENTOR.PERFIL} element={<PerfilMentor />} />
+            <Route path={RUTAS.MENTOR.EDITAR_HORARIO_LABORAL} element={<EditarHorarioLaboral />} />
             <Route path={RUTAS.MENTOR.MENTORIAS} element={<MisMentoriasMentor />} />
             <Route path={RUTAS.MENTOR.DETALLE_MENTORIA_ID} element={<DetalleMentoriaMentor />} />
             <Route path={RUTAS.MENTOR.EDITAR_MENTORIA_ID} element={<EditarMentoria />} />

@@ -18,21 +18,45 @@ import {
   FaGraduationCap,
   FaBriefcase,
   FaCalendarAlt,
+  FaClock,
 } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 import NavbarMentor from "../../components/mentor/NavbarMentor";
 import Footer from "../../components/Footer";
 import Panel from "../../theme/components/Panel";
 import { formatoFecha } from "../../utils/formatoFecha";
 import { useAuth } from "../../context/AuthContext";
+import { RUTAS } from "../../routes";
+import { obtenerDisponibilidadBase } from "../../api/disponibilidadApi";
+
+const DIAS = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
 
 export default function PerfilMentor() {
   const { usuario } = useAuth();
+  const navigate = useNavigate();
+  const [disponibilidadBase, setDisponibilidadBase] = useState<{
+    diasSemana: number[];
+    horaDesde: string;
+    horaHasta: string;
+  } | null>(null);
+
+  useEffect(() => {
+    obtenerDisponibilidadBase().then((res) => {
+      if (res.data) setDisponibilidadBase(res.data);
+    });
+  }, []);
 
   // 🛡️ Protección básica
-  if (!usuario) {
-    return null; // o spinner
-  }
+  if (!usuario) return null;
+
+  const diasTexto =
+    disponibilidadBase?.diasSemana.map((d) => DIAS[d]).join(", ") || "-";
+  const rangoHoras =
+    disponibilidadBase?.horaDesde && disponibilidadBase?.horaHasta
+      ? `${disponibilidadBase.horaDesde} - ${disponibilidadBase.horaHasta}`
+      : "-";
 
   return (
     <Box minH="100vh" display="flex" flexDirection="column">
@@ -94,6 +118,20 @@ export default function PerfilMentor() {
               </Text>
             </Flex>
 
+            <Flex align="center" gap={3}>
+              <Icon as={FaClock} color="brand.400" boxSize={5} />
+              <Text fontSize="lg">
+                <strong>Horario laboral:</strong>{" "}
+                {diasTexto} — {rangoHoras}
+              </Text>
+              <Button
+                variant="secondary"
+                onClick={() => navigate(RUTAS.MENTOR.EDITAR_HORARIO_LABORAL)}
+              >
+                Editar
+              </Button>
+            </Flex>
+
             {/* DISPONIBILIDAD */}
             <FormControl display="flex" alignItems="center" mt={4}>
               <FormLabel
@@ -113,6 +151,8 @@ export default function PerfilMentor() {
                 isReadOnly
               />
             </FormControl>
+
+
           </VStack>
 
           <Button
