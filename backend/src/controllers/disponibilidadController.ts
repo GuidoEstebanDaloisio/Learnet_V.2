@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { RequestConUsuario } from "../middleware/authMiddleware";
 import { DisponibilidadBaseModel } from "../models/DisponibilidadBase";
 import { ExcepcionDisponibilidadModel } from "../models/ExcepcionDisponibilidad";
-import { getSlotsDisponibles } from "../services/disponibilidadService";
+import { getSlotsDisponibles, obtenerProximoSlot } from "../services/disponibilidadService";
 
 export const obtenerSlotsDisponibles = async (
   req: Request,
@@ -71,6 +71,52 @@ export const obtenerDisponibilidadBase = async (
   });
 
   res.json(disponibilidad);
+};
+
+
+// Obtener la disponibilidad base de un mentor por ID
+export const obtenerDisponibilidadMentorPorId = async (req: Request, res: Response) => {
+  const mentorId = req.params.id;
+
+  if (!mentorId) {
+    return res.status(400).json({ mensaje: "Falta el ID del mentor." });
+  }
+
+  try {
+    const disponibilidadBase = await DisponibilidadBaseModel.findOne({
+      mentor: mentorId,
+    });
+
+    if (!disponibilidadBase) {
+      return res.status(404).json({ mensaje: "El mentor no tiene disponibilidad configurada." });
+    }
+
+    res.json(disponibilidadBase);
+  } catch (error) {
+    console.error("Error obteniendo disponibilidad del mentor:", error);
+    res.status(500).json({ mensaje: "Error interno al obtener disponibilidad." });
+  }
+};
+
+export const obtenerProximaDisponibilidadMentor = async (req: Request, res: Response) => {
+  const mentorId = req.params.id;
+
+  if (!mentorId) {
+    return res.status(400).json({ mensaje: "Falta el ID del mentor." });
+  }
+
+  try {
+    const proximoSlot = await obtenerProximoSlot(mentorId);
+
+    if (!proximoSlot) {
+      return res.status(404).json({ mensaje: "El mentor no tiene slots disponibles próximamente." });
+    }
+
+    res.json(proximoSlot);
+  } catch (error) {
+    console.error("Error obteniendo próxima disponibilidad:", error);
+    res.status(500).json({ mensaje: "Error interno al obtener disponibilidad." });
+  }
 };
 
 //Crear excepción (bloqueo)

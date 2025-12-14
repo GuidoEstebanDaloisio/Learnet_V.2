@@ -7,10 +7,17 @@ import {
   obtenerDisponibilidadBase,
   crearExcepcion,
   listarExcepciones,
-  obtenerSlotsDisponibles
+  obtenerSlotsDisponibles,
+  obtenerProximaDisponibilidadMentor, 
+  obtenerDisponibilidadMentorPorId
 } from "../controllers/disponibilidadController";
 
 const router = Router();
+
+router.get("/:id/proxima-disponibilidad", obtenerProximaDisponibilidadMentor);
+
+// Obtener disponibilidad base de un mentor por ID (para que lo vea un alumno)
+router.get("/:id/base", obtenerDisponibilidadMentorPorId);
 
 // Base
 router.get(
@@ -21,7 +28,7 @@ router.get(
 );
 
 router.post(
-  "/base",
+  "/base", 
   authMiddleware,
   roleMiddleware(ROLES.MENTOR),
   upsertDisponibilidadBase

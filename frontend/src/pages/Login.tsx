@@ -103,26 +103,6 @@ export default function Login() {
                 Registrarme
               </Button>
             </VStack>
-
-            <VStack w="100%" spacing={3} mt={4}>
-              <Button
-                as={Link}
-                to={RUTAS.ALUMNO.EXPLORAR_MENTORES}
-                w="100%"
-                variant="secondary"
-              >
-                Entrar como Alumno
-              </Button>
-
-              <Button
-                as={Link}
-                to={RUTAS.MENTOR.PERFIL}
-                w="100%"
-                variant="secondary"
-              >
-                Entrar como Mentor
-              </Button>
-            </VStack>
           </VStack>
         </Panel>
       </Box>

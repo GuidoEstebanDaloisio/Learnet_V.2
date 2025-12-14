@@ -109,3 +109,38 @@ export const getSlotsDisponibles = async ({
 
   return slotsDisponibles;
 };
+
+export const obtenerProximoSlot = async (mentorId: string) => {
+  const base = await DisponibilidadBaseModel.findOne({ mentor: mentorId });
+  if (!base) return null;
+
+  const hoy = new Date();
+  for (let i = 0; i < 30; i++) { // buscamos slots de los próximos 30 días
+    const fecha = new Date();
+    fecha.setDate(hoy.getDate() + i);
+    const diaSemana = fecha.getDay();
+
+    if (!base.diasSemana.includes(diaSemana)) continue;
+
+    const slotsBase = generarSlots(base.horaDesde, base.horaHasta, base.duracionSesion || 60);
+
+    // Obtener excepciones del día
+    const excepciones = await ExcepcionDisponibilidadModel.find({
+      mentor: mentorId,
+      fecha: fecha.toISOString().split("T")[0],
+    });
+
+    const slotsDisponibles = slotsBase.filter((slot) =>
+      !excepciones.some((ex) => solapan(slot.horaDesde, slot.horaHasta, ex.horaDesde, ex.horaHasta))
+    );
+
+    if (slotsDisponibles.length > 0) {
+      return {
+        fecha: fecha.toISOString().split("T")[0],
+        ...slotsDisponibles[0],
+      };
+    }
+  }
+
+  return null; // ningún slot disponible en los próximos 30 días
+};
