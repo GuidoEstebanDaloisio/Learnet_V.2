@@ -8,7 +8,6 @@ import {
   Icon,
   Stack,
   Tag,
-  TagLabel,
   Accordion,
   AccordionItem,
   AccordionButton,
