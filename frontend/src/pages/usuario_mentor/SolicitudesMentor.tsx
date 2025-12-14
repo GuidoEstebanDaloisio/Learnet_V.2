@@ -20,11 +20,12 @@ interface Solicitud {
       nombre: string;
     };
   };
-  fechaDesde: string;   // ISO
-  fechaHasta: string;   // ISO
+  fechaDesde: string;   
+  fechaHasta: string;
   mensajeOpcional?: string;
   estado: "pendiente" | "aceptada" | "rechazada";
 }
+
 
 
 export default function SolicitudesMentor() {

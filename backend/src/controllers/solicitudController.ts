@@ -93,8 +93,15 @@ export const listarSolicitudesMentor = async (req: RequestConUsuario, res: Respo
 
   try {
     const solicitudes = await SolicitudModel.find({ mentor: req.usuario.id })
-      .populate("alumno", "nombre apellido")
-      .populate("mentoria", "titulo descripcion tema"); // agregá tema si lo tenés
+  .populate("alumno", "nombre apellido")
+  .populate({
+    path: "mentoria",
+    populate: {
+      path: "tema",
+      select: "nombre",
+    },
+  });
+
 
     res.json(solicitudes);
   } catch (error) {
