@@ -1,18 +1,16 @@
-import { Box, Flex, Text, Icon, Button } from "@chakra-ui/react";
+import { Box, Flex, Text, Icon } from "@chakra-ui/react";
 import Card from "../../theme/components/Card";
 import { MdEvent } from "react-icons/md";
-import { useNavigate } from "react-router-dom";
-import { RUTAS } from "../../routes";
 
-interface ExcepcionCardProps {
+
+interface IndisposicionCardProps {
   fecha: string;
   horaDesde: string;
   horaHasta: string;
   motivo?: string;
 }
 
-export default function ExcepcionCard({ fecha, horaDesde, horaHasta, motivo }: ExcepcionCardProps) {
-  const navigate = useNavigate();
+export default function IndisposicionCard({ fecha, horaDesde, horaHasta, motivo }: IndisposicionCardProps) {
 
   return (
     <Card>

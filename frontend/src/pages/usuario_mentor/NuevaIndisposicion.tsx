@@ -1,4 +1,3 @@
-// src/pages/mentor/NuevaExcepcionDisponibilidad.tsx
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -15,11 +14,11 @@ import {
 import NavbarMentor from "../../components/mentor/NavbarMentor";
 import Footer from "../../components/Footer";
 import Panel from "../../theme/components/Panel";
-import { crearExcepcion } from "../../api/disponibilidadApi";
+import { crearIndisposicion } from "../../api/disponibilidadApi";
 import { mostrarToast } from "../../utils/toast";
 import { RUTAS } from "../../routes";
 
-export default function NuevaExcepcionDisponibilidad() {
+export default function NuevaIndisposicion() {
   const navigate = useNavigate();
   const toast = useToast();
 
@@ -29,7 +28,7 @@ export default function NuevaExcepcionDisponibilidad() {
   const [motivo, setMotivo] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleCrearExcepcion = async () => {
+  const handleCrearIndisposicion = async () => {
     if (!fecha || !horaDesde || !horaHasta || !motivo.trim()) {
       mostrarToast(toast, "error", "Por favor completa todos los campos obligatorios");
       return;
@@ -37,7 +36,7 @@ export default function NuevaExcepcionDisponibilidad() {
 
     setLoading(true);
     try {
-      await crearExcepcion({ fecha, horaDesde, horaHasta, motivo });
+      await crearIndisposicion({ fecha, horaDesde, horaHasta, motivo });
       mostrarToast(toast, "success", "Excepción creada correctamente");
       navigate(RUTAS.MENTOR.AGENDA); // Volver a la agenda
     } catch (error) {
@@ -97,10 +96,10 @@ export default function NuevaExcepcionDisponibilidad() {
 
             <Button
               colorScheme="red"
-              onClick={handleCrearExcepcion}
+              onClick={handleCrearIndisposicion}
               isLoading={loading}
             >
-              Crear Excepción
+              Crear Indisposicion
             </Button>
           </VStack>
         </Panel>

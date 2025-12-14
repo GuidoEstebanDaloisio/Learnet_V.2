@@ -1,14 +1,14 @@
-import { Box, Heading, SimpleGrid, VStack, Text, Button, Divider } from "@chakra-ui/react";
+import { Box, Heading, SimpleGrid, Text, Button, Divider } from "@chakra-ui/react";
 import NavbarMentor from "../../components/mentor/NavbarMentor";
 import Footer from "../../components/Footer";
 import SesionAsesoriaCard from "../../components/mentor/SesionAsesoriaCard";
-import ExcepcionCard from "../../components/mentor/ExcepcionCard"; // <--- Nuevo
+import IndisposicionCard from "../../components/mentor/IndisposicionCard";
 import { useEffect, useState } from "react";
-import { obtenerExcepciones } from "../../api/disponibilidadApi";
+import { obtenerIndisposiciones } from "../../api/disponibilidadApi";
 import { useNavigate } from "react-router-dom";
 import { RUTAS } from "../../routes";
 
-interface Excepcion {
+interface Indisposicion {
   _id: string;
   fecha: string;
   horaDesde: string;
@@ -24,20 +24,20 @@ const sesionesDeAsesoria = [
 ];
 
 export default function Agenda() {
-  const [excepciones, setExcepciones] = useState<Excepcion[]>([]);
+  const [indisposiciones, setIndisposiciones] = useState<Indisposicion[]>([]);
   const navigate = useNavigate();
 
-  const cargarExcepciones = async () => {
+  const cargarIndisposiciones = async () => {
     try {
-      const res = await obtenerExcepciones();
-      setExcepciones(res.data);
+      const res = await obtenerIndisposiciones();
+      setIndisposiciones(res.data);
     } catch (error) {
-      console.error("Error cargando excepciones:", error);
+      console.error("Error cargando indisposiciones:", error);
     }
   };
 
   useEffect(() => {
-    cargarExcepciones();
+    cargarIndisposiciones();
   }, []);
 
   return (
@@ -62,13 +62,13 @@ export default function Agenda() {
 
         <Divider my={8} />
 
-        <Heading size="md" mb={4}>Excepciones de disponibilidad</Heading>
+        <Heading size="md" mb={4}>Indisposiciones</Heading>
 
         {/* Usamos SimpleGrid como con las sesiones */}
         <SimpleGrid columns={{ base: 1, sm: 2, lg: 3 }} spacing={8} mb={6}>
-          {excepciones.length > 0 ? (
-            excepciones.map(e => (
-              <ExcepcionCard
+          {indisposiciones.length > 0 ? (
+            indisposiciones.map(e => (
+              <IndisposicionCard
                 key={e._id}
                 fecha={e.fecha}
                 horaDesde={e.horaDesde}
@@ -77,16 +77,16 @@ export default function Agenda() {
               />
             ))
           ) : (
-            <Text color="gray.400">No hay excepciones registradas.</Text>
+            <Text color="gray.400">No hay indisposiciones registradas.</Text>
           )}
         </SimpleGrid>
 
 
         <Button
           colorScheme="green"
-          onClick={() => navigate(RUTAS.MENTOR.NUEVA_EXCEPCION_DISPONIBILIDAD)}
+          onClick={() => navigate(RUTAS.MENTOR.NUEVA_INDISPOSICION)}
         >
-          Crear nueva excepción
+          Crear nueva indisposicion
         </Button>
       </Box>
 

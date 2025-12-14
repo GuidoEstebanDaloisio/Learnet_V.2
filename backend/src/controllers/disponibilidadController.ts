@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { RequestConUsuario } from "../middleware/authMiddleware";
 import { DisponibilidadBaseModel } from "../models/DisponibilidadBase";
-import { ExcepcionDisponibilidadModel } from "../models/ExcepcionDisponibilidad";
+import { IndisposicionModel } from "../models/Indisposicion";
 import { getSlotsDisponibles, obtenerProximoSlot } from "../services/disponibilidadService";
 
 export const obtenerSlotsDisponibles = async (
@@ -119,8 +119,8 @@ export const obtenerProximaDisponibilidadMentor = async (req: Request, res: Resp
   }
 };
 
-//Crear excepción (bloqueo)
-export const crearExcepcion = async (
+//Crear indisposicion (bloqueo)
+export const crearIndisposicion = async (
   req: RequestConUsuario,
   res: Response
 ) => {
@@ -130,7 +130,7 @@ export const crearExcepcion = async (
     return res.status(401).json({ mensaje: "No autenticado" });
   }
 
-  const excepcion = await ExcepcionDisponibilidadModel.create({
+  const indisposicion = await IndisposicionModel.create({
     mentor: req.usuario.id,
     fecha,
     horaDesde,
@@ -138,17 +138,17 @@ export const crearExcepcion = async (
     motivo,
   });
 
-  res.status(201).json(excepcion);
+  res.status(201).json(indisposicion);
 };
 
-//Obtener excepciones del mentor
-export const listarExcepciones = async (
+//Obtener indisposiciones del mentor
+export const listarIndisposiciones = async (
   req: RequestConUsuario,
   res: Response
 ) => {
-  const excepciones = await ExcepcionDisponibilidadModel.find({
+  const indisposiciones = await IndisposicionModel.find({
     mentor: req.usuario?.id,
   }).sort({ fecha: 1, horaDesde: 1 });
 
-  res.json(excepciones);
+  res.json(indisposiciones);
 };

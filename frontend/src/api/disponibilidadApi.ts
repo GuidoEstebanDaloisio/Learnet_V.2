@@ -34,7 +34,7 @@ export const guardarDisponibilidadBase = (data: {
 }) =>
   api.post("/disponibilidad/base", data);
 
-export const obtenerExcepciones = () =>
+export const obtenerIndisposiciones = () =>
   api.get<
     {
       _id: string;
@@ -44,15 +44,15 @@ export const obtenerExcepciones = () =>
       horaHasta: string;
       motivo?: string;
     }[]
-  >("/disponibilidad/excepciones");
+  >("/disponibilidad/indisposiciones");
 
-export const crearExcepcion = (data: {
+export const crearIndisposicion = (data: {
   fecha: string; // YYYY-MM-DD
   horaDesde: string;
   horaHasta: string;
   motivo?: string;
 }) =>
-  api.post("/disponibilidad/excepciones", data);
+  api.post("/disponibilidad/indisposiciones", data);
 
 export const obtenerSlotsDisponibles = (params: {
   mentorId: string;

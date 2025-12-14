@@ -5,8 +5,8 @@ import { ROLES } from "../constants/roles";
 import {
   upsertDisponibilidadBase,
   obtenerDisponibilidadBase,
-  crearExcepcion,
-  listarExcepciones,
+  crearIndisposicion,
+  listarIndisposiciones,
   obtenerSlotsDisponibles,
   obtenerProximaDisponibilidadMentor, 
   obtenerDisponibilidadMentorPorId
@@ -34,19 +34,19 @@ router.post(
   upsertDisponibilidadBase
 );
 
-// Excepciones
+// Indisposiciones
 router.get(
-  "/excepciones",
+  "/indisposiciones",
   authMiddleware,
   roleMiddleware(ROLES.MENTOR),
-  listarExcepciones
+  listarIndisposiciones
 );
 
 router.post(
-  "/excepciones",
+  "/indisposiciones",
   authMiddleware,
   roleMiddleware(ROLES.MENTOR),
-  crearExcepcion
+  crearIndisposicion
 );
 
 router.get("/slots", obtenerSlotsDisponibles);

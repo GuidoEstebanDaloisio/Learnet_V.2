@@ -40,7 +40,7 @@ export const RUTAS = {
     EDITAR_MENTORIA_ID: `${PATHS.MENTOR_BASE}/mentoria/editar/:id`,
 
     EDITAR_HORARIO_LABORAL:`${PATHS.MENTOR_BASE}/horario-laboral/editar`,
-    NUEVA_EXCEPCION_DISPONIBILIDAD: `${PATHS.MENTOR_BASE}/excepcion-disponibilidad/nueva`,
+    NUEVA_INDISPOSICION: `${PATHS.MENTOR_BASE}/indisposicion/nueva`,
     NUEVA_MENTORIA: `${PATHS.MENTOR_BASE}/mentoria/nueva`,
     SOLICITUDES: `${PATHS.MENTOR_BASE}/solicitudes`,
     AGENDA: `${PATHS.MENTOR_BASE}/agenda`,

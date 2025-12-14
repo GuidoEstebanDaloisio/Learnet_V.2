@@ -27,7 +27,7 @@ import SolicitudesMentor from "./pages/usuario_mentor/SolicitudesMentor";
 import Agenda from "./pages/usuario_mentor/Agenda";
 import DetalleSesionAsesoriaMentor from "./pages/usuario_mentor/DetalleSesionAsesoriaMentor";
 import EditarHorarioLaboral from "./pages/usuario_mentor/EditarHorarioLaboral";
-import NuevaExcepcionDisponibilidad from "./pages/usuario_mentor/NuevaExcepcionDisponibilidad";
+import NuevaIndisposicion from "./pages/usuario_mentor/NuevaIndisposicion";
 
 // Rutas centralizadas
 import { RUTAS } from "./routes";
@@ -83,7 +83,7 @@ function App() {
           >
             <Route path={RUTAS.MENTOR.PERFIL} element={<PerfilMentor />} />
             <Route path={RUTAS.MENTOR.EDITAR_HORARIO_LABORAL} element={<EditarHorarioLaboral />} />
-            <Route path={RUTAS.MENTOR.NUEVA_EXCEPCION_DISPONIBILIDAD} element={<NuevaExcepcionDisponibilidad />} />
+            <Route path={RUTAS.MENTOR.NUEVA_INDISPOSICION} element={<NuevaIndisposicion />} />
             <Route path={RUTAS.MENTOR.MENTORIAS} element={<MisMentoriasMentor />} />
             <Route path={RUTAS.MENTOR.DETALLE_MENTORIA_ID} element={<DetalleMentoriaMentor />} />
             <Route path={RUTAS.MENTOR.EDITAR_MENTORIA_ID} element={<EditarMentoria />} />

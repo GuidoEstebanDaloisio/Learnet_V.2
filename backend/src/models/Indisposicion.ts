@@ -1,7 +1,7 @@
 import { Schema, model, Types } from "mongoose";
 
 //Este modelo se contrasta con el DisponibilidadBase ya que este incluye los dias y horas en el que el mentor no estara disponible.
-const ExcepcionDisponibilidadSchema = new Schema(
+const IndisposicionSchema = new Schema(
   {
     mentor: {
       type: Types.ObjectId,
@@ -38,7 +38,7 @@ const ExcepcionDisponibilidadSchema = new Schema(
   { timestamps: true }
 );
 
-export const ExcepcionDisponibilidadModel = model(
-  "ExcepcionDisponibilidad",
-  ExcepcionDisponibilidadSchema
+export const IndisposicionModel = model(
+  "Indisponibilidad",
+  IndisposicionSchema
 );

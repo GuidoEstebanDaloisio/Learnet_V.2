@@ -1,5 +1,7 @@
 import { DisponibilidadBaseModel } from "../models/DisponibilidadBase";
-import { ExcepcionDisponibilidadModel } from "../models/ExcepcionDisponibilidad";
+// ❌ ANTES: import { ExcepcionDisponibilidadModel } from "../models/ExcepcionDisponibilidad";
+// ✅ AHORA:
+import { IndisposicionModel } from "../models/Indisposicion";
 import { Types } from "mongoose";
 
 // --- Tipos de la Interfaz del Service ---
@@ -12,6 +14,10 @@ interface Params {
   mentorId: Types.ObjectId | string;
   fecha: string; // YYYY-MM-DD
   duracionSesion: number; // minutos
+}
+
+interface ProximoSlot extends Slot {
+  fecha: string; // YYYY-MM-DD
 }
 
 // --- Helpers (Funciones Puras de Lógica) ---
@@ -92,25 +98,24 @@ export const getSlotsDisponibles = async ({
     duracionSesion
   );
 
-  // 4️⃣ obtener excepciones de ese día
-  // IMPORTANTE: Mongoose puede manejar la fecha como string "YYYY-MM-DD"
-  const excepciones = await ExcepcionDisponibilidadModel.find({
+  // 4️⃣ obtener indisposiciones (antes excepciones) de ese día
+  const indisposiciones = await IndisposicionModel.find({ // 👈 Cambiado el nombre del modelo
     mentor: mentorId,
     fecha,
   });
 
   // 5️⃣ filtrar slots ocupados
   const slotsDisponibles = slotsBase.filter((slot) => {
-    // Si algún slot de excepción SOLAPA el slot base, entonces el slot base está ocupado.
-    return !excepciones.some((ex) =>
-      solapan(slot.horaDesde, slot.horaHasta, ex.horaDesde, ex.horaHasta)
+    // Si algún slot de indisposición SOLAPA el slot base, entonces el slot base está ocupado.
+    return !indisposiciones.some((indisposicion) => // 👈 Cambiado el nombre de la variable
+      solapan(slot.horaDesde, slot.horaHasta, indisposicion.horaDesde, indisposicion.horaHasta)
     );
   });
 
   return slotsDisponibles;
 };
 
-export const obtenerProximoSlot = async (mentorId: string) => {
+export const obtenerProximoSlot = async (mentorId: string): Promise<ProximoSlot | null> => { // 👈 Añadida tipificación para mejor claridad
   const base = await DisponibilidadBaseModel.findOne({ mentor: mentorId });
   if (!base) return null;
 
@@ -124,14 +129,16 @@ export const obtenerProximoSlot = async (mentorId: string) => {
 
     const slotsBase = generarSlots(base.horaDesde, base.horaHasta, base.duracionSesion || 60);
 
-    // Obtener excepciones del día
-    const excepciones = await ExcepcionDisponibilidadModel.find({
+    // Obtener indisposiciones (antes excepciones) del día
+    const indisposiciones = await IndisposicionModel.find({ // 👈 Cambiado el nombre del modelo
       mentor: mentorId,
       fecha: fecha.toISOString().split("T")[0],
     });
 
     const slotsDisponibles = slotsBase.filter((slot) =>
-      !excepciones.some((ex) => solapan(slot.horaDesde, slot.horaHasta, ex.horaDesde, ex.horaHasta))
+      !indisposiciones.some((indisposicion) => // 👈 Cambiado el nombre de la variable
+        solapan(slot.horaDesde, slot.horaHasta, indisposicion.horaDesde, indisposicion.horaHasta)
+      )
     );
 
     if (slotsDisponibles.length > 0) {
