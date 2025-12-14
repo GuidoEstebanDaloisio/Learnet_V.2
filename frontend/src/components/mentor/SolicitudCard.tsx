@@ -13,17 +13,18 @@ interface SolicitudCardProps {
   tituloMentoria: string;
   tema: string;
   fecha: string;
-  hora: string;
+  horario: string;
   mensaje?: string;
   estado: "pendiente" | "aceptada" | "cancelada";
 }
+
 
 export default function SolicitudCard({
   alumno,
   tituloMentoria,
   tema,
   fecha,
-  hora,
+  horario,
   mensaje,
   estado,
 }: SolicitudCardProps) {
@@ -45,7 +46,7 @@ export default function SolicitudCard({
       </Text>
 
       <Text fontSize="sm" color="gray.400" mb={2}>
-        <strong>Fecha:</strong> {fecha} — <strong>Hora:</strong> {hora}
+        <strong>Fecha:</strong> {fecha} — <strong>Hora:</strong> {horario}
       </Text>
 
       {mensaje && (

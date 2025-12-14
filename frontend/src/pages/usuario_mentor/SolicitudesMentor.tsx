@@ -10,12 +10,22 @@ import { formatoFechaHoraLocal } from "../../utils/fechaConfig";
 
 interface Solicitud {
   _id: string;
-  alumno: { nombre: string; apellido: string };
-  mentoria: { titulo: string; tema: { nombre: string } };
-  fechaSolicitada: string;
+  alumno: {
+    nombre: string;
+    apellido: string;
+  };
+  mentoria: {
+    titulo: string;
+    tema: {
+      nombre: string;
+    };
+  };
+  fechaDesde: string;   // ISO
+  fechaHasta: string;   // ISO
   mensajeOpcional?: string;
   estado: "pendiente" | "aceptada" | "rechazada";
 }
+
 
 export default function SolicitudesMentor() {
   const [solicitudes, setSolicitudes] = useState<Solicitud[]>([]);
@@ -57,7 +67,9 @@ export default function SolicitudesMentor() {
           gap={8}
         >
           {solicitudes.map((s) => {
-            const { fecha, hora } = formatoFechaHoraLocal(s.fechaSolicitada);
+            const { fecha } = formatoFechaHoraLocal(s.fechaDesde);
+            const { hora: horaDesde } = formatoFechaHoraLocal(s.fechaDesde);
+            const { hora: horaHasta } = formatoFechaHoraLocal(s.fechaHasta);
 
             return (
               <SolicitudCard
@@ -66,7 +78,7 @@ export default function SolicitudesMentor() {
                 tituloMentoria={s.mentoria.titulo}
                 tema={s.mentoria.tema.nombre}
                 fecha={fecha}
-                hora={hora}
+                horario={`${horaDesde} a ${horaHasta}`}
                 mensaje={s.mensajeOpcional}
                 estado={s.estado === "rechazada" ? "cancelada" : s.estado}
               />
