@@ -1,6 +1,5 @@
 import { DisponibilidadBaseModel } from "../models/DisponibilidadBase";
-// ❌ ANTES: import { ExcepcionDisponibilidadModel } from "../models/ExcepcionDisponibilidad";
-// ✅ AHORA:
+
 import { IndisposicionModel } from "../models/Indisposicion";
 import { Types } from "mongoose";
 
@@ -150,4 +149,38 @@ export const obtenerProximoSlot = async (mentorId: string): Promise<ProximoSlot 
   }
 
   return null; // ningún slot disponible en los próximos 30 días
+};
+
+
+export const getSlotsDisponiblesRango = async (
+  mentorId: string,
+  desde: Date,
+  hasta: Date
+): Promise<{ fecha: string; slots: Slot[] }[]> => {
+  const base = await DisponibilidadBaseModel.findOne({ mentor: mentorId });
+  if (!base) return [];
+
+  const resultados: { fecha: string; slots: Slot[] }[] = [];
+  const duracionSesion = base.duracionSesion || 60;
+
+  for (let d = new Date(desde); d <= hasta; d.setDate(d.getDate() + 1)) {
+    const diaSemana = d.getDay();
+    if (!base.diasSemana.includes(diaSemana)) continue;
+
+    const slotsBase = generarSlots(base.horaDesde, base.horaHasta, duracionSesion);
+
+    // Indisposiciones para el día
+    const indisposiciones = await IndisposicionModel.find({
+      mentor: mentorId,
+      fecha: d.toISOString().split("T")[0],
+    });
+
+    const slotsDisponibles = slotsBase.filter((slot) =>
+      !indisposiciones.some((ind) => solapan(slot.horaDesde, slot.horaHasta, ind.horaDesde, ind.horaHasta))
+    );
+
+    resultados.push({ fecha: d.toISOString().split("T")[0], slots: slotsDisponibles });
+  }
+
+  return resultados;
 };

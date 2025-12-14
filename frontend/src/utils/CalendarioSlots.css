@@ -1,0 +1,104 @@
+/*
+  Sobrescribir los estilos de react-calendar con los valores de tu tema Chakra UI.
+
+  Nota: Los colores de Chakra UI se obtienen de tu tema.
+  - brand.500 es #254eda
+  - brand.300 es #6690ff
+  - gray.700 es para fondos (inputs/selects)
+  - gray.900 es el fondo global
+  - gray.100 es el color de texto global
+*/
+
+/* Contenedor principal del calendario */
+.react-calendar {
+  width: 100%;
+  max-width: 400px; /* Limita el ancho si es necesario */
+  background: var(--chakra-colors-gray-700); /* Fondo del componente */
+  border: 1px solid var(--chakra-colors-gray-600); /* Borde similar al de los Inputs */
+  border-radius: var(--chakra-radii-md); /* Borde redondeado */
+  font-family: var(--chakra-fonts-body); /* Usar la tipografía Inter */
+  line-height: 1.125em;
+  color: var(--chakra-colors-gray-100); /* Color de texto general */
+}
+
+/* Encabezados y navegadores */
+.react-calendar__navigation button {
+  color: var(--chakra-colors-gray-100); /* Color de los iconos de navegación */
+  font-weight: var(--chakra-fontWeights-semibold);
+}
+
+.react-calendar__navigation button:enabled:hover,
+.react-calendar__navigation button:enabled:focus {
+  background-color: var(--chakra-colors-gray-600); /* Hover en botones de navegación */
+  border-radius: var(--chakra-radii-md);
+}
+
+.react-calendar__navigation button[disabled] {
+  background-color: transparent;
+  color: var(--chakra-colors-gray-500); /* Color si está deshabilitado */
+}
+
+/* Contenido de los días */
+.react-calendar__month-view__weekdays {
+  text-transform: uppercase;
+  font-weight: var(--chakra-fontWeights-medium);
+  font-size: 0.8em;
+  color: var(--chakra-colors-gray-400); /* Color de los días de la semana */
+}
+
+/* Celdas individuales (días) */
+.react-calendar__tile {
+  background: none;
+  padding: 0.5em 0.5em; /* Espaciado */
+  border-radius: var(--chakra-radii-md);
+  color: var(--chakra-colors-gray-100);
+}
+
+.react-calendar__tile:disabled {
+  background-color: var(--chakra-colors-gray-800); /* Fondo para días deshabilitados (sin slots) */
+  color: var(--chakra-colors-gray-500); /* Texto para días deshabilitados */
+  opacity: 0.6;
+}
+
+.react-calendar__tile:enabled:hover,
+.react-calendar__tile:enabled:focus {
+  background-color: var(--chakra-colors-gray-600); /* Hover en días disponibles */
+}
+
+/* Días marcados como "hoy" */
+.react-calendar__tile--now {
+  background: var(--chakra-colors-brand-800); /* Un color oscuro de la marca para el día de hoy */
+  color: var(--chakra-colors-gray-50);
+}
+
+.react-calendar__tile--now:enabled:hover,
+.react-calendar__tile--now:enabled:focus {
+  background: var(--chakra-colors-brand-700);
+}
+
+/* Días seleccionados (el valor de fechaSeleccionada) */
+.react-calendar__tile--active {
+  background: var(--chakra-colors-brand-500); /* Color principal de tu marca */
+  color: var(--chakra-colors-white);
+}
+
+.react-calendar__tile--active:enabled:hover,
+.react-calendar__tile--active:enabled:focus {
+  background: var(--chakra-colors-brand-400);
+}
+
+/* Vista de años, décadas, siglos */
+.react-calendar__year-view .react-calendar__tile,
+.react-calendar__decade-view .react-calendar__tile,
+.react-calendar__century-view .react-calendar__tile {
+  padding: 2em 0.5em; /* Ajuste para estas vistas */
+}
+
+/* Añade un estilo específico para los días con slots disponibles (que no están deshabilitados)
+   Puedes añadir una clase en tu componente Calendar para aplicar esto si quieres algo más específico
+   que el simple :enabled. Por ahora, :enabled funciona bien para los días con slots.
+*/
+.react-calendar__tile:enabled {
+  font-weight: var(--chakra-fontWeights-semibold);
+  border: 1px solid var(--chakra-colors-brand-600); /* Borde para destacar los días disponibles */
+}

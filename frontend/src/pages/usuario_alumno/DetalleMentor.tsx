@@ -89,11 +89,9 @@ export default function DetalleMentor() {
   useEffect(() => {
     const fetchMentor = async () => {
       try {
-        // 🔹 Datos del mentor
         const mentorRes = await obtenerMentorPorId(id!);
         setMentor(mentorRes.data);
 
-        // 🔹 Horario laboral
         try {
           const baseRes = await obtenerDisponibilidadPorId(id!);
           setDisponibilidadBase(baseRes.data);
@@ -102,7 +100,6 @@ export default function DetalleMentor() {
           setDisponibilidadBase(null);
         }
 
-        // 🔹 Próximo slot disponible
         try {
           const slotRes = await obtenerProximaDisponibilidadMentor(id!);
           setProximoSlot(slotRes.data);
@@ -158,12 +155,6 @@ export default function DetalleMentor() {
               </Text>
             </Box>
             <Stack spacing={3} minW="180px">
-              <Button
-                variant="primary"
-                onClick={() => navigate(RUTAS.ALUMNO.SOLICITAR_MENTORIA, { state: { mentorId: mentor._id } })}
-              >
-                Solicitar mentoría
-              </Button>
               <Button variant="alerta_secondary" w="100%" rounded="lg">Reportar perfil</Button>
             </Stack>
           </Flex>
@@ -188,6 +179,18 @@ export default function DetalleMentor() {
                       <Card key={m._id}>
                         <Text fontSize="lg" fontWeight="bold" color="brand.300">{m.titulo}</Text>
                         <Text color="gray.300">{m.descripcion}</Text>
+                        <Button
+                          variant="primary"
+                          onClick={() =>
+                            navigate(
+                              RUTAS.ALUMNO.SOLICITAR_MENTORIA_ID
+                                .replace(":id-mentor", mentor._id)
+                                .replace(":id-mentoria", m._id)
+                            )
+                          }
+                        >
+                          Solicitar
+                        </Button>
                       </Card>
                     ))}
                   </Stack>
@@ -202,9 +205,8 @@ export default function DetalleMentor() {
         <Heading size="md" mb={6}>Disponibilidad</Heading>
 
         <Flex direction={{ base: "column", md: "row" }} gap={6}>
-          {/* Horario laboral */}
           {disponibilidadBase && (
-            <Panel flex="1" >
+            <Panel flex="1">
               <Flex align="center" mb={4}>
                 <Icon as={FaClock} boxSize={6} mr={3} color="brand.300" />
                 <Text fontSize="lg" fontWeight="bold">Horario laboral</Text>
@@ -228,7 +230,6 @@ export default function DetalleMentor() {
             </Panel>
           )}
 
-          {/* Próximo slot disponible */}
           {proximoSlot && (
             <Panel flex="1" bg="brand.600" borderColor="brand.400" color="white">
               <Flex align="center" mb={4}>
@@ -244,7 +245,6 @@ export default function DetalleMentor() {
             </Panel>
           )}
         </Flex>
-
 
         {/* CALIFICACIONES */}
         <Divider my={10} />

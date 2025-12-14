@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { RequestConUsuario } from "../middleware/authMiddleware";
 import { DisponibilidadBaseModel } from "../models/DisponibilidadBase";
 import { IndisposicionModel } from "../models/Indisposicion";
-import { getSlotsDisponibles, obtenerProximoSlot } from "../services/disponibilidadService";
+import { getSlotsDisponibles, getSlotsDisponiblesRango, obtenerProximoSlot } from "../services/disponibilidadService";
 
 export const obtenerSlotsDisponibles = async (
   req: Request,
@@ -151,4 +151,28 @@ export const listarIndisposiciones = async (
   }).sort({ fecha: 1, horaDesde: 1 });
 
   res.json(indisposiciones);
+};
+
+
+
+
+export const obtenerSlotsDisponiblesRango = async (req: Request, res: Response) => {
+  const { mentorId, desde, hasta } = req.query;
+
+  if (!mentorId || !desde || !hasta) {
+    return res.status(400).json({ mensaje: "Faltan parámetros requeridos." });
+  }
+
+  try {
+    const slots = await getSlotsDisponiblesRango(
+      mentorId.toString(),
+      new Date(desde.toString()),
+      new Date(hasta.toString())
+    );
+
+    res.json(slots);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ mensaje: "Error obteniendo slots disponibles." });
+  }
 };

@@ -2,95 +2,199 @@ import {
   Box,
   Heading,
   Text,
-  Select,
-  Textarea,
   Button,
   Stack,
   FormControl,
   FormLabel,
+  Input,
+  Textarea,
 } from "@chakra-ui/react";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { crearSolicitud } from "../../api/solicitudApi";
+import 'react-calendar/dist/Calendar.css';
+import { useToast } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
+import { mostrarToast } from "../../utils/toast";
 
 import NavbarAlumno from "../../components/alumno/NavbarAlumno";
 import Footer from "../../components/Footer";
 import Panel from "../../theme/components/Panel";
-import { useState } from "react";
+
+import { obtenerMentorPorId } from "../../api/usuarioApi";
+import { obtenerSlotsDisponiblesRango } from "../../api/disponibilidadApi";
+import CalendarioSlots from "../../utils/CalendarioSlots";
+
+interface Mentoria {
+  _id: string;
+  titulo: string;
+  descripcion: string;
+  tema: { nombre: string };
+}
+
+interface Mentor {
+  _id: string;
+  nombre: string;
+  apellido: string;
+  mentorias: Mentoria[];
+}
+
+interface Slot {
+  fecha: string;       // YYYY-MM-DD
+  horaDesde: string;   // HH:MM
+  horaHasta: string;   // HH:MM
+}
 
 export default function SolicitarMentoria() {
-  const mentorias = [
-    "React Básico",
-    "React Avanzado",
-    "JavaScript desde 0",
-    "Ciberseguridad Web",
-  ];
+  const { "id-mentor": mentorId, "id-mentoria": mentoriaId } = useParams<{
+    "id-mentor": string;
+    "id-mentoria": string;
+  }>();
 
-  const horarios = [
-    "Lunes 18:00 - 20:00",
-    "Miércoles 17:00 - 19:00",
-    "Viernes 19:00 - 21:00",
-  ];
-
-  const [selectedMentoria, setSelectedMentoria] = useState("");
+  const [mentor, setMentor] = useState<Mentor | null>(null);
+  const [mentoriaSeleccionada, setMentoriaSeleccionada] = useState<Mentoria | null>(null);
+  const [slots, setSlots] = useState<Slot[]>([]);
+  const [fechaSeleccionada, setFechaSeleccionada] = useState<Date>(new Date());
   const [selectedHorario, setSelectedHorario] = useState("");
   const [mensaje, setMensaje] = useState("");
+  const toast = useToast();
+  const navigate = useNavigate();
 
-  const enviarSolicitud = () => {
+
+  // Traer datos del mentor y mentoría
+  useEffect(() => {
+    if (!mentorId) return;
+
+    const fetchMentor = async () => {
+      try {
+        const res = await obtenerMentorPorId(mentorId);
+        setMentor(res.data);
+
+        const encontrada = res.data.mentorias.find((m: Mentoria) => m._id === mentoriaId);
+        if (encontrada) setMentoriaSeleccionada(encontrada);
+      } catch (error) {
+        console.error("Error obteniendo mentor:", error);
+      }
+    };
+
+    fetchMentor();
+  }, [mentorId, mentoriaId]);
+
+  // Traer slots de hoy hasta 30 días
+  useEffect(() => {
+    if (!mentorId || !mentoriaSeleccionada) return;
+
+    const fetchSlots = async () => {
+      try {
+        const hoy = new Date();
+        const hasta = new Date();
+        hasta.setDate(hoy.getDate() + 30);
+
+        const res = await obtenerSlotsDisponiblesRango({
+          mentorId,
+          desde: hoy.toISOString().split("T")[0],
+          hasta: hasta.toISOString().split("T")[0],
+        });
+
+        const slotsArray: Slot[] = [];
+        res.data.forEach((d) => {
+          d.slots.forEach((s) => {
+            slotsArray.push({ fecha: d.fecha, ...s });
+          });
+        });
+
+        setSlots(slotsArray);
+      } catch (error) {
+        console.error("Error obteniendo slots:", error);
+      }
+    };
+
+    fetchSlots();
+  }, [mentorId, mentoriaSeleccionada]);
+
+  // Slots del día seleccionado
+  const slotsDelDia = slots.filter(
+    (s) => s.fecha === fechaSeleccionada.toISOString().split("T")[0]
+  );
+
+  // Enviar solicitud
+  const enviarSolicitud = async () => {
+    if (!mentor || !mentoriaSeleccionada || !selectedHorario) return;
+
     const data = {
-      mentoria: selectedMentoria,
+      mentorId: mentor._id,
+      mentoriaId: mentoriaSeleccionada._id,
       horario: selectedHorario,
       mensaje,
     };
 
-    console.log("Solicitud enviada:", data);
+    try {
+      const res = await crearSolicitud(data);
+      console.log("Solicitud creada:", res.data);
+
+      // Mostrar toast de éxito
+      mostrarToast(toast, "success", "Solicitud enviada correctamente");
+
+      // Volver atrás (por ejemplo a la página anterior)
+      navigate(-1);
+    } catch (error: any) {
+      console.error("Error al enviar solicitud:", error);
+      mostrarToast(toast, "error", error.response?.data?.mensaje || "Ocurrió un error al enviar la solicitud");
+    }
   };
+
+
+  if (!mentor) return <Text p={10}>Cargando mentor...</Text>;
 
   return (
     <>
       <NavbarAlumno />
-
       <Box px={6} py={10} minH="100vh">
         <Panel maxW="700px" mx="auto" p={8}>
           <Heading size="lg" mb={4} color="brand.300">
             Solicitar mentoría
           </Heading>
 
-          <Text fontSize="md" color="gray.400" mb={6}>
-            Selecciona la mentoría, el horario y envía un mensaje opcional.
-          </Text>
-
           <Stack spacing={5}>
-            {/* SELECT MENTORÍA */}
+            <FormControl>
+              <FormLabel>Mentor</FormLabel>
+              <Input value={`${mentor.nombre} ${mentor.apellido}`} isDisabled />
+            </FormControl>
+
             <FormControl>
               <FormLabel>Mentoría</FormLabel>
-              <Select
-                placeholder="Elige una mentoría"
-                value={selectedMentoria}
-                onChange={(e) => setSelectedMentoria(e.target.value)}
-              >
-                {mentorias.map((m, i) => (
-                  <option key={i} value={m}>
-                    {m}
-                  </option>
-                ))}
-              </Select>
+              <Input value={mentoriaSeleccionada?.titulo || ""} isDisabled />
             </FormControl>
 
-            {/* SELECT HORARIO */}
             <FormControl>
-              <FormLabel>Horario</FormLabel>
-              <Select
-                placeholder="Elige un horario disponible"
-                value={selectedHorario}
-                onChange={(e) => setSelectedHorario(e.target.value)}
-              >
-                {horarios.map((h, i) => (
-                  <option key={i} value={h}>
-                    {h}
-                  </option>
-                ))}
-              </Select>
+              <FormLabel>Seleccioná un día</FormLabel>
+              <CalendarioSlots
+                slots={slots}
+                fechaSeleccionada={fechaSeleccionada}
+                setFechaSeleccionada={setFechaSeleccionada}
+              />
             </FormControl>
 
-            {/* MENSAJE OPCIONAL */}
+            {slotsDelDia.length > 0 && (
+              <FormControl>
+                <FormLabel>Horario disponible</FormLabel>
+                <Stack direction="row" wrap="wrap">
+                  {slotsDelDia.map((s, i) => (
+                    <Button
+                      key={i}
+                      size="sm"
+                      variant={selectedHorario === `${s.fecha} ${s.horaDesde} - ${s.horaHasta}` ? "solid" : "outline"}
+                      onClick={() =>
+                        setSelectedHorario(`${s.fecha} ${s.horaDesde} - ${s.horaHasta}`)
+                      }
+                    >
+                      {s.horaDesde} - {s.horaHasta}
+                    </Button>
+                  ))}
+                </Stack>
+              </FormControl>
+            )}
+
             <FormControl>
               <FormLabel>Mensaje opcional</FormLabel>
               <Textarea
@@ -101,17 +205,15 @@ export default function SolicitarMentoria() {
               />
             </FormControl>
 
-            {/* BOTÓN */}
             <Button
-              isDisabled={!selectedMentoria || !selectedHorario}
+              isDisabled={!mentoriaSeleccionada || !selectedHorario}
               onClick={enviarSolicitud}
             >
-              Enviar solicitud
+              Solicitar mentoría
             </Button>
           </Stack>
         </Panel>
       </Box>
-
       <Footer />
     </>
   );

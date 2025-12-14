@@ -9,12 +9,17 @@ import {
   listarIndisposiciones,
   obtenerSlotsDisponibles,
   obtenerProximaDisponibilidadMentor, 
-  obtenerDisponibilidadMentorPorId
+  obtenerDisponibilidadMentorPorId,
+  obtenerSlotsDisponiblesRango
 } from "../controllers/disponibilidadController";
 
 const router = Router();
 
 router.get("/:id/proxima-disponibilidad", obtenerProximaDisponibilidadMentor);
+
+// Obtener slots en un rango de fechas (ej: hoy hasta un mes)
+router.get("/slots/rango", obtenerSlotsDisponiblesRango);
+
 
 // Obtener disponibilidad base de un mentor por ID (para que lo vea un alumno)
 router.get("/:id/base", obtenerDisponibilidadMentorPorId);

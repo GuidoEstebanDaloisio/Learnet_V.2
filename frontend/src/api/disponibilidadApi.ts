@@ -1,5 +1,19 @@
 import api from "./axios";
 
+// Obtener todos los slots de un mentor entre dos fechas
+export const obtenerSlotsDisponiblesRango = (params: {
+  mentorId: string;
+  desde: string; // YYYY-MM-DD
+  hasta: string; // YYYY-MM-DD
+}) =>
+  api.get<
+    {
+      fecha: string; // YYYY-MM-DD
+      slots: { horaDesde: string; horaHasta: string }[];
+    }[]
+  >("/disponibilidad/slots/rango", { params });
+  
+
 // obtiene el próximo slot disponible de un mentor
 export const obtenerProximaDisponibilidadMentor = (mentorId: string) =>
   api.get<{
