@@ -67,7 +67,7 @@
 
 /* Días seleccionados (el valor de fechaSeleccionada) */
 .react-calendar__tile--active {
-  background: var(--chakra-colors-brand-500); /* Color principal de tu marca */
+  background: var(--chakra-colors-brand-500); /* Color principal de la 'marca' */
   color: var(--chakra-colors-white);
 }
 

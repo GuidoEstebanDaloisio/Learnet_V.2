@@ -48,23 +48,23 @@ export default function SolicitudesMentor() {
   };
 
   const handleAceptar = async (id: string) => {
-  try {
-    // Aceptar la solicitud
-    await aceptarSolicitud(id);
+    try {
+      // Aceptar la solicitud
+      await aceptarSolicitud(id);
 
-    // Actualizar el estado local de la solicitud
-    setSolicitudes((prev) =>
-      prev.map((s) => (s._id === id ? { ...s, estado: "aceptada" } : s))
-    );
+      // Actualizar el estado local de la solicitud
+      setSolicitudes((prev) =>
+        prev.map((s) => (s._id === id ? { ...s, estado: "aceptada" } : s))
+      );
 
-    // Crear la sesión de asesoría basada en la solicitud
-    await crearSesionDesdeSolicitud(id);
+      // Crear la sesión de asesoría basada en la solicitud
+      await crearSesionDesdeSolicitud(id);
 
-    console.log("Sesión de asesoría creada correctamente.");
-  } catch (error) {
-    console.error("Error al aceptar la solicitud o crear la sesión:", error);
-  }
-};
+      console.log("Sesión de asesoría creada correctamente.");
+    } catch (error) {
+      console.error("Error al aceptar la solicitud o crear la sesión:", error);
+    }
+  };
 
   useEffect(() => {
     const fetchSolicitudes = async () => {
@@ -81,7 +81,7 @@ export default function SolicitudesMentor() {
     fetchSolicitudes();
   }, []);
 
-  if (loading) return <Text p={10}>Cargando solicitudes...</Text>;
+
 
   return (
     <Box minH="100vh" display="flex" flexDirection="column">
@@ -91,6 +91,18 @@ export default function SolicitudesMentor() {
         <Heading size="xl" mb={8} textAlign="center">
           Solicitudes de Mentoría
         </Heading>
+
+        {loading && (
+          <Text textAlign="center" opacity={0.7}>
+            Cargando solicitudes...
+          </Text>
+        )}
+
+        {!loading && solicitudes.length === 0 && (
+          <Text textAlign="center" opacity={0.7}>
+            Todavía no recibiste ninguna solicitud.
+          </Text>
+        )}
 
         <SimpleGrid columns={{ base: 1, sm: 2, lg: 3 }} spacing={8}>
           {solicitudes.map((s) => {
