@@ -117,7 +117,7 @@ export default function EditarHorarioLaboral() {
 
                         {/* Formulario */}
                         <Box>
-                            <FormControl mb={4}>
+                            <FormControl mb={4} isRequired>
                                 <FormLabel>Días de la semana</FormLabel>
                                 <CheckboxGroup
                                     value={diasSemana.map(String)}
@@ -134,7 +134,7 @@ export default function EditarHorarioLaboral() {
                             </FormControl>
 
                             <HStack spacing={4} mb={4}>
-                                <FormControl>
+                                <FormControl isRequired>
                                     <FormLabel>Desde</FormLabel>
                                     <Input
                                         type="time"
@@ -143,7 +143,7 @@ export default function EditarHorarioLaboral() {
                                     />
                                 </FormControl>
 
-                                <FormControl>
+                                <FormControl isRequired>
                                     <FormLabel>Hasta</FormLabel>
                                     <Input
                                         type="time"

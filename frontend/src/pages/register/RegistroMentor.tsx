@@ -64,7 +64,7 @@ export default function RegistroMentor() {
               Datos de Mentor
             </Heading>
 
-            <FormControl>
+            <FormControl isRequired>
               <FormLabel>Título profesional</FormLabel>
               <Input
                 name="tituloProfesional"
@@ -74,7 +74,7 @@ export default function RegistroMentor() {
               />
             </FormControl>
 
-            <FormControl>
+            <FormControl isRequired>
               <FormLabel>Experiencia</FormLabel>
               <Textarea
                 name="experiencia"

@@ -64,7 +64,7 @@ export default function Login() {
               Iniciar sesión
             </Heading>
 
-            <FormControl>
+            <FormControl >
               <FormLabel>Email</FormLabel>
               <Input
                 type="email"

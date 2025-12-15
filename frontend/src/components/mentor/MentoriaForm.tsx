@@ -34,7 +34,7 @@ export default function MentoriaForm({
   return (
     <Panel maxW="700px" mx="auto">
       {/* Tema - para crear y editar */}
-      <FormControl mb={5}>
+      <FormControl mb={5} isRequired>
         <FormLabel>Tema</FormLabel>
         <Select
           placeholder="Selecciona un tema"
@@ -52,7 +52,7 @@ export default function MentoriaForm({
       </FormControl>
 
       {/* Título */}
-      <FormControl mb={5}>
+      <FormControl mb={5} isRequired>
         <FormLabel>Título</FormLabel>
         <Input
           value={titulo}
@@ -61,7 +61,7 @@ export default function MentoriaForm({
       </FormControl>
 
       {/* Descripción */}
-      <FormControl mb={8}>
+      <FormControl mb={8} isRequired>
         <FormLabel>Descripción</FormLabel>
         <Textarea
           value={descripcion}

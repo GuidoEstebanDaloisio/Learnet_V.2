@@ -95,7 +95,7 @@ export default function NuevaIndisposicion() {
             </FormControl>
 
             <Button
-              colorScheme="red"
+            variant="primary"
               onClick={handleCrearIndisposicion}
               isLoading={loading}
             >

@@ -63,7 +63,7 @@ export default function Registro() {
               Crear cuenta
             </Heading>
 
-            <FormControl>
+            <FormControl isRequired>
               <FormLabel>Nombre</FormLabel>
               <Input
                 name="nombre"
@@ -73,7 +73,7 @@ export default function Registro() {
               />
             </FormControl>
 
-            <FormControl>
+            <FormControl isRequired>
               <FormLabel>Apellido</FormLabel>
               <Input
                 name="apellido"
@@ -83,7 +83,7 @@ export default function Registro() {
               />
             </FormControl>
 
-            <FormControl>
+            <FormControl isRequired>
               <FormLabel>Email</FormLabel>
               <Input
                 name="email"
@@ -94,7 +94,7 @@ export default function Registro() {
               />
             </FormControl>
 
-            <FormControl>
+            <FormControl isRequired>
               <FormLabel>Contraseña</FormLabel>
               <Input
                 name="password"
@@ -105,7 +105,7 @@ export default function Registro() {
               />
             </FormControl>
 
-            <FormControl>
+            <FormControl isRequired>
               <FormLabel>Tipo de usuario</FormLabel>
               <Select
                 name="tipo"

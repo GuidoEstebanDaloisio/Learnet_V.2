@@ -168,7 +168,7 @@ export default function SolicitarMentoria() {
               <Input value={mentoriaSeleccionada?.titulo || ""} isDisabled />
             </FormControl>
 
-            <FormControl>
+            <FormControl isRequired>
               <FormLabel>Seleccioná un día</FormLabel>
               <CalendarioSlots
                 slots={slots}
@@ -178,7 +178,7 @@ export default function SolicitarMentoria() {
             </FormControl>
 
             {slotsDelDia.length > 0 && (
-              <FormControl>
+              <FormControl isRequired>
                 <FormLabel>Horario disponible</FormLabel>
                 <Stack direction="row" wrap="wrap">
                   {slotsDelDia.map((s, i) => (

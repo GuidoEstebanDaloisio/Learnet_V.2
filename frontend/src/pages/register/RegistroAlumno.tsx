@@ -54,7 +54,7 @@ export default function RegistroAlumno() {
               Datos de Alumno
             </Heading>
 
-            <FormControl>
+            <FormControl isRequired>
               <FormLabel>Fecha de nacimiento</FormLabel>
               <Input
                 type="date"

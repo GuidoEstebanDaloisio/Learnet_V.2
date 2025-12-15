@@ -55,7 +55,7 @@ export default function RegistroAdmin() {
               Para completar el registro de administrador, ingresá el token de autorización.
             </Text>
 
-            <FormControl>
+            <FormControl isRequired>
               <FormLabel>Token de Administrador</FormLabel>
               <Input
                 placeholder="Ingresá el token"
