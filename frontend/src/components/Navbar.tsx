@@ -8,7 +8,6 @@ export default function NavbarGeneral() {
   return (
     <NavbarContainer>
       <Flex justify="space-between" align="center" w="100%">
-        {/* Logo */}
         <NavbarLogo />
 
         {/* Links y botón */}

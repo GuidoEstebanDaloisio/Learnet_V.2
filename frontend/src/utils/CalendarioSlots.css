@@ -1,14 +1,3 @@
-/*
-  Sobrescribir los estilos de react-calendar con los valores de tu tema Chakra UI.
-
-  Nota: Los colores de Chakra UI se obtienen de tu tema.
-  - brand.500 es #254eda
-  - brand.300 es #6690ff
-  - gray.700 es para fondos (inputs/selects)
-  - gray.900 es el fondo global
-  - gray.100 es el color de texto global
-*/
-
 /* Contenedor principal del calendario */
 .react-calendar {
   width: 100%;
@@ -94,10 +83,6 @@
   padding: 2em 0.5em; /* Ajuste para estas vistas */
 }
 
-/* Añade un estilo específico para los días con slots disponibles (que no están deshabilitados)
-   Puedes añadir una clase en tu componente Calendar para aplicar esto si quieres algo más específico
-   que el simple :enabled. Por ahora, :enabled funciona bien para los días con slots.
-*/
 .react-calendar__tile:enabled {
   font-weight: var(--chakra-fontWeights-semibold);
   border: 1px solid var(--chakra-colors-brand-600); /* Borde para destacar los días disponibles */

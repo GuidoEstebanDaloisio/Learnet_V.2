@@ -93,7 +93,7 @@ export default function Agenda() {
                   tituloMentoria={s.mentoria.titulo}
                   fecha={fecha}
                   hora={hora}
-                  estado={s.estado.replace(" ", "-") as any} // coincide con tu enum en el Card
+                  estado={s.estado.replace(" ", "-") as any} 
                 />
               );
             })

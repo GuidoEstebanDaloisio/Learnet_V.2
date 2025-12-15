@@ -20,14 +20,14 @@ export default function EditarMentoria() {
   const [tema, setTema] = useState(plantilla?.tema || "");
   const [temas, setTemas] = useState<{ _id: string; nombre: string; slug: string }[]>([]);
 
-  // 🔹 Cargar temas y mentoría (si se refresca la página)
+  // Cargar temas y mentoría (si se refresca la página)
   useEffect(() => {
     const fetchData = async () => {
       try {
         const temasRes = await listarTemas();
         setTemas(temasRes.data);
 
-        // Si NO vino state, pedimos la mentoría al backend
+        // Si NO vino state, pedo la mentoría al backend
         if (!plantilla && id) {
           const mentoriaRes = await obtenerMentoriaPorId(id);
           setTitulo(mentoriaRes.data.titulo);
@@ -43,7 +43,7 @@ export default function EditarMentoria() {
     fetchData();
   }, [id, plantilla, toast]);
 
-  // 🔹 Guardar cambios
+  // Guardar cambios
   const handleSave = async () => {
     if (!id) return;
 

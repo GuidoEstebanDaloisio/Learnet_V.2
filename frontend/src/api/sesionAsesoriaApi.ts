@@ -13,3 +13,7 @@ export const listarSesionesMentor = () => {
 export const listarSesionesAlumno = () => {
   return api.get("/sesiones-asesoria/alumno");
 };
+
+export const actualizarLinkSesion = (id: string, linkMeet: string) => {
+  return api.patch(`/sesiones-asesoria/${id}/link`, { linkMeet });
+};

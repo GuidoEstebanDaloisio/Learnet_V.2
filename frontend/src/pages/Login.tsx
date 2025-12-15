@@ -90,7 +90,6 @@ export default function Login() {
               Ingresar
             </Button>
 
-            {/* NO CAMBIO NADA DE TU DISEÑO */}
             <VStack w="100%" spacing={3}>
               <Text fontSize="sm" opacity={0.7}>
                 ¿No tenés cuenta?

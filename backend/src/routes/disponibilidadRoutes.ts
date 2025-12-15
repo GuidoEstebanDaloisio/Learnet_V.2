@@ -24,7 +24,6 @@ router.get("/slots/rango", obtenerSlotsDisponiblesRango);
 // Obtener disponibilidad base de un mentor por ID (para que lo vea un alumno)
 router.get("/:id/base", obtenerDisponibilidadMentorPorId);
 
-// Base
 router.get(
   "/base",
   authMiddleware,
@@ -39,7 +38,6 @@ router.post(
   upsertDisponibilidadBase
 );
 
-// Indisposiciones
 router.get(
   "/indisposiciones",
   authMiddleware,

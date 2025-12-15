@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { crearSesionDesdeSolicitud, listarSesionesMentor, listarSesionesAlumno } from "../controllers/sesionAsesoriaController";
+import { crearSesionDesdeSolicitud, listarSesionesMentor, listarSesionesAlumno, actualizarLinkMeet } from "../controllers/sesionAsesoriaController";
 import { authMiddleware } from "../middleware/authMiddleware";
 
 const router = Router();
@@ -10,6 +10,8 @@ router.post("/crear/:solicitudId", crearSesionDesdeSolicitud);
 router.get("/mentor", authMiddleware, listarSesionesMentor);
 
 router.get("/alumno", authMiddleware, listarSesionesAlumno);
+
+router.patch("/:id/link", authMiddleware, actualizarLinkMeet);
 
 
 export default router;

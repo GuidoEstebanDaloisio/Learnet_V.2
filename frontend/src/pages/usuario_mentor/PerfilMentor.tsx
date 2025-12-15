@@ -49,7 +49,7 @@ const { usuario, setUsuario } = useAuth();
     });
   }, []);
 
-  // 🛡️ Protección básica
+  //Protección básica
   if (!usuario) return null;
 
   const diasTexto =
@@ -154,7 +154,7 @@ const { usuario, setUsuario } = useAuth();
                   try {
                     await actualizarDisponibilidad(nuevaDisponibilidad);
 
-                    // Actualizamos el estado global del usuario
+                    // Actualiza el estado global del usuario
                     setUsuario({ ...usuario, estaDisponible: nuevaDisponibilidad });
                   } catch (error) {
                     console.error("Error al actualizar disponibilidad:", error);

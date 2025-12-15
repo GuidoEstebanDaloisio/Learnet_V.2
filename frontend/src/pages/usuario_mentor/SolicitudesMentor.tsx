@@ -49,15 +49,15 @@ export default function SolicitudesMentor() {
 
   const handleAceptar = async (id: string) => {
   try {
-    // 1️⃣ Aceptar la solicitud
+    // Aceptar la solicitud
     await aceptarSolicitud(id);
 
-    // 2️⃣ Actualizar el estado local de la solicitud
+    // Actualizar el estado local de la solicitud
     setSolicitudes((prev) =>
       prev.map((s) => (s._id === id ? { ...s, estado: "aceptada" } : s))
     );
 
-    // 3️⃣ Crear la sesión de asesoría basada en la solicitud
+    // Crear la sesión de asesoría basada en la solicitud
     await crearSesionDesdeSolicitud(id);
 
     console.log("Sesión de asesoría creada correctamente.");

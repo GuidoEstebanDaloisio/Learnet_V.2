@@ -1,4 +1,3 @@
-// src/pages/mentor/EditarHorarioLaboral.tsx
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { RUTAS } from "../../routes";
@@ -40,7 +39,7 @@ const DIAS = [
 ];
 
 export default function EditarHorarioLaboral() {
-    const navigate = useNavigate(); // 🔹 debe estar aquí
+    const navigate = useNavigate(); 
     const toast = useToast();
 
     const [diasSemana, setDiasSemana] = useState<number[]>([]);

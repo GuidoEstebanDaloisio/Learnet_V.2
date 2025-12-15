@@ -77,8 +77,6 @@ export default function MentorCard({
         w="100%"
         variant="primary"
         onClick={() => navigate(`${RUTAS.ALUMNO.DETALLE_MENTOR}/${id}`)}
-                  
-
       >
         Ver perfil
       </Button>

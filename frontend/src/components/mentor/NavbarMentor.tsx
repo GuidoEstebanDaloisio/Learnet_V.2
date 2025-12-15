@@ -18,8 +18,8 @@ export default function NavbarMentor() {
   ];
 
   const handleLogout = () => {
-    logout(); // limpia sesión
-    navigate(RUTAS.LOGIN); // redirige
+    logout(); 
+    navigate(RUTAS.LOGIN);
   };
 
   return (

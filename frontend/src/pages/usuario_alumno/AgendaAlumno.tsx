@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import NavbarAlumno from "../../components/alumno/NavbarAlumno";
 import Footer from "../../components/Footer";
 import SesionAsesoriaAlumnoCard from "../../components/alumno/SesiónAsesoríaAlumnoCard";
-import { listarSesionesAlumno } from "../../api/sesionAsesoriaApi";  // Importamos la función de API
+import { listarSesionesAlumno } from "../../api/sesionAsesoriaApi";  // Importa la función de API
 import { formatoFechaHoraLocal } from "../../utils/fechaConfig";
 
 export default function AgendaAlumno() {
@@ -13,12 +13,12 @@ export default function AgendaAlumno() {
   useEffect(() => {
     const fetchSesiones = async () => {
       try {
-        const res = await listarSesionesAlumno();  // Llamamos la API
-        setSesiones(res.data);  // Guardamos las sesiones en el state
+        const res = await listarSesionesAlumno();  // Llama la API
+        setSesiones(res.data);  // Guarda las sesiones en el state
       } catch (error) {
         console.error("Error cargando las sesiones:", error);
       } finally {
-        setLoading(false);  // Terminamos de cargar
+        setLoading(false);  // Termina de cargar
       }
     };
 
@@ -39,7 +39,7 @@ export default function AgendaAlumno() {
         <SimpleGrid columns={{ base: 1, sm: 2, lg: 3 }} spacing={8}>
           {sesiones.length > 0 ? (
             sesiones.map((s, i) => {
-              const { fecha } = formatoFechaHoraLocal(s.fechaDesde);  // Formateamos la fecha
+              const { fecha } = formatoFechaHoraLocal(s.fechaDesde);  // Formatea la fecha
               const { hora: horaDesde } = formatoFechaHoraLocal(s.fechaDesde);
               const { hora: horaHasta } = formatoFechaHoraLocal(s.fechaHasta);
               const hora = `${horaDesde} a ${horaHasta}`;
@@ -51,7 +51,7 @@ export default function AgendaAlumno() {
                   titulo={s.mentoria.titulo}
                   fecha={fecha}
                   hora={hora}
-                  estado={s.estado.replace(" ", "-") as any}  // Aseguramos que el estado esté en el formato correcto
+                  estado={s.estado.replace(" ", "-") as any}  // Asegura que el estado esté en el formato correcto
                 />
               );
             })

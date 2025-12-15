@@ -17,20 +17,22 @@ interface Params {
 interface ProximoSlot extends Slot {
   fecha: string; // YYYY-MM-DD
 }
+// --- Helpers de tiempo y slots ---
 
-// --- Helpers ---
+// Convertir hora "HH:MM" a minutos totales
 const timeToMinutes = (time: string): number => {
   const [h, m] = time.split(":").map(Number);
   return h * 60 + m;
 };
 
+// Convertir minutos totales a hora "HH:MM"
 const minutesToTime = (min: number): string => {
   const h = Math.floor(min / 60);
   const m = min % 60;
   return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
 };
 
-// Formatea la fecha a YYYY-MM-DD en zona horaria local
+// Formatear fecha a YYYY-MM-DD en zona horaria local
 const formatFechaLocal = (d: Date) => {
   const yyyy = d.getFullYear();
   const mm = String(d.getMonth() + 1).padStart(2, '0');
@@ -38,6 +40,7 @@ const formatFechaLocal = (d: Date) => {
   return `${yyyy}-${mm}-${dd}`;
 };
 
+// Generar slots entre horas desde y hasta según duración
 const generarSlots = (desde: string, hasta: string, duracion: number): Slot[] => {
   const slots: Slot[] = [];
   let actual = timeToMinutes(desde);
@@ -54,6 +57,7 @@ const generarSlots = (desde: string, hasta: string, duracion: number): Slot[] =>
   return slots;
 };
 
+// Verificar solapamiento entre dos rangos de tiempo
 const solapan = (aDesde: string, aHasta: string, bDesde: string, bHasta: string): boolean => {
   const a1 = timeToMinutes(aDesde);
   const a2 = timeToMinutes(aHasta);
@@ -63,6 +67,8 @@ const solapan = (aDesde: string, aHasta: string, bDesde: string, bHasta: string)
 };
 
 // --- Funciones principales ---
+
+// Obtener slots disponibles de un mentor en un día
 export const getSlotsDisponibles = async ({ mentorId, fecha, duracionSesion }: Params): Promise<Slot[]> => {
   const base = await DisponibilidadBaseModel.findOne({ mentor: mentorId });
   if (!base) return [];
@@ -78,6 +84,7 @@ export const getSlotsDisponibles = async ({ mentorId, fecha, duracionSesion }: P
     fecha: formatFechaLocal(fechaDate),
   });
 
+  // Filtrar slots que no se solapen con indisposiciones
   const slotsDisponibles = slotsBase.filter(slot =>
     !indisposiciones.some(ind =>
       solapan(slot.horaDesde, slot.horaHasta, ind.horaDesde, ind.horaHasta)
@@ -86,9 +93,11 @@ export const getSlotsDisponibles = async ({ mentorId, fecha, duracionSesion }: P
 
   return slotsDisponibles;
 };
+
+// Contar slots disponibles de un mentor en un rango de días
 export const contarSlotsDisponibles = async (
   mentorId: string,
-  dias = 30 //Cantidad de dias para calcular
+  dias = 30
 ): Promise<number> => {
   const base = await DisponibilidadBaseModel.findOne({ mentor: mentorId });
   if (!base) return 0;
@@ -120,7 +129,7 @@ export const contarSlotsDisponibles = async (
   return totalSlots;
 };
 
-
+// Obtener slots disponibles de un mentor en un rango de fechas
 export const getSlotsDisponiblesRango = async (mentorId: string, desde: Date, hasta: Date): Promise<{ fecha: string; slots: Slot[] }[]> => {
   const base = await DisponibilidadBaseModel.findOne({ mentor: mentorId });
   if (!base) return [];

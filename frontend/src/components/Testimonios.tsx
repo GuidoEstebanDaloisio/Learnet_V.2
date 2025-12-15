@@ -1,5 +1,4 @@
 import { Box, Heading, SimpleGrid, Text, VStack } from "@chakra-ui/react";
-// 1. Importar el componente Card
 import Card from "../theme/components/Card";
 
 const testimonios = [

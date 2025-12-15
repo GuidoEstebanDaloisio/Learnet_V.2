@@ -20,6 +20,7 @@ export default function Registro() {
   const navigate = useNavigate();
   const toast = useToast();
 
+  // Estado para guardar lo que voy escribiendo en el formulario
   const [form, setForm] = useState({
     nombre: "",
     apellido: "",
@@ -28,6 +29,7 @@ export default function Registro() {
     tipo: "",
   });
 
+  // Cada vez que cambio un input, actualizo mi estado
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setForm({
       ...form,
@@ -35,16 +37,18 @@ export default function Registro() {
     });
   };
 
+  // Cuando hago click en "Continuar"
   const handleContinuar = () => {
+    // Primero reviso que no falte nada
     if (!form.nombre.trim() || !form.apellido.trim() || !form.email.trim() || !form.password.trim() || !form.tipo) {
       mostrarToast(toast, "error", "Debes completar todos los campos antes de continuar");
       return;
     }
 
-    // Guardás datos base en localStorage o en contexto
+    // Guardo los datos básicos en localStorage para no perderlos
     localStorage.setItem("registroBase", JSON.stringify(form));
 
-    // Redirección según tipo
+    // Según el tipo de usuario, voy al siguiente paso de mi registro
     if (form.tipo === "mentor") navigate(RUTAS.REGISTRO.MENTOR);
     if (form.tipo === "alumno") navigate(RUTAS.REGISTRO.ALUMNO);
     if (form.tipo === "admin") navigate(RUTAS.REGISTRO.ADMIN);

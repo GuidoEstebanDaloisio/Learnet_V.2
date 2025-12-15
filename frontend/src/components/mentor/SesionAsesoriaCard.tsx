@@ -77,7 +77,7 @@ export default function SesionAsesoriaCard({
         </Badge>
       </Flex>
 
-      {/* Botón: Ver detalles */}
+      {/* Boton: Ver detalles */}
       <Button
         w="100%"
         variant="primary"

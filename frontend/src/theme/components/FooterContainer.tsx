@@ -1,4 +1,3 @@
-// theme/components/FooterContainer.tsx
 import { Box, type BoxProps } from "@chakra-ui/react";
 
 export default function FooterContainer({ children, ...props }: BoxProps) {

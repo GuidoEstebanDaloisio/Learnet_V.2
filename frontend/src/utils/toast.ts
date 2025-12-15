@@ -1,4 +1,3 @@
-// src/utils/toast.ts
 import type { UseToastOptions, ToastPosition } from "@chakra-ui/react";
 
 type TipoToast = "success" | "error" | "info";

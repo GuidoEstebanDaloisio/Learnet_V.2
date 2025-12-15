@@ -95,7 +95,7 @@ export default function SolicitarMentoria() {
       try {
         const hoy = new Date();
         const hasta = new Date();
-        hasta.setDate(hoy.getDate() + 30); //hasta 30 dias adelante
+        hasta.setDate(hoy.getDate() + 30); //indico los 30 dias adelante
 
         const res = await obtenerSlotsDisponiblesRango({
           mentorId,

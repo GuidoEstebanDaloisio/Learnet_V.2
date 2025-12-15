@@ -7,7 +7,6 @@ interface CrearSolicitudData {
   mensaje?: string;
 }
 
-// Crear solicitud de mentoría
 export const crearSolicitud = (data: CrearSolicitudData) => {
   return api.post("/solicitudes", data);
 };
@@ -20,7 +19,6 @@ export const aceptarSolicitud = (id: string) => {
   return api.patch(`/solicitudes/${id}/aceptar`);
 };
 
-// Listar solicitudes del alumno autenticado
 export const listarSolicitudesAlumno = () => {
   return api.get("/solicitudes");
 };

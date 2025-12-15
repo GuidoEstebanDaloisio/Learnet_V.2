@@ -20,7 +20,7 @@ import { useAuth } from "../../context/AuthContext";
 export default function PerfilAlumno() {
   const { usuario } = useAuth();
 
-  // 🛡️ Protección básica
+  //Protección básica
   if (!usuario) {
     return null; // o spinner / redirect
   }

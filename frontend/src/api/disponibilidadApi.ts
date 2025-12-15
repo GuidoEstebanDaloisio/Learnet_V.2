@@ -34,7 +34,7 @@ export const obtenerDisponibilidadBase = () =>
 
 export const guardarDisponibilidadBase = (data: {
   diasSemana: number[];
-  horaDesde: string; // "08:00"
+  horaDesde: string; // ej. "08:00"
   horaHasta: string; // "18:00"
 }) =>
   api.post("/disponibilidad/base", data);
@@ -72,6 +72,5 @@ export const obtenerSlotsDisponibles = (params: {
     params,
   });
 
-// Obtener la cantidad de slots disponibles de un mentor
 export const obtenerCantidadSlotsDisponibles = (mentorId: string) =>
   api.get<{ cantidad: number }>(`/disponibilidad/mentor/${mentorId}/cantidad-slots`);

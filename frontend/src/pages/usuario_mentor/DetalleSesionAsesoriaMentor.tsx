@@ -5,11 +5,11 @@ import {
   Badge,
   Button,
   Icon,
-  Link,
   Divider,
   Select,
   Input,
   Collapse,
+  useToast,
 } from "@chakra-ui/react";
 import { FaUser, FaCalendar, FaClock, FaInfoCircle } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
@@ -17,9 +17,11 @@ import NavbarMentor from "../../components/mentor/NavbarMentor";
 import Footer from "../../components/Footer";
 import Panel from "../../theme/components/Panel";
 import { useState } from "react";
+import { mostrarToast } from "../../utils/toast";
+import { actualizarLinkSesion } from "../../api/sesionAsesoriaApi";
 
 interface SesionAsesoria {
-  idMentoria: string;
+  id: string;
   tituloMentoria: string;
   descripcionMentoria: string;
   alumno: string;
@@ -38,10 +40,11 @@ const colorEstado: Record<SesionAsesoria["estado"], string> = {
 
 export default function DetalleSesionAsesoriaMentor() {
   const { state } = useLocation();
+  const toast = useToast();
 
   const sesionInicial: SesionAsesoria =
     state?.sesionAsesoria || {
-      idMentoria: "123",
+      id: "123",
       tituloMentoria: "Ejemplo de Mentoría",
       descripcionMentoria:
         "Esta es la descripción de la mentoría asociada a esta sesión de asesoría.",
@@ -49,15 +52,15 @@ export default function DetalleSesionAsesoriaMentor() {
       fecha: "14/02/2025",
       hora: "17:00",
       estado: "No iniciada",
-      meetUrl: "https://meet.google.com/ejemplo",
+      meetUrl: "",
     };
 
   const [sesionAsesoria, setSesionAsesoria] =
     useState<SesionAsesoria>(sesionInicial);
-
   const [mostrarReprogramar, setMostrarReprogramar] = useState(false);
   const [nuevaFecha, setNuevaFecha] = useState("");
   const [nuevaHora, setNuevaHora] = useState("");
+  const [nuevoLink, setNuevoLink] = useState(sesionInicial.meetUrl);
 
   const actualizarEstado = (nuevoEstado: SesionAsesoria["estado"]) => {
     setSesionAsesoria({ ...sesionAsesoria, estado: nuevoEstado });
@@ -65,24 +68,40 @@ export default function DetalleSesionAsesoriaMentor() {
 
   const guardarNuevaFecha = () => {
     if (!nuevaFecha || !nuevaHora) return;
-
     const fechaFormateada = nuevaFecha.split("-").reverse().join("/");
-
-    setSesionAsesoria({
-      ...sesionAsesoria,
-      fecha: fechaFormateada,
-      hora: nuevaHora,
-    });
-
+    setSesionAsesoria({ ...sesionAsesoria, fecha: fechaFormateada, hora: nuevaHora });
     setMostrarReprogramar(false);
     setNuevaFecha("");
     setNuevaHora("");
   };
 
+  const guardarLinkMeet = async () => {
+    if (!nuevoLink) {
+      mostrarToast(toast, "info", "Debes ingresar el link de Meet antes de guardar");
+      return;
+    }
+
+    try {
+      await actualizarLinkSesion(sesionAsesoria.id, nuevoLink); // Llamada al backend
+      setSesionAsesoria({ ...sesionAsesoria, meetUrl: nuevoLink });
+      mostrarToast(toast, "success", "Link de Meet guardado correctamente");
+    } catch (error) {
+      mostrarToast(toast, "error", "Error al guardar el link de Meet");
+      console.error(error);
+    }
+  };
+
+  const unirseSesion = () => {
+    if (!sesionAsesoria.meetUrl) {
+      mostrarToast(toast, "info", "Debes ingresar el link de Meet antes de unirte");
+      return;
+    }
+    window.open(sesionAsesoria.meetUrl, "_blank");
+  };
+
   return (
     <>
       <NavbarMentor />
-
       <Box minH="100vh" px={6} py={10} display="flex" justifyContent="center">
         <Panel maxW="700px" w="100%">
           {/* Título */}
@@ -100,7 +119,7 @@ export default function DetalleSesionAsesoriaMentor() {
 
           <Divider />
 
-          {/* Panel interno */}
+          {/* Panel info sesión */}
           <Panel bg="gray.700" borderColor="gray.600" mt={6} mb={6}>
             <Flex align="center" gap={3} color="gray.300" mb={4}>
               <Icon as={FaUser} />
@@ -108,27 +127,23 @@ export default function DetalleSesionAsesoriaMentor() {
                 <strong>Alumno:</strong> {sesionAsesoria.alumno}
               </Text>
             </Flex>
-
             <Flex align="center" gap={3} color="gray.300" mb={2}>
               <Icon as={FaCalendar} />
               <Text>
                 <strong>Fecha:</strong> {sesionAsesoria.fecha}
               </Text>
             </Flex>
-
             <Flex align="center" gap={3} color="gray.300" mb={4}>
               <Icon as={FaClock} />
               <Text>
                 <strong>Hora:</strong> {sesionAsesoria.hora}
               </Text>
             </Flex>
-
             <Flex align="center" gap={3}>
               <Icon as={FaInfoCircle} />
               <Text fontWeight="semibold" color="gray.200">
                 Estado:
               </Text>
-
               <Badge
                 colorScheme={colorEstado[sesionAsesoria.estado]}
                 px={3}
@@ -148,7 +163,6 @@ export default function DetalleSesionAsesoriaMentor() {
             <Text fontSize="lg" color="gray.200" fontWeight="bold" mb={3}>
               Cambiar estado de la sesión de asesoría
             </Text>
-
             <Select
               value={sesionAsesoria.estado}
               onChange={(e) =>
@@ -178,21 +192,18 @@ export default function DetalleSesionAsesoriaMentor() {
               <Text color="gray.200" mb={3} fontWeight="bold">
                 Seleccionar nueva fecha y hora
               </Text>
-
               <Input
                 type="date"
                 value={nuevaFecha}
                 onChange={(e) => setNuevaFecha(e.target.value)}
                 mb={3}
               />
-
               <Input
                 type="time"
                 value={nuevaHora}
                 onChange={(e) => setNuevaHora(e.target.value)}
                 mb={4}
               />
-
               <Button
                 w="100%"
                 variant="primary"
@@ -206,12 +217,27 @@ export default function DetalleSesionAsesoriaMentor() {
 
           <Divider mt={6} />
 
-          {/* Link Meet */}
-          <Link href={sesionAsesoria.meetUrl} target="_blank" style={{ width: "100%" }}>
-            <Button w="100%" variant="primary">
+          {/* Link Meet / Input */}
+          {!sesionAsesoria.meetUrl ? (
+            <Panel bg="gray.700" borderColor="gray.600" mt={4}>
+              <Text fontWeight="bold" color="gray.200" mb={2}>
+                Ingresa el link de Meet
+              </Text>
+              <Input
+                placeholder="https://meet.google.com/xxxx-xxxx-xxx"
+                value={nuevoLink}
+                onChange={(e) => setNuevoLink(e.target.value)}
+                mb={3}
+              />
+              <Button w="100%" variant="primary" onClick={guardarLinkMeet}>
+                Guardar link de Meet
+              </Button>
+            </Panel>
+          ) : (
+            <Button w="100%" variant="primary" mt={4} onClick={unirseSesion}>
               Unirse a la sesión de asesoría
             </Button>
-          </Link>
+          )}
         </Panel>
       </Box>
 

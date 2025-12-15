@@ -158,7 +158,7 @@ const tema = extendTheme({
       sizes: {
         md: {
           borderRadius: "md",
-          minH: 32, // altura mínima, opcional
+          minH: 32, // altura mínima
         },
       },
       defaultProps: {

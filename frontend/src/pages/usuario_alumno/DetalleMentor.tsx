@@ -37,9 +37,6 @@ import Card from "../../theme/components/Card";
 import { obtenerMentorPorId } from "../../api/usuarioApi";
 import { obtenerDisponibilidadPorId, obtenerCantidadSlotsDisponibles } from "../../api/disponibilidadApi";
 
-/* =======================
-   Tipos
-======================= */
 interface Mentoria {
   _id: string;
   titulo: string;
@@ -65,9 +62,7 @@ interface DisponibilidadBase {
   duracionSesion?: number;
 }
 
-/* =======================
-   Componente
-======================= */
+
 export default function DetalleMentor() {
   const { id } = useParams();
   const navigate = useNavigate();

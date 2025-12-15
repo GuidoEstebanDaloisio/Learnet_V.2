@@ -43,7 +43,7 @@ export default function DetalleSesionAsesoriaAlumno() {
   const { state } = useLocation();
   const toast = useToast();
 
-  const sesion: SesionAsesoriaAlumno =
+  const sesion: SesionAsesoriaAlumno = //simluacion para que no rompa
     state || {
       titulo: "Ejemplo de Sesión de Asesoría",
       descripcion:
@@ -52,7 +52,7 @@ export default function DetalleSesionAsesoriaAlumno() {
       fecha: "10/02/2025",
       hora: "18:00",
       estado: "No iniciada",
-      meetUrl: "", // simulamos que no hay link
+      meetUrl: "", 
     };
 
   const handleUnirseClick = () => {
