@@ -8,14 +8,14 @@ import {
   crearIndisposicion,
   listarIndisposiciones,
   obtenerSlotsDisponibles,
-  obtenerProximaDisponibilidadMentor, 
   obtenerDisponibilidadMentorPorId,
-  obtenerSlotsDisponiblesRango
+  obtenerSlotsDisponiblesRango,
+  obtenerCantidadSlotsDisponibles
 } from "../controllers/disponibilidadController";
 
 const router = Router();
 
-router.get("/:id/proxima-disponibilidad", obtenerProximaDisponibilidadMentor);
+router.get("/mentor/:id/cantidad-slots", obtenerCantidadSlotsDisponibles);
 
 // Obtener slots en un rango de fechas (ej: hoy hasta un mes)
 router.get("/slots/rango", obtenerSlotsDisponiblesRango);

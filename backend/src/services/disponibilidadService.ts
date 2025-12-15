@@ -86,15 +86,20 @@ export const getSlotsDisponibles = async ({ mentorId, fecha, duracionSesion }: P
 
   return slotsDisponibles;
 };
-
-export const obtenerProximoSlot = async (mentorId: string): Promise<ProximoSlot | null> => {
+export const contarSlotsDisponibles = async (
+  mentorId: string,
+  dias = 30
+): Promise<number> => {
   const base = await DisponibilidadBaseModel.findOne({ mentor: mentorId });
-  if (!base) return null;
+  if (!base) return 0;
 
+  let totalSlots = 0;
   const hoy = new Date();
-  for (let i = 0; i < 30; i++) {
+
+  for (let i = 0; i < dias; i++) {
     const fecha = new Date();
     fecha.setDate(hoy.getDate() + i);
+
     const diaSemana = fecha.getDay();
     if (!base.diasSemana.includes(diaSemana)) continue;
 
@@ -109,16 +114,12 @@ export const obtenerProximoSlot = async (mentorId: string): Promise<ProximoSlot 
       !indisposiciones.some(ind => solapan(slot.horaDesde, slot.horaHasta, ind.horaDesde, ind.horaHasta))
     );
 
-    if (slotsDisponibles.length > 0) {
-      return {
-        fecha: formatFechaLocal(fecha),
-        ...slotsDisponibles[0],
-      };
-    }
+    totalSlots += slotsDisponibles.length;
   }
 
-  return null;
+  return totalSlots;
 };
+
 
 export const getSlotsDisponiblesRango = async (mentorId: string, desde: Date, hasta: Date): Promise<{ fecha: string; slots: Slot[] }[]> => {
   const base = await DisponibilidadBaseModel.findOne({ mentor: mentorId });

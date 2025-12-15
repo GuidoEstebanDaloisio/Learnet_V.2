@@ -14,15 +14,6 @@ export const obtenerSlotsDisponiblesRango = (params: {
   >("/disponibilidad/slots/rango", { params });
   
 
-// obtiene el próximo slot disponible de un mentor
-export const obtenerProximaDisponibilidadMentor = (mentorId: string) =>
-  api.get<{
-    fecha: string;      // YYYY-MM-DD
-    horaDesde: string;  // HH:MM
-    horaHasta: string;  // HH:MM
-  }>(`/disponibilidad/${mentorId}/proxima-disponibilidad`);
-
-
 export const obtenerDisponibilidadBase = () =>
   api.get<{
     _id: string;
@@ -81,3 +72,6 @@ export const obtenerSlotsDisponibles = (params: {
     params,
   });
 
+// Obtener la cantidad de slots disponibles de un mentor
+export const obtenerCantidadSlotsDisponibles = (mentorId: string) =>
+  api.get<{ cantidad: number }>(`/disponibilidad/mentor/${mentorId}/cantidad-slots`);

@@ -35,7 +35,7 @@ import Panel from "../../theme/components/Panel";
 import Card from "../../theme/components/Card";
 
 import { obtenerMentorPorId } from "../../api/usuarioApi";
-import { obtenerProximaDisponibilidadMentor, obtenerDisponibilidadPorId } from "../../api/disponibilidadApi";
+import { obtenerDisponibilidadPorId, obtenerCantidadSlotsDisponibles } from "../../api/disponibilidadApi";
 
 /* =======================
    Tipos
@@ -58,12 +58,6 @@ interface Mentor {
   mentorias: Mentoria[];
 }
 
-interface Slot {
-  fecha: string;
-  horaDesde: string;
-  horaHasta: string;
-}
-
 interface DisponibilidadBase {
   diasSemana: number[];
   horaDesde: string;
@@ -79,10 +73,9 @@ export default function DetalleMentor() {
   const navigate = useNavigate();
   const toast = useToast();
 
-
   const [mentor, setMentor] = useState<Mentor | null>(null);
   const [loading, setLoading] = useState(true);
-  const [proximoSlot, setProximoSlot] = useState<Slot | null>(null);
+  const [cantidadSlots, setCantidadSlots] = useState<number | null>(null);
   const [disponibilidadBase, setDisponibilidadBase] = useState<DisponibilidadBase | null>(null);
 
   const diasSemanaMap = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
@@ -102,11 +95,11 @@ export default function DetalleMentor() {
         }
 
         try {
-          const slotRes = await obtenerProximaDisponibilidadMentor(id!);
-          setProximoSlot(slotRes.data);
+          const cantidadRes = await obtenerCantidadSlotsDisponibles(id!);
+          setCantidadSlots(cantidadRes.data.cantidad);
         } catch (error) {
-          console.error("No se pudo obtener la próxima disponibilidad:", error);
-          setProximoSlot(null);
+          console.error("No se pudo obtener la cantidad de slots:", error);
+          setCantidadSlots(null);
         }
 
       } catch (error) {
@@ -195,7 +188,7 @@ export default function DetalleMentor() {
                         <Text fontSize="lg" fontWeight="bold" color="brand.300">{m.titulo}</Text>
                         <Text color="gray.300">{m.descripcion}</Text>
 
-                        {mentor.estaDisponible ? (
+                        {mentor.estaDisponible && (
                           <Button
                             variant="primary"
                             onClick={() =>
@@ -208,8 +201,6 @@ export default function DetalleMentor() {
                           >
                             Solicitar
                           </Button>
-                        ) : (
-                          <></>
                         )}
                       </Card>
                     ))}
@@ -250,17 +241,14 @@ export default function DetalleMentor() {
             </Panel>
           )}
 
-          {proximoSlot && (
+          {cantidadSlots !== null && (
             <Panel flex="1" bg="brand.600" borderColor="brand.400" color="white">
               <Flex align="center" mb={4}>
                 <Icon as={FaCalendarAlt} boxSize={6} mr={3} />
-                <Text fontSize="lg" fontWeight="bold">Próximo horario disponible</Text>
+                <Text fontSize="lg" fontWeight="bold">Cupos disponibles</Text>
               </Flex>
               <Text fontSize="md">
-                <strong>Fecha:</strong> {new Date(proximoSlot.fecha).toLocaleDateString()}
-              </Text>
-              <Text fontSize="md">
-                <strong>Horario:</strong> {proximoSlot.horaDesde} - {proximoSlot.horaHasta}
+                <strong>Cantidad:</strong> {cantidadSlots}
               </Text>
             </Panel>
           )}

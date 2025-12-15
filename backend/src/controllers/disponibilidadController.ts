@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { RequestConUsuario } from "../middleware/authMiddleware";
 import { DisponibilidadBaseModel } from "../models/DisponibilidadBase";
 import { IndisposicionModel } from "../models/Indisposicion";
-import { getSlotsDisponibles, getSlotsDisponiblesRango, obtenerProximoSlot } from "../services/disponibilidadService";
+import { getSlotsDisponibles, getSlotsDisponiblesRango, contarSlotsDisponibles } from "../services/disponibilidadService";
 
 export const obtenerSlotsDisponibles = async (
   req: Request,
@@ -98,27 +98,6 @@ export const obtenerDisponibilidadMentorPorId = async (req: Request, res: Respon
   }
 };
 
-export const obtenerProximaDisponibilidadMentor = async (req: Request, res: Response) => {
-  const mentorId = req.params.id;
-
-  if (!mentorId) {
-    return res.status(400).json({ mensaje: "Falta el ID del mentor." });
-  }
-
-  try {
-    const proximoSlot = await obtenerProximoSlot(mentorId);
-
-    if (!proximoSlot) {
-      return res.status(404).json({ mensaje: "El mentor no tiene slots disponibles próximamente." });
-    }
-
-    res.json(proximoSlot);
-  } catch (error) {
-    console.error("Error obteniendo próxima disponibilidad:", error);
-    res.status(500).json({ mensaje: "Error interno al obtener disponibilidad." });
-  }
-};
-
 //Crear indisposicion (bloqueo)
 export const crearIndisposicion = async (
   req: RequestConUsuario,
@@ -153,9 +132,6 @@ export const listarIndisposiciones = async (
   res.json(indisposiciones);
 };
 
-
-
-
 export const obtenerSlotsDisponiblesRango = async (req: Request, res: Response) => {
   const { mentorId, desde, hasta } = req.query;
 
@@ -174,5 +150,22 @@ export const obtenerSlotsDisponiblesRango = async (req: Request, res: Response) 
   } catch (error) {
     console.error(error);
     res.status(500).json({ mensaje: "Error obteniendo slots disponibles." });
+  }
+};
+
+// Controlador para obtener la cantidad de turnos disponibles de un mentor
+export const obtenerCantidadSlotsDisponibles = async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  if (!id) {
+    return res.status(400).json({ mensaje: "Falta el ID del mentor." });
+  }
+
+  try {
+    const cantidad = await contarSlotsDisponibles(id);
+    res.json({ cantidad });
+  } catch (error) {
+    console.error("Error obteniendo cantidad de slots:", error);
+    res.status(500).json({ mensaje: "Error interno al obtener slots disponibles." });
   }
 };
