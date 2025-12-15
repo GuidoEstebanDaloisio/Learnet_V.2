@@ -30,11 +30,12 @@ import { formatoFecha } from "../../utils/fechaConfig";
 import { useAuth } from "../../context/AuthContext";
 import { RUTAS } from "../../routes";
 import { obtenerDisponibilidadBase } from "../../api/disponibilidadApi";
+import { actualizarDisponibilidad } from "../../api/usuarioApi";
 
 const DIAS = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
 
 export default function PerfilMentor() {
-  const { usuario } = useAuth();
+const { usuario, setUsuario } = useAuth();
   const navigate = useNavigate();
   const [disponibilidadBase, setDisponibilidadBase] = useState<{
     diasSemana: number[];
@@ -148,8 +149,19 @@ export default function PerfilMentor() {
                 colorScheme="green"
                 size="lg"
                 isChecked={usuario.estaDisponible}
-                isReadOnly
+                onChange={async (e) => {
+                  const nuevaDisponibilidad = e.target.checked;
+                  try {
+                    await actualizarDisponibilidad(nuevaDisponibilidad);
+
+                    // Actualizamos el estado global del usuario
+                    setUsuario({ ...usuario, estaDisponible: nuevaDisponibilidad });
+                  } catch (error) {
+                    console.error("Error al actualizar disponibilidad:", error);
+                  }
+                }}
               />
+
             </FormControl>
 
 

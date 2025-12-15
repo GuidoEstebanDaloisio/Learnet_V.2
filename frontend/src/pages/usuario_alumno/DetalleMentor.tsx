@@ -14,10 +14,12 @@ import {
   AccordionIcon,
   AccordionPanel,
   Button,
+  useToast
 } from "@chakra-ui/react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { RUTAS } from "../../routes";
+import { mostrarToast } from "../../utils/toast";
 
 import {
   FaUserTie,
@@ -38,14 +40,11 @@ import { obtenerProximaDisponibilidadMentor, obtenerDisponibilidadPorId } from "
 /* =======================
    Tipos
 ======================= */
-
 interface Mentoria {
   _id: string;
   titulo: string;
   descripcion: string;
-  tema: {
-    nombre: string;
-  };
+  tema: { nombre: string };
 }
 
 interface Mentor {
@@ -55,6 +54,7 @@ interface Mentor {
   tituloProfesional?: string;
   experiencia?: string;
   fechaDeIngreso?: string;
+  estaDisponible?: boolean;
   mentorias: Mentoria[];
 }
 
@@ -65,19 +65,20 @@ interface Slot {
 }
 
 interface DisponibilidadBase {
-  diasSemana: number[]; // 0 = domingo
+  diasSemana: number[];
   horaDesde: string;
   horaHasta: string;
   duracionSesion?: number;
 }
 
 /* =======================
-   Component
+   Componente
 ======================= */
-
 export default function DetalleMentor() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const toast = useToast();
+
 
   const [mentor, setMentor] = useState<Mentor | null>(null);
   const [loading, setLoading] = useState(true);
@@ -121,7 +122,6 @@ export default function DetalleMentor() {
   if (loading) return <Text p={10}>Cargando mentor...</Text>;
   if (!mentor) return <Text p={10}>Mentor no encontrado</Text>;
 
-  // Agrupar mentorías por tema
   const mentoriasPorTema = mentor.mentorias.reduce<Record<string, Mentoria[]>>(
     (acc, m) => {
       const tema = m.tema.nombre;
@@ -154,8 +154,23 @@ export default function DetalleMentor() {
                 Registrado el: {mentor.fechaDeIngreso ? new Date(mentor.fechaDeIngreso).toLocaleDateString() : "—"}
               </Text>
             </Box>
+
             <Stack spacing={3} minW="180px">
-              <Button variant="alerta_secondary" w="100%" rounded="lg">Reportar perfil</Button>
+              {!mentor.estaDisponible && (
+                <Button
+                  variant="secondary"
+                  w="100%"
+                  rounded="lg"
+                  onClick={() =>
+                    mostrarToast(toast, "info", "Se te notificará cuando el mentor esté disponible")
+                  }
+                >
+                  Notificar cuando esté disponible
+                </Button>
+              )}
+              <Button variant="alerta_secondary" w="100%" rounded="lg">
+                Reportar perfil
+              </Button>
             </Stack>
           </Flex>
         </Panel>
@@ -165,7 +180,7 @@ export default function DetalleMentor() {
         <Accordion allowToggle>
           {Object.entries(mentoriasPorTema).map(([tema, mentorias]) => (
             <AccordionItem key={tema} border="none" mb={4}>
-              <Panel p={0} >
+              <Panel p={0}>
                 <AccordionButton>
                   <Box flex="1" textAlign="left" fontWeight="bold">
                     <Icon as={FaBook} mr={2} />
@@ -179,18 +194,23 @@ export default function DetalleMentor() {
                       <Card key={m._id}>
                         <Text fontSize="lg" fontWeight="bold" color="brand.300">{m.titulo}</Text>
                         <Text color="gray.300">{m.descripcion}</Text>
-                        <Button
-                          variant="primary"
-                          onClick={() =>
-                            navigate(
-                              RUTAS.ALUMNO.SOLICITAR_MENTORIA_ID
-                                .replace(":id-mentor", mentor._id)
-                                .replace(":id-mentoria", m._id)
-                            )
-                          }
-                        >
-                          Solicitar
-                        </Button>
+
+                        {mentor.estaDisponible ? (
+                          <Button
+                            variant="primary"
+                            onClick={() =>
+                              navigate(
+                                RUTAS.ALUMNO.SOLICITAR_MENTORIA_ID
+                                  .replace(":id-mentor", mentor._id)
+                                  .replace(":id-mentoria", m._id)
+                              )
+                            }
+                          >
+                            Solicitar
+                          </Button>
+                        ) : (
+                          <></>
+                        )}
                       </Card>
                     ))}
                   </Stack>
@@ -216,7 +236,7 @@ export default function DetalleMentor() {
                   <Tag
                     key={d}
                     size="md"
-                    colorScheme="brand" //lo pongo aca en lugar de en temas porque alli no se ajusta solo con brand
+                    colorScheme="brand"
                     variant="subtle"
                     rounded="full"
                   >

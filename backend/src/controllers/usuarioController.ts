@@ -66,3 +66,27 @@ export const obtenerMentorConMentorias = async (
     res.status(500).json({ mensaje: "Error obteniendo mentor" });
   }
 };
+
+export const cambiarDisponibilidad = async (req: RequestConUsuario, res: Response) => {
+  try {
+    const { estaDisponible } = req.body;
+
+    if (!req.usuario) {
+      return res.status(401).json({ mensaje: "No autorizado" });
+    }
+
+    // Solo mentores pueden cambiar su disponibilidad
+    const usuario = await UsuarioModel.findById(req.usuario.id);
+    if (!usuario || usuario.tipo !== "mentor") {
+      return res.status(403).json({ mensaje: "Solo los mentores pueden cambiar su disponibilidad" });
+    }
+
+    usuario.estaDisponible = estaDisponible;
+    await usuario.save();
+
+    res.json({ mensaje: "Disponibilidad actualizada", estaDisponible: usuario.estaDisponible });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ mensaje: "Error actualizando disponibilidad" });
+  }
+};
