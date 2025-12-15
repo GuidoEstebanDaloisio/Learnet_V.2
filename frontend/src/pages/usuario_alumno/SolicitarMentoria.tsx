@@ -45,6 +45,14 @@ interface Slot {
   horaHasta: string;   // HH:MM
 }
 
+// Helper local para convertir Date a YYYY-MM-DD
+const getFechaYYYYMMDD = (date: Date) => {
+  const yyyy = date.getFullYear();
+  const mm = String(date.getMonth() + 1).padStart(2, '0');
+  const dd = String(date.getDate()).padStart(2, '0');
+  return `${yyyy}-${mm}-${dd}`;
+};
+
 export default function SolicitarMentoria() {
   const { "id-mentor": mentorId, "id-mentoria": mentoriaId } = useParams<{
     "id-mentor": string;
@@ -59,7 +67,6 @@ export default function SolicitarMentoria() {
   const [mensaje, setMensaje] = useState("");
   const toast = useToast();
   const navigate = useNavigate();
-
 
   // Traer datos del mentor y mentoría
   useEffect(() => {
@@ -92,8 +99,8 @@ export default function SolicitarMentoria() {
 
         const res = await obtenerSlotsDisponiblesRango({
           mentorId,
-          desde: hoy.toISOString().split("T")[0],
-          hasta: hasta.toISOString().split("T")[0],
+          desde: getFechaYYYYMMDD(hoy),
+          hasta: getFechaYYYYMMDD(hasta),
         });
 
         const slotsArray: Slot[] = [];
@@ -112,9 +119,9 @@ export default function SolicitarMentoria() {
     fetchSlots();
   }, [mentorId, mentoriaSeleccionada]);
 
-  // Slots del día seleccionado
+  // Slots del día seleccionado (usando helper para fecha local)
   const slotsDelDia = slots.filter(
-    (s) => s.fecha === fechaSeleccionada.toISOString().split("T")[0]
+    (s) => s.fecha === getFechaYYYYMMDD(fechaSeleccionada)
   );
 
   // Enviar solicitud
@@ -131,18 +138,13 @@ export default function SolicitarMentoria() {
     try {
       const res = await crearSolicitud(data);
       console.log("Solicitud creada:", res.data);
-
-      // Mostrar toast de éxito
       mostrarToast(toast, "success", "Solicitud enviada correctamente");
-
-      // Volver atrás (por ejemplo a la página anterior)
       navigate(-1);
     } catch (error: any) {
       console.error("Error al enviar solicitud:", error);
       mostrarToast(toast, "error", error.response?.data?.mensaje || "Ocurrió un error al enviar la solicitud");
     }
   };
-
 
   if (!mentor) return <Text p={10}>Cargando mentor...</Text>;
 

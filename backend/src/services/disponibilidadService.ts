@@ -1,9 +1,8 @@
 import { DisponibilidadBaseModel } from "../models/DisponibilidadBase";
-
 import { IndisposicionModel } from "../models/Indisposicion";
 import { Types } from "mongoose";
 
-// --- Tipos de la Interfaz del Service ---
+// --- Tipos ---
 interface Slot {
   horaDesde: string;
   horaHasta: string;
@@ -19,28 +18,28 @@ interface ProximoSlot extends Slot {
   fecha: string; // YYYY-MM-DD
 }
 
-// --- Helpers (Funciones Puras de Lógica) ---
-/** Convierte "HH:MM" a minutos desde la medianoche. */
+// --- Helpers ---
 const timeToMinutes = (time: string): number => {
   const [h, m] = time.split(":").map(Number);
   return h * 60 + m;
 };
 
-/** Convierte minutos desde la medianoche a "HH:MM". */
 const minutesToTime = (min: number): string => {
   const h = Math.floor(min / 60);
   const m = min % 60;
   return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
 };
 
-/** Genera todos los slots posibles dentro de un rango y duración. */
-const generarSlots = (
-  desde: string,
-  hasta: string,
-  duracion: number
-): Slot[] => {
-  const slots: Slot[] = [];
+// Formatea la fecha a YYYY-MM-DD en zona horaria local
+const formatFechaLocal = (d: Date) => {
+  const yyyy = d.getFullYear();
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return `${yyyy}-${mm}-${dd}`;
+};
 
+const generarSlots = (desde: string, hasta: string, duracion: number): Slot[] => {
+  const slots: Slot[] = [];
   let actual = timeToMinutes(desde);
   const fin = timeToMinutes(hasta);
 
@@ -55,108 +54,73 @@ const generarSlots = (
   return slots;
 };
 
-/** Verifica si dos rangos de tiempo se solapan. */
-const solapan = (
-  aDesde: string,
-  aHasta: string,
-  bDesde: string,
-  bHasta: string
-): boolean => {
+const solapan = (aDesde: string, aHasta: string, bDesde: string, bHasta: string): boolean => {
   const a1 = timeToMinutes(aDesde);
   const a2 = timeToMinutes(aHasta);
   const b1 = timeToMinutes(bDesde);
   const b2 = timeToMinutes(bHasta);
-
-  // Solapan si (A comienza antes de que B termine) Y (B comienza antes de que A termine)
   return a1 < b2 && b1 < a2;
 };
 
-// --- Función Principal del Service ---
-export const getSlotsDisponibles = async ({
-  mentorId,
-  fecha,
-  duracionSesion,
-}: Params): Promise<Slot[]> => {
-  // 1️⃣ obtener disponibilidad base
+// --- Funciones principales ---
+export const getSlotsDisponibles = async ({ mentorId, fecha, duracionSesion }: Params): Promise<Slot[]> => {
   const base = await DisponibilidadBaseModel.findOne({ mentor: mentorId });
   if (!base) return [];
 
   const fechaDate = new Date(fecha);
-  // getDay() devuelve 0 (domingo) a 6 (sábado)
   const diaSemana = fechaDate.getDay();
+  if (!base.diasSemana.includes(diaSemana)) return [];
 
-  // 2️⃣ validar que el mentor trabaje ese día
-  if (!base.diasSemana.includes(diaSemana)) {
-    return [];
-  }
+  const slotsBase = generarSlots(base.horaDesde, base.horaHasta, duracionSesion);
 
-  // 3️⃣ generar slots base
-  const slotsBase = generarSlots(
-    base.horaDesde,
-    base.horaHasta,
-    duracionSesion
-  );
-
-  // 4️⃣ obtener indisposiciones (antes excepciones) de ese día
-  const indisposiciones = await IndisposicionModel.find({ // 👈 Cambiado el nombre del modelo
+  const indisposiciones = await IndisposicionModel.find({
     mentor: mentorId,
-    fecha,
+    fecha: formatFechaLocal(fechaDate),
   });
 
-  // 5️⃣ filtrar slots ocupados
-  const slotsDisponibles = slotsBase.filter((slot) => {
-    // Si algún slot de indisposición SOLAPA el slot base, entonces el slot base está ocupado.
-    return !indisposiciones.some((indisposicion) => // 👈 Cambiado el nombre de la variable
-      solapan(slot.horaDesde, slot.horaHasta, indisposicion.horaDesde, indisposicion.horaHasta)
-    );
-  });
+  const slotsDisponibles = slotsBase.filter(slot =>
+    !indisposiciones.some(ind =>
+      solapan(slot.horaDesde, slot.horaHasta, ind.horaDesde, ind.horaHasta)
+    )
+  );
 
   return slotsDisponibles;
 };
 
-export const obtenerProximoSlot = async (mentorId: string): Promise<ProximoSlot | null> => { // 👈 Añadida tipificación para mejor claridad
+export const obtenerProximoSlot = async (mentorId: string): Promise<ProximoSlot | null> => {
   const base = await DisponibilidadBaseModel.findOne({ mentor: mentorId });
   if (!base) return null;
 
   const hoy = new Date();
-  for (let i = 0; i < 30; i++) { // buscamos slots de los próximos 30 días
+  for (let i = 0; i < 30; i++) {
     const fecha = new Date();
     fecha.setDate(hoy.getDate() + i);
     const diaSemana = fecha.getDay();
-
     if (!base.diasSemana.includes(diaSemana)) continue;
 
     const slotsBase = generarSlots(base.horaDesde, base.horaHasta, base.duracionSesion || 60);
 
-    // Obtener indisposiciones (antes excepciones) del día
-    const indisposiciones = await IndisposicionModel.find({ // 👈 Cambiado el nombre del modelo
+    const indisposiciones = await IndisposicionModel.find({
       mentor: mentorId,
-      fecha: fecha.toISOString().split("T")[0],
+      fecha: formatFechaLocal(fecha),
     });
 
-    const slotsDisponibles = slotsBase.filter((slot) =>
-      !indisposiciones.some((indisposicion) => // 👈 Cambiado el nombre de la variable
-        solapan(slot.horaDesde, slot.horaHasta, indisposicion.horaDesde, indisposicion.horaHasta)
-      )
+    const slotsDisponibles = slotsBase.filter(slot =>
+      !indisposiciones.some(ind => solapan(slot.horaDesde, slot.horaHasta, ind.horaDesde, ind.horaHasta))
     );
 
     if (slotsDisponibles.length > 0) {
       return {
-        fecha: fecha.toISOString().split("T")[0],
+        fecha: formatFechaLocal(fecha),
         ...slotsDisponibles[0],
       };
     }
   }
 
-  return null; // ningún slot disponible en los próximos 30 días
+  return null;
 };
 
-
-export const getSlotsDisponiblesRango = async (
-  mentorId: string,
-  desde: Date,
-  hasta: Date
-): Promise<{ fecha: string; slots: Slot[] }[]> => {
+export const getSlotsDisponiblesRango = async (mentorId: string, desde: Date, hasta: Date): Promise<{ fecha: string; slots: Slot[] }[]> => {
   const base = await DisponibilidadBaseModel.findOne({ mentor: mentorId });
   if (!base) return [];
 
@@ -169,17 +133,16 @@ export const getSlotsDisponiblesRango = async (
 
     const slotsBase = generarSlots(base.horaDesde, base.horaHasta, duracionSesion);
 
-    // Indisposiciones para el día
     const indisposiciones = await IndisposicionModel.find({
       mentor: mentorId,
-      fecha: d.toISOString().split("T")[0],
+      fecha: formatFechaLocal(d),
     });
 
-    const slotsDisponibles = slotsBase.filter((slot) =>
-      !indisposiciones.some((ind) => solapan(slot.horaDesde, slot.horaHasta, ind.horaDesde, ind.horaHasta))
+    const slotsDisponibles = slotsBase.filter(slot =>
+      !indisposiciones.some(ind => solapan(slot.horaDesde, slot.horaHasta, ind.horaDesde, ind.horaHasta))
     );
 
-    resultados.push({ fecha: d.toISOString().split("T")[0], slots: slotsDisponibles });
+    resultados.push({ fecha: formatFechaLocal(d), slots: slotsDisponibles });
   }
 
   return resultados;
