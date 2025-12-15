@@ -80,15 +80,7 @@ export default function RegistroMentor() {
                 name="experiencia"
                 placeholder="Contanos sobre tu experiencia…"
                 value={form.experiencia}
-                onChange={handleChange}
-                bg="gray.700"
-                borderColor="gray.600"
-                _hover={{ borderColor: "gray.500" }}
-                _focus={{
-                  borderColor: "brand.400",
-                  boxShadow: "0 0 0 1px var(--chakra-colors-brand-400)",
-                }}
-              />
+                onChange={handleChange} />
             </FormControl>
 
             <Button w="100%" onClick={handleRegistrar}>

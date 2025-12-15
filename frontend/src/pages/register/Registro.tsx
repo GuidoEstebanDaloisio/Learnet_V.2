@@ -115,7 +115,7 @@ export default function Registro() {
               </Select>
             </FormControl>
 
-            <Button w="100%" onClick={handleContinuar}>
+            <Button w="100%" variant="primary" onClick={handleContinuar}>
               Continuar
             </Button>
           </VStack>

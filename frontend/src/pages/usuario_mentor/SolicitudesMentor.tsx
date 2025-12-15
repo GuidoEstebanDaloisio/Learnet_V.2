@@ -1,4 +1,4 @@
-import { Box, Heading, Text } from "@chakra-ui/react";
+import { Box, Heading, Text, SimpleGrid } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
 import NavbarMentor from "../../components/mentor/NavbarMentor";
@@ -38,11 +38,8 @@ export default function SolicitudesMentor() {
   const handleRechazar = async (id: string) => {
     try {
       await rechazarSolicitud(id);
-
       setSolicitudes((prev) =>
-        prev.map((s) =>
-          s._id === id ? { ...s, estado: "rechazada" } : s
-        )
+        prev.map((s) => (s._id === id ? { ...s, estado: "rechazada" } : s))
       );
     } catch (error) {
       console.error("Error al rechazar solicitud:", error);
@@ -52,11 +49,8 @@ export default function SolicitudesMentor() {
   const handleAceptar = async (id: string) => {
     try {
       await aceptarSolicitud(id);
-
       setSolicitudes((prev) =>
-        prev.map((s) =>
-          s._id === id ? { ...s, estado: "aceptada" } : s
-        )
+        prev.map((s) => (s._id === id ? { ...s, estado: "aceptada" } : s))
       );
     } catch (error) {
       console.error("Error al aceptar solicitud:", error);
@@ -89,15 +83,7 @@ export default function SolicitudesMentor() {
           Solicitudes de Mentoría
         </Heading>
 
-        <Box
-          display="grid"
-          gridTemplateColumns={{
-            base: "1fr",
-            sm: "1fr 1fr",
-            lg: "1fr 1fr 1fr",
-          }}
-          gap={8}
-        >
+        <SimpleGrid columns={{ base: 1, sm: 2, lg: 3 }} spacing={8}>
           {solicitudes.map((s) => {
             const { fecha } = formatoFechaHoraLocal(s.fechaDesde);
             const { hora: horaDesde } = formatoFechaHoraLocal(s.fechaDesde);
@@ -119,7 +105,7 @@ export default function SolicitudesMentor() {
               />
             );
           })}
-        </Box>
+        </SimpleGrid>
       </Box>
 
       <Footer />

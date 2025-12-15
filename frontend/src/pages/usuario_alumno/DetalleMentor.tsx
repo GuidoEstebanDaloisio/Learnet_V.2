@@ -137,7 +137,7 @@ export default function DetalleMentor() {
       <NavbarAlumno />
       <Box minH="100vh" px={6} py={10}>
         {/* HEADER */}
-        <Panel p={8} rounded="2xl" mb={10}>
+        <Panel mb={10}>
           <Flex gap={6} align="center">
             <Avatar size="xl" name={`${mentor.nombre} ${mentor.apellido}`} />
             <Box flex="1">
@@ -165,15 +165,15 @@ export default function DetalleMentor() {
         <Accordion allowToggle>
           {Object.entries(mentoriasPorTema).map(([tema, mentorias]) => (
             <AccordionItem key={tema} border="none" mb={4}>
-              <Panel p={0} overflow="hidden">
-                <AccordionButton _expanded={{ bg: "brand.500", color: "white" }}>
+              <Panel p={0} >
+                <AccordionButton>
                   <Box flex="1" textAlign="left" fontWeight="bold">
                     <Icon as={FaBook} mr={2} />
                     {tema}
                   </Box>
                   <AccordionIcon />
                 </AccordionButton>
-                <AccordionPanel pb={4}>
+                <AccordionPanel>
                   <Stack spacing={4} mt={2}>
                     {mentorias.map((m) => (
                       <Card key={m._id}>
@@ -216,7 +216,7 @@ export default function DetalleMentor() {
                   <Tag
                     key={d}
                     size="md"
-                    colorScheme="brand"
+                    colorScheme="brand" //lo pongo aca en lugar de en temas porque alli no se ajusta solo con brand
                     variant="subtle"
                     rounded="full"
                   >

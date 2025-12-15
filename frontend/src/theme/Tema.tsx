@@ -142,6 +142,48 @@ const tema = extendTheme({
       },
     },
 
+    Textarea: {
+      baseStyle: {
+        bg: "gray.700",
+        borderColor: "gray.600",
+        _placeholder: { color: "gray.400" },
+        _hover: {
+          borderColor: "gray.500",
+        },
+        _focus: {
+          borderColor: "brand.400",
+          boxShadow: "0 0 0 1px var(--chakra-colors-brand-400)",
+        },
+      },
+      sizes: {
+        md: {
+          borderRadius: "md",
+          minH: 32, // altura mínima, opcional
+        },
+      },
+      defaultProps: {
+        size: "md",
+        variant: "outline",
+      },
+    },
+
+    Accordion: {
+      baseStyle: {
+        container: {
+          border: "none",
+        },
+        button: {
+          fontWeight: "bold",
+          _expanded: {
+            bg: "brand.500",
+            color: "white",
+          },
+        },
+      },
+    },
+
+
+
     FormLabel: {
       baseStyle: {
         marginBottom: 1,

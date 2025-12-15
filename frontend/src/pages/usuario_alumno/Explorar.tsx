@@ -10,6 +10,7 @@ import {
   Heading,
   VStack,
   Icon,
+  SimpleGrid,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { listarMentores } from "../../api/usuarioApi";
@@ -27,7 +28,6 @@ interface Mentor {
   tituloProfesional?: string;
   estaDisponible?: boolean;
 }
-
 
 export default function Explorar() {
   const [mentores, setMentores] = useState<Mentor[]>([]);
@@ -81,16 +81,7 @@ export default function Explorar() {
         </VStack>
 
         {/* Grid de cards */}
-        <Box
-          display="grid"
-          gridTemplateColumns={{
-            base: "1fr",
-            sm: "1fr 1fr",
-            lg: "1fr 1fr 1fr",
-          }}
-          gap={8}
-          mt={4}
-        >
+        <SimpleGrid columns={{ base: 1, sm: 2, lg: 3 }} spacing={8} mt={4}>
           {mentores.map((mentor) => (
             <MentorCard
               key={mentor._id}
@@ -102,8 +93,7 @@ export default function Explorar() {
               disponible={mentor.estaDisponible ?? false}
             />
           ))}
-
-        </Box>
+        </SimpleGrid>
       </Box>
 
       <Footer />
