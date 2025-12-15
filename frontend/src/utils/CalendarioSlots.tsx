@@ -20,7 +20,7 @@ const CalendarioSlots: React.FC<Props> = ({ slots, fechaSeleccionada, setFechaSe
         }
       }}
       value={fechaSeleccionada}
-      tileDisabled={({ date, view }) => {
+      tileDisabled={({ date }) => {
         const dateStr = date.toISOString().split("T")[0];
         return !slots.some(s => s.fecha === dateStr);
       }}

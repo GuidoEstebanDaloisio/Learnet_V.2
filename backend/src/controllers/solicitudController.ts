@@ -164,15 +164,12 @@ export const listarSolicitudesMentor = async (req: RequestConUsuario, res: Respo
 
   try {
     const solicitudes = await SolicitudModel.find({ mentor: req.usuario.id })
-  .populate("alumno", "nombre apellido")
-  .populate({
-    path: "mentoria",
-    populate: {
-      path: "tema",
-      select: "nombre",
-    },
-  });
-
+      .populate("alumno", "nombre apellido")
+      .populate({
+        path: "mentoria",
+        populate: { path: "tema", select: "nombre" },
+      })
+      .sort({ createdAt: -1 }); // <- orden descendente por fecha de creación
 
     res.json(solicitudes);
   } catch (error) {
