@@ -1,56 +1,34 @@
-import { Schema, model, Types } from "mongoose";
+import { Schema, model, Types, Document } from "mongoose";
 
-export const ESTADOS_SESION = {
-  NO_INICIADA: "no iniciada",
-  EN_PROGRESO: "en progreso",
-  CANCELADA: "cancelada",
-  FINALIZADA: "finalizada",
-} as const;
+export interface ISesionAsesoria extends Document {
+  alumno: Types.ObjectId;
+  mentor: Types.ObjectId;
+  mentoria: Types.ObjectId;
+  fechaDesde: Date;
+  fechaHasta: Date;
+  linkMeet: string;
+  estado: "no iniciada" | "en progreso" | "cancelada" | "finalizada";
+}
 
-const SesionAsesoriaSchema = new Schema(
+const SesionAsesoriaSchema = new Schema<ISesionAsesoria>(
   {
-    mentoria: {
-      type: Types.ObjectId,
-      ref: "Mentoria",
-      required: true,
-    },
-
-    mentor: {
-      type: Types.ObjectId,
-      ref: "Usuario",
-      required: true,
-    },
-
-    alumno: {
-      type: Types.ObjectId,
-      ref: "Usuario",
-      required: true,
-    },
-
-    inicio: {
-      type: Date,
-      required: true,
-    },
-
-    fin: {
-      type: Date,
-      required: true,
-    },
-
+    alumno: { type: Schema.Types.ObjectId, ref: "Usuario", required: true },
+    mentor: { type: Schema.Types.ObjectId, ref: "Usuario", required: true },
+    mentoria: { type: Schema.Types.ObjectId, ref: "Mentoria", required: true },
+    fechaDesde: { type: Date, required: true },
+    fechaHasta: { type: Date, required: true },
+    linkMeet: {type: String, default: "",},
     estado: {
       type: String,
-      enum: Object.values(ESTADOS_SESION),
-      default: ESTADOS_SESION.NO_INICIADA,
-    },
-
-    linkMeet: {
-      type: String,
+      enum: ["no iniciada", "en progreso", "cancelada", "finalizada"],
+      default: "no iniciada",
     },
   },
   { timestamps: true }
 );
 
-export const SesionAsesoriaModel = model(
+
+export const SesionAsesoriaModel = model<ISesionAsesoria>(
   "SesionAsesoria",
   SesionAsesoriaSchema
 );

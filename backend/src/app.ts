@@ -7,6 +7,7 @@ import mentoriaRoutes from "./routes/mentoriaRoutes";
 import temaRoutes from "./routes/temaRoutes";
 import disponibilidadRoutes from "./routes/disponibilidadRoutes";
 import solicitudRoutes from "./routes/solicitudRoutes";
+import sesionAsesoriaRoutes from "./routes/sesionAsesoriaRoutes";
 
 
 const app = express();
@@ -21,6 +22,8 @@ app.use("/api/mentorias", mentoriaRoutes);
 app.use("/api/temas", temaRoutes);
 app.use("/api/disponibilidad", disponibilidadRoutes);
 app.use("/api/solicitudes", solicitudRoutes);
+app.use("/api/sesiones-asesoria", sesionAsesoriaRoutes);
+
 
 
 export default app;

@@ -12,6 +12,7 @@ import {
 } from "../../api/solicitudApi";
 
 import { formatoFechaHoraLocal } from "../../utils/fechaConfig";
+import { crearSesionDesdeSolicitud } from "../../api/sesionAsesoriaApi";
 
 interface Solicitud {
   _id: string;
@@ -47,15 +48,23 @@ export default function SolicitudesMentor() {
   };
 
   const handleAceptar = async (id: string) => {
-    try {
-      await aceptarSolicitud(id);
-      setSolicitudes((prev) =>
-        prev.map((s) => (s._id === id ? { ...s, estado: "aceptada" } : s))
-      );
-    } catch (error) {
-      console.error("Error al aceptar solicitud:", error);
-    }
-  };
+  try {
+    // 1️⃣ Aceptar la solicitud
+    await aceptarSolicitud(id);
+
+    // 2️⃣ Actualizar el estado local de la solicitud
+    setSolicitudes((prev) =>
+      prev.map((s) => (s._id === id ? { ...s, estado: "aceptada" } : s))
+    );
+
+    // 3️⃣ Crear la sesión de asesoría basada en la solicitud
+    await crearSesionDesdeSolicitud(id);
+
+    console.log("Sesión de asesoría creada correctamente.");
+  } catch (error) {
+    console.error("Error al aceptar la solicitud o crear la sesión:", error);
+  }
+};
 
   useEffect(() => {
     const fetchSolicitudes = async () => {

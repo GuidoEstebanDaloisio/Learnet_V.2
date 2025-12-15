@@ -88,7 +88,7 @@ export const getSlotsDisponibles = async ({ mentorId, fecha, duracionSesion }: P
 };
 export const contarSlotsDisponibles = async (
   mentorId: string,
-  dias = 30
+  dias = 30 //Cantidad de dias para calcular
 ): Promise<number> => {
   const base = await DisponibilidadBaseModel.findOne({ mentor: mentorId });
   if (!base) return 0;

@@ -245,7 +245,7 @@ export default function DetalleMentor() {
             <Panel flex="1" bg="brand.600" borderColor="brand.400" color="white">
               <Flex align="center" mb={4}>
                 <Icon as={FaCalendarAlt} boxSize={6} mr={3} />
-                <Text fontSize="lg" fontWeight="bold">Cupos disponibles</Text>
+                <Text fontSize="lg" fontWeight="bold">Cupos disponibles para los proximos 30 dias</Text>
               </Flex>
               <Text fontSize="md">
                 <strong>Cantidad:</strong> {cantidadSlots}

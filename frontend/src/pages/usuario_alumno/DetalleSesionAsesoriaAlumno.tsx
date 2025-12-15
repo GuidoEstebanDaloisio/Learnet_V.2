@@ -5,8 +5,8 @@ import {
   Badge,
   Button,
   Icon,
-  Link,
-  Divider
+  Divider,
+  useToast,
 } from "@chakra-ui/react";
 
 import {
@@ -20,6 +20,7 @@ import { useLocation } from "react-router-dom";
 import NavbarAlumno from "../../components/alumno/NavbarAlumno";
 import Footer from "../../components/Footer";
 import Panel from "../../theme/components/Panel";
+import { mostrarToast } from "../../utils/toast";
 
 interface SesionAsesoriaAlumno {
   titulo: string;
@@ -40,10 +41,10 @@ const colorEstado: Record<SesionAsesoriaAlumno["estado"], string> = {
 
 export default function DetalleSesionAsesoriaAlumno() {
   const { state } = useLocation();
+  const toast = useToast();
 
   const sesion: SesionAsesoriaAlumno =
-    state ||
-    {
+    state || {
       titulo: "Ejemplo de Sesión de Asesoría",
       descripcion:
         "Esta es una descripción de ejemplo utilizada para visualizar cómo luce la página de detalles.",
@@ -51,16 +52,22 @@ export default function DetalleSesionAsesoriaAlumno() {
       fecha: "10/02/2025",
       hora: "18:00",
       estado: "No iniciada",
-      meetUrl: "https://meet.google.com/ejemplo",
+      meetUrl: "", // simulamos que no hay link
     };
+
+  const handleUnirseClick = () => {
+    if (!sesion.meetUrl) {
+      mostrarToast(toast, "info", "El link de la sesión aún no está disponible");
+    } else {
+      window.open(sesion.meetUrl, "_blank");
+    }
+  };
 
   return (
     <>
       <NavbarAlumno />
 
       <Box minH="100vh" px={6} py={10} display="flex" justifyContent="center">
-        
-        {/* PANEL PRINCIPAL */}
         <Panel maxW="700px" w="100%" p={8} rounded="2xl" shadow="2xl">
           
           {/* TÍTULO */}
@@ -111,14 +118,15 @@ export default function DetalleSesionAsesoriaAlumno() {
           <Divider/>
 
           {/* BOTÓN */}
-          <Link href={sesion.meetUrl} target="_blank" style={{ width: "100%" }}>
-            <Button w="100%" variant="primary">
-              Unirse a la sesión
-            </Button>
-          </Link>
+          <Button
+            w="100%"
+            variant="primary"
+            onClick={handleUnirseClick}
+          >
+            Unirse a la sesión
+          </Button>
 
         </Panel>
-
       </Box>
 
       <Footer />
