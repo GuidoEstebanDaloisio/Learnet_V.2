@@ -5,7 +5,12 @@ import NavbarMentor from "../../components/mentor/NavbarMentor";
 import Footer from "../../components/Footer";
 import SolicitudCard from "../../components/mentor/SolicitudCard";
 
-import { listarSolicitudesMentor } from "../../api/solicitudApi";
+import {
+  listarSolicitudesMentor,
+  rechazarSolicitud,
+  aceptarSolicitud,
+} from "../../api/solicitudApi";
+
 import { formatoFechaHoraLocal } from "../../utils/fechaConfig";
 
 interface Solicitud {
@@ -20,17 +25,43 @@ interface Solicitud {
       nombre: string;
     };
   };
-  fechaDesde: string;   
+  fechaDesde: string;
   fechaHasta: string;
   mensajeOpcional?: string;
   estado: "pendiente" | "aceptada" | "rechazada";
 }
 
-
-
 export default function SolicitudesMentor() {
   const [solicitudes, setSolicitudes] = useState<Solicitud[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const handleRechazar = async (id: string) => {
+    try {
+      await rechazarSolicitud(id);
+
+      setSolicitudes((prev) =>
+        prev.map((s) =>
+          s._id === id ? { ...s, estado: "rechazada" } : s
+        )
+      );
+    } catch (error) {
+      console.error("Error al rechazar solicitud:", error);
+    }
+  };
+
+  const handleAceptar = async (id: string) => {
+    try {
+      await aceptarSolicitud(id);
+
+      setSolicitudes((prev) =>
+        prev.map((s) =>
+          s._id === id ? { ...s, estado: "aceptada" } : s
+        )
+      );
+    } catch (error) {
+      console.error("Error al aceptar solicitud:", error);
+    }
+  };
 
   useEffect(() => {
     const fetchSolicitudes = async () => {
@@ -75,13 +106,16 @@ export default function SolicitudesMentor() {
             return (
               <SolicitudCard
                 key={s._id}
+                id={s._id}
                 alumno={`${s.alumno.nombre} ${s.alumno.apellido}`}
                 tituloMentoria={s.mentoria.titulo}
                 tema={s.mentoria.tema.nombre}
                 fecha={fecha}
                 horario={`${horaDesde} a ${horaHasta}`}
                 mensaje={s.mensajeOpcional}
-                estado={s.estado === "rechazada" ? "cancelada" : s.estado}
+                estado={s.estado}
+                onAceptar={handleAceptar}
+                onRechazar={handleRechazar}
               />
             );
           })}

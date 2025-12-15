@@ -2,24 +2,25 @@ import {
   Box,
   Text,
   Button,
-  HStack
+  HStack,
 } from "@chakra-ui/react";
 import Card from "../../theme/components/Card";
 
-import { useState } from "react";
-
 interface SolicitudCardProps {
+  id: string;
   alumno: string;
   tituloMentoria: string;
   tema: string;
   fecha: string;
   horario: string;
   mensaje?: string;
-  estado: "pendiente" | "aceptada" | "cancelada";
+  estado: "pendiente" | "aceptada" | "rechazada";
+  onAceptar: (id: string) => void;
+  onRechazar: (id: string) => void;
 }
 
-
 export default function SolicitudCard({
+  id,
   alumno,
   tituloMentoria,
   tema,
@@ -27,12 +28,11 @@ export default function SolicitudCard({
   horario,
   mensaje,
   estado,
+  onAceptar,
+  onRechazar,
 }: SolicitudCardProps) {
-  const [estadoActual, setEstadoActual] = useState(estado);
-
   return (
     <Card>
-
       <Text fontSize="lg" fontWeight="bold" color="brand.300" mb={1}>
         {alumno}
       </Text>
@@ -46,7 +46,7 @@ export default function SolicitudCard({
       </Text>
 
       <Text fontSize="sm" color="gray.400" mb={2}>
-        <strong>Fecha:</strong> {fecha} — <strong>Hora:</strong> {horario}
+        <strong>Fecha:</strong> {fecha} — <strong>Horario:</strong> {horario}
       </Text>
 
       {mensaje && (
@@ -55,54 +55,54 @@ export default function SolicitudCard({
         </Text>
       )}
 
-      {/* Estado final o botones */}
-      {estadoActual === "pendiente" ? (
+      {estado === "pendiente" && (
         <HStack mt={4}>
           <Button
             w="50%"
             variant="primary"
-            onClick={() => setEstadoActual("aceptada")}
+            onClick={() => onAceptar(id)}
           >
             Aceptar
           </Button>
 
           <Button
             w="50%"
-            variant="primary"
-            onClick={() => setEstadoActual("cancelada")}
+            colorScheme="red"
+            onClick={() => onRechazar(id)}
           >
             Rechazar
           </Button>
         </HStack>
-      ) : (
+      )}
+
+      {estado === "aceptada" && (
         <Box
           mt={4}
           p={3}
           rounded="md"
           textAlign="center"
-          bg={
-            estadoActual === "aceptada"
-              ? "green.900"
-              : "red.900"
-          }
+          bg="green.900"
           border="1px solid"
-          borderColor={
-            estadoActual === "aceptada"
-              ? "green.400"
-              : "red.400"
-          }
+          borderColor="green.400"
         >
-          <Text
-            color={
-              estadoActual === "aceptada"
-                ? "green.300"
-                : "red.300"
-            }
-            fontWeight="bold"
-          >
-            {estadoActual === "aceptada"
-              ? "Esta solicitud fue aceptada."
-              : "Esta solicitud fue cancelada."}
+          <Text color="green.300" fontWeight="bold">
+            Esta solicitud fue aceptada.
+          </Text>
+        </Box>
+      )}
+
+      {estado === "rechazada" && (
+        <Box
+          mt={4}
+          p={3}
+          rounded="md"
+          textAlign="center"
+          bg="red.900"
+          border="1px solid"
+          borderColor="red.400"
+        >
+          <Text color="red.300" fontWeight="bold">
+            Esta solicitud fue rechazada.
           </Text>
         </Box>
       )}

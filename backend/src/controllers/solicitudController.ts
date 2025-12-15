@@ -36,7 +36,7 @@ export const crearSolicitud = async (
     const [hDesde, mDesde] = horaDesdeStr.split(":").map(Number);
     const [hHasta, mHasta] = horaHastaStr.split(":").map(Number);
 
-    // ⚠️ FECHAS EN HORA LOCAL
+    // FECHAS EN HORA LOCAL
     const fechaDesde = new Date(anio, mes - 1, dia, hDesde, mDesde, 0, 0);
     const fechaHasta = new Date(anio, mes - 1, dia, hHasta, mHasta, 0, 0);
 
@@ -62,6 +62,77 @@ export const crearSolicitud = async (
     res
       .status(500)
       .json({ mensaje: "Error interno al crear la solicitud" });
+  }
+};
+
+// Aceptar solicitud
+export const aceptarSolicitud = async (
+  req: RequestConUsuario,
+  res: Response
+) => {
+  const { id } = req.params;
+
+  if (!req.usuario) {
+    return res.status(401).json({ mensaje: "No autenticado" });
+  }
+
+  try {
+    const solicitud = await SolicitudModel.findById(id);
+
+    if (!solicitud) {
+      return res.status(404).json({ mensaje: "Solicitud no encontrada" });
+    }
+
+    // Validar que el mentor sea el dueño
+    if (solicitud.mentor.toString() !== req.usuario.id) {
+      return res.status(403).json({ mensaje: "No autorizado" });
+    }
+
+    // Solo se puede aceptar si está pendiente
+    if (solicitud.estado !== "pendiente") {
+      return res
+        .status(400)
+        .json({ mensaje: "La solicitud ya fue procesada" });
+    }
+
+    solicitud.estado = "aceptada";
+    await solicitud.save();
+
+    res.json(solicitud);
+  } catch (error) {
+    console.error("Error aceptando solicitud:", error);
+    res.status(500).json({ mensaje: "Error al aceptar solicitud" });
+  }
+};
+
+
+// Rechazar solicitud
+export const rechazarSolicitud = async (req: RequestConUsuario, res: Response) => {
+  const { id } = req.params;
+
+  if (!req.usuario) {
+    return res.status(401).json({ mensaje: "No autenticado" });
+  }
+
+  try {
+    const solicitud = await SolicitudModel.findById(id);
+
+    if (!solicitud) {
+      return res.status(404).json({ mensaje: "Solicitud no encontrada" });
+    }
+
+    // Opcional: validar que el mentor sea el dueño
+    if (solicitud.mentor.toString() !== req.usuario.id) {
+      return res.status(403).json({ mensaje: "No autorizado" });
+    }
+
+    solicitud.estado = "rechazada";
+    await solicitud.save();
+
+    res.json(solicitud);
+  } catch (error) {
+    console.error("Error rechazando solicitud:", error);
+    res.status(500).json({ mensaje: "Error al rechazar solicitud" });
   }
 };
 
